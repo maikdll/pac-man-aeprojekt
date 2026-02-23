@@ -1,0 +1,26 @@
+[gd_scene format=3 uid="uid://c1512qgi04htt"]
+
+[ext_resource type="Script" uid="uid://bxtxgovh0rw5i" path="res://scenes/healthbar.gd" id="1_2mw6h"]
+[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://assets/Pacman.png" id="1_flqgd"]
+
+[node name="Healthbar" type="Control" unique_id=309987989]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_2mw6h")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=777731238]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=1056979255]
+layout_mode = 2
+texture = ExtResource("1_flqgd")
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer" unique_id=477769671]
+layout_mode = 2
+texture = ExtResource("1_flqgd")
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer" unique_id=1754045592]
+layout_mode = 2
+texture = ExtResource("1_flqgd")

@@ -1,11 +1,12 @@
-[gd_scene format=3 uid="uid://tfkqo11vvvsq"]
+[gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" path="res://scenes/Points.tscn" id="2_rvslj"]
+[ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
-[ext_resource type="PackedScene" path="res://scenes/ghost.tscn" id="7_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://cepysal7iqfd7" path="res://scenes/ghost.tscn" id="7_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/Healthbar.tscn" id="7_nxtc6"]
 
 [node name="Main" type="Node2D" unique_id=1240070931]
 
@@ -56,4 +57,14 @@ autoplay = true
 
 [node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
 position = Vector2(75.46582, 731.4829)
-up_direction = Vector2(0.70710677, -0.70710677)
+up_direction = Vector2(0.7071068, -0.7071068)
+
+[node name="Healthbar" type="CanvasLayer" parent="." unique_id=833753433]
+scale = Vector2(0.2, 0.2)
+transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
+
+[node name="Healthbar" parent="Healthbar" unique_id=309987989 instance=ExtResource("7_nxtc6")]
+offset_left = 299.99997
+offset_top = 4979.9995
+offset_right = 299.99997
+offset_bottom = 4979.9995
