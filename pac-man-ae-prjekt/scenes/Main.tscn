@@ -1,16 +1,16 @@
-[gd_scene format=3 uid="uid://tfkqo11vvvsq"]
+[gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" path="res://scenes/Points.tscn" id="2_rvslj"]
+[ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
-[ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
-[ext_resource type="PackedScene" path="res://scenes/ghost.tscn" id="7_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://by5uja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
 
-[node name="Main" type="Node2D" unique_id=1240070931]
+[node name="Main" type="Node2D" unique_id=1344439806]
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
 position = Vector2(927, 507)
+scale = Vector2(0.075, 0.075)
 
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
 
@@ -45,15 +45,11 @@ position = Vector2(697, 701)
 position = Vector2(356, 148)
 
 [node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
-scale = Vector2(3, 3)
-transform = Transform2D(3, 0, 0, 3, 0, 0)
+scale = Vector2(2, 2)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
 stream = ExtResource("4_rarhs")
 autoplay = true
+playback_type = 1
 
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
-
-[node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
-position = Vector2(75.46582, 731.4829)
-up_direction = Vector2(0.70710677, -0.70710677)
