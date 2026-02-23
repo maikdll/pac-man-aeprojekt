@@ -1,12 +1,7 @@
 [gd_scene format=3 uid="uid://df7wcdjnldlt4"]
 
-[ext_resource type="Script" uid="uid://hp8yuiqa78uo" path="res://scripts/Score.gd" id="1_chgv4"]
+[node name="Score" type="Node2D" unique_id=1746268149]
 
-[node name="Score" type="CanvasLayer" unique_id=255026769]
-script = ExtResource("1_chgv4")
-
-[node name="Label" type="Label" parent="." unique_id=711922889]
-offset_left = 908.0
-offset_top = 468.0
-offset_right = 948.0
-offset_bottom = 491.0
+[node name="Label" type="Label" parent="." unique_id=1877816283]
+offset_right = 40.0
+offset_bottom = 23.0
