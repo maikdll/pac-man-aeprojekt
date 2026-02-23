@@ -1,8 +1,13 @@
 [gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/Player.tscn" id="1_elqb8"]
+[ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 
 [node name="Main" type="Node2D" unique_id=1344439806]
+position = Vector2(308, 852)
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(349.8236, -574.16254)
+position = Vector2(-16, -529)
+
+[node name="Points" parent="." unique_id=1780295708 instance=ExtResource("2_rvslj")]
+position = Vector2(420, -617)

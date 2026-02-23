@@ -15,7 +15,7 @@ func _physics_process(_delta: float) -> void:
 
 	velocity = current_direction * SPEED
 
-	# 3. Bewegen und an Wänden sliden
 	move_and_slide()
 	
-	rotation = current_direction.angle()
+	if current_direction != Vector2.ZERO:
+		rotation = current_direction.angle()
