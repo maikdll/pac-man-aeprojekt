@@ -6,6 +6,7 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 
 [node name="PacMan" type="CharacterBody2D" unique_id=1073800312]
+position = Vector2(-86, -22)
 script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=441394606]
