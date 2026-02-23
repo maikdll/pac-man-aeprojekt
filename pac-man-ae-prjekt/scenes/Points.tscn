@@ -2,9 +2,12 @@
 
 [ext_resource type="Texture2D" uid="uid://bwbkyjip3y3g6" path="res://assets/Point.png" id="1_jk3o3"]
 
-[node name="Points" type="Node2D" unique_id=1780295708]
+[sub_resource type="CircleShape2D" id="CircleShape2D_jk3o3"]
+
+[node name="Points" type="Area2D" unique_id=419111269]
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1132145450]
-position = Vector2(51, 78)
-scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_jk3o3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=804615187]
+shape = SubResource("CircleShape2D_jk3o3")
