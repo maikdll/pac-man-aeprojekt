@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://by5uja8lgq3ml"]
+[gd_scene format=3 uid="uid://dj40bchn0w75c"]
 
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
