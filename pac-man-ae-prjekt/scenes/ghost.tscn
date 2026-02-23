@@ -1,3 +1,15 @@
 [gd_scene format=3 uid="uid://cepysal7iqfd7"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" unique_id=251117665]
+[ext_resource type="Script" uid="uid://f1r0vhra7dv0" path="res://scripts/ghost.gd" id="1_l5lq6"]
+[ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/redGhost.png" id="2_bbnym"]
+
+[node name="Ghost" type="CharacterBody2D" unique_id=251117665]
+script = ExtResource("1_l5lq6")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1481200487]
+texture = ExtResource("2_bbnym")
+region_rect = Rect2(158.22223, -2.8518524, 0.29629517, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=242626023]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=1037810499]

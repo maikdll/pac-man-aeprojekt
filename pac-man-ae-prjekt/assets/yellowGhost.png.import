@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dfn8itj1w335g"
-path="res://.godot/imported/blueGh.png-77f15b8ce468306dc8c9b73776fa942b.ctex"
+uid="uid://cyj2viv16o4kv"
+path="res://.godot/imported/yellowGhost.png-e521fc8d20b7a4ee52e331fb8b7d8d97.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/blueGh.png"
-dest_files=["res://.godot/imported/blueGh.png-77f15b8ce468306dc8c9b73776fa942b.ctex"]
+source_file="res://assets/yellowGhost.png"
+dest_files=["res://.godot/imported/yellowGhost.png-e521fc8d20b7a4ee52e331fb8b7d8d97.ctex"]
 
 [params]
 

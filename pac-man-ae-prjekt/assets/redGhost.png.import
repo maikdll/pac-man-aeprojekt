@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://0sckx1g5a1te"
-path="res://.godot/imported/yellowGh.jpeg-97cab99d23b795d2a02dae045a58b14e.ctex"
+uid="uid://dhcpwihoy37ve"
+path="res://.godot/imported/redGhost.png-71022b2d4c361478a28f1d59dba2e125.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/yellowGh.jpeg"
-dest_files=["res://.godot/imported/yellowGh.jpeg-97cab99d23b795d2a02dae045a58b14e.ctex"]
+source_file="res://assets/redGhost.png"
+dest_files=["res://.godot/imported/redGhost.png-71022b2d4c361478a28f1d59dba2e125.ctex"]
 
 [params]
 
