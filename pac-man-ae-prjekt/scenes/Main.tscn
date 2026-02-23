@@ -1,7 +1,9 @@
-[gd_scene format=3 uid="uid://dj40bchn0w75c"]
+[gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
+[ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
+[ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://by5uja8lgq3ml" path="res://scenes/level_1.tscn" id="3_0bbpv"]
 
 [node name="Main" type="Node2D" unique_id=1344439806]
@@ -43,4 +45,12 @@ position = Vector2(697, 701)
 [node name="Points10" parent="AllPoints" unique_id=576592602 instance=ExtResource("2_rvslj")]
 position = Vector2(356, 148)
 
+[node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
+scale = Vector2(2, 2)
+transform = Transform2D(2, 0, 0, 2, 0, 0)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
+stream = ExtResource("4_rarhs")
+autoplay = true
+playback_type = 1
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("3_0bbpv")]
