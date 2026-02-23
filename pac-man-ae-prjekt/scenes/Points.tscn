@@ -1,14 +1,19 @@
 [gd_scene format=3 uid="uid://c6huaj228fla1"]
 
 [ext_resource type="Texture2D" uid="uid://bwbkyjip3y3g6" path="res://assets/Point.png" id="1_jk3o3"]
+[ext_resource type="Script" uid="uid://bd2aikuacr0nk" path="res://scripts/Point.gd" id="1_n6d21"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_jk3o3"]
 
 [node name="Points" type="Area2D" unique_id=419111269]
-
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1132145450]
-scale = Vector2(0.1, 0.1)
-texture = ExtResource("1_jk3o3")
+script = ExtResource("1_n6d21")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=804615187]
+scale = Vector2(2, 2)
 shape = SubResource("CircleShape2D_jk3o3")
+
+[node name="Area2D" type="Sprite2D" parent="." unique_id=615239309]
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("1_jk3o3")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

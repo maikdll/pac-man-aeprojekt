@@ -6,7 +6,36 @@
 [node name="Main" type="Node2D" unique_id=1344439806]
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(139, 386)
+position = Vector2(927, 507)
 
-[node name="Points" parent="." unique_id=1780295708 instance=ExtResource("2_rvslj")]
+[node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
+
+[node name="Points" parent="AllPoints" unique_id=1780295708 instance=ExtResource("2_rvslj")]
 position = Vector2(432, 388)
+
+[node name="Points2" parent="AllPoints" unique_id=419111269 instance=ExtResource("2_rvslj")]
+position = Vector2(331, 613)
+
+[node name="Points3" parent="AllPoints" unique_id=595074538 instance=ExtResource("2_rvslj")]
+position = Vector2(548, 891)
+
+[node name="Points4" parent="AllPoints" unique_id=525224730 instance=ExtResource("2_rvslj")]
+position = Vector2(811, 231)
+
+[node name="Points5" parent="AllPoints" unique_id=918174456 instance=ExtResource("2_rvslj")]
+position = Vector2(1266, 317)
+
+[node name="Points6" parent="AllPoints" unique_id=419853865 instance=ExtResource("2_rvslj")]
+position = Vector2(1266, 658)
+
+[node name="Points7" parent="AllPoints" unique_id=1551199428 instance=ExtResource("2_rvslj")]
+position = Vector2(1703, 562)
+
+[node name="Points8" parent="AllPoints" unique_id=2066434182 instance=ExtResource("2_rvslj")]
+position = Vector2(1039, 813)
+
+[node name="Points9" parent="AllPoints" unique_id=911625849 instance=ExtResource("2_rvslj")]
+position = Vector2(697, 701)
+
+[node name="Points10" parent="AllPoints" unique_id=576592602 instance=ExtResource("2_rvslj")]
+position = Vector2(356, 148)
