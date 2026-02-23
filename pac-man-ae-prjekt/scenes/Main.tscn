@@ -48,4 +48,3 @@ scale = Vector2(2, 2)
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
 stream = ExtResource("4_rarhs")
 autoplay = true
-playback_type = 1
