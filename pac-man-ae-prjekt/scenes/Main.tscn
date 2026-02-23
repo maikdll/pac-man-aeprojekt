@@ -11,7 +11,7 @@
 [node name="Main" type="Node2D" unique_id=1240070931]
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(927, 507)
+position = Vector2(970, 490)
 
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
 
