@@ -1,7 +1,11 @@
 [gd_scene format=3 uid="uid://df7wcdjnldlt4"]
 
-[node name="Score" type="Node2D" unique_id=1746268149]
+[ext_resource type="Script" uid="uid://hp8yuiqa78uo" path="res://scripts/Score.gd" id="1_chgv4"]
+
+[node name="Score" type="CanvasLayer" unique_id=1670354731]
+script = ExtResource("1_chgv4")
 
 [node name="Label" type="Label" parent="." unique_id=1877816283]
 offset_right = 40.0
 offset_bottom = 23.0
+text = "TESTT"

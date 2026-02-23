@@ -1,11 +1,13 @@
 [gd_scene format=3 uid="uid://yl6lupiynlhi"]
 
 [ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://assets/Pacman.png" id="1_3vyb7"]
+[ext_resource type="Script" uid="uid://bdn2g6hofykro" path="res://scripts/PacMan.gd" id="1_g2els"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 
 [node name="PacMan" type="CharacterBody2D" unique_id=1073800312]
 scale = Vector2(0.3, 0.3)
+script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=441394606]
 texture = ExtResource("1_3vyb7")
