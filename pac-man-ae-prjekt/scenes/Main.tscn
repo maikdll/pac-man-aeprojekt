@@ -8,10 +8,11 @@
 [ext_resource type="PackedScene" uid="uid://cepysal7iqfd7" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/Healthbar.tscn" id="7_nxtc6"]
 
-[node name="Main" type="Node2D" unique_id=1240070931]
+[node name="Main" type="Node2D" unique_id=1344439806]
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(970, 490)
+position = Vector2(927, 507)
+scale = Vector2(0.075, 0.075)
 
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
 
@@ -46,12 +47,12 @@ position = Vector2(697, 701)
 position = Vector2(356, 148)
 
 [node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
-scale = Vector2(3, 3)
-transform = Transform2D(3, 0, 0, 3, 0, 0)
+scale = Vector2(2, 2)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
 stream = ExtResource("4_rarhs")
 autoplay = true
+playback_type = 1
 
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
 
