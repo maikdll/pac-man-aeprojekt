@@ -1,23 +1,21 @@
 extends CharacterBody2D
 
-@export var speed = 150.0  # How fast the ghost moves
-@onready var nav_agent = $NavigationAgent2D # Reference to the "Brain" node
-
-# Your friends will "link" the player node to this variable later
-var player = 1
+@export var speed: float = 200.0
+# We start by moving Right
+var current_direction: Vector2 = Vector2.RIGHT
 
 func _physics_process(_delta):
-	if player:
+	# 1. Apply the current direction to velocity
+	velocity = current_direction * speed
+	
+	# 2. Move the ghost. move_and_slide returns 'true' if it hit something
+	move_and_slide()
+	
+	# 3. Check if we hit a wall in this frame
+	if is_on_wall():
+		# This flips the direction: if it was 1, it becomes -1. If -1, it becomes 1.
+		current_direction.x *= -1 
 		
-	# 1. Tell the "Brain" where the player is currently standin
-		# 2. Ask the "Brain": "Where is the next step I should take to get there?"
-		var next_path_pos = nav_agent.get_next_path_position()
-		
-		# 3. Calculate the direction (the angle) from the ghost to that next step
-		var current_direction = global_position.direction_to(next_path_pos)
-		var direction = Vector2.RIGHT
-		# 4. Apply the speed to that direction and move the ghost
-		velocity = direction * speed
-		
-		# This function moves the ghost and handles wall collisions automatically
-		move_and_slide()
+		# Optional: Flip the visual sprite to face the new direction
+		if has_node("Sprite2D"):
+			$Sprite2D.flip_h = current_direction.x < 0
