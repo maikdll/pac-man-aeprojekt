@@ -38,4 +38,4 @@ position = Vector2(1039, 813)
 position = Vector2(697, 701)
 
 [node name="Points10" parent="AllPoints" unique_id=576592602 instance=ExtResource("2_rvslj")]
-position = Vector2(356, 148)
+position = Vector2(356, 142)
