@@ -11,6 +11,7 @@ config_version=5
 [application]
 
 config/name="PacManAePrjekt"
+run/main_scene="uid://yl6lupiynlhi"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [display]
