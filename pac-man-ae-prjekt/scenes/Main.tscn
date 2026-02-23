@@ -1,10 +1,11 @@
-[gd_scene format=3 uid="uid://by5uja8lgq3ml"]
+[gd_scene format=3 uid="uid://tfkqo11vvvsq"]
 
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
+[ext_resource type="PackedScene" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
+[ext_resource type="PackedScene" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 
 [node name="Main" type="Node2D" unique_id=1240070931]
 
@@ -52,3 +53,7 @@ stream = ExtResource("4_rarhs")
 autoplay = true
 
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
+
+[node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
+position = Vector2(75.46582, 731.4829)
+up_direction = Vector2(0.70710677, -0.70710677)
