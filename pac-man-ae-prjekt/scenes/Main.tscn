@@ -1,13 +1,14 @@
 [gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
+[ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
-[ext_resource type="PackedScene" uid="uid://d1x4am2b63mm8" path="res://scenes/ghost.tscn" id="7_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://c3o7q7tan05fu" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/Healthbar.tscn" id="7_nxtc6"]
-[ext_resource type="PackedScene" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
+[ext_resource type="PackedScene" uid="uid://bnkraxqow0grd" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
@@ -19,9 +20,10 @@
 radius = 8.0
 
 [node name="Main" type="Node2D" unique_id=1344439806]
+script = ExtResource("1_3p2gp")
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(469, 314)
+position = Vector2(837, 488)
 scale = Vector2(0.13, 0.13)
 
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]

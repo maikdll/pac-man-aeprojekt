@@ -18,7 +18,7 @@ script = ExtResource("1_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=880179392]
 modulate = Color(1, 0, 1, 1)
-scale = Vector2(15, 15)
+scale = Vector2(16.6, 16.6)
 shape = SubResource("CircleShape2D_3vyb7")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1136085556]
@@ -30,7 +30,7 @@ texture = ExtResource("1_3vyb7")
 scale = Vector2(1.1, 1.1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1893822101]
-scale = Vector2(16, 16)
+scale = Vector2(15, 15)
 shape = SubResource("CircleShape2D_lmhyd")
 
 [node name="AudioEatingPoints" type="AudioStreamPlayer" parent="." unique_id=1346993533]
