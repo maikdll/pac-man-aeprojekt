@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://d1x4am2b63mm8" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/Healthbar.tscn" id="7_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
 
 [node name="Main" type="Node2D" unique_id=1344439806]
 
@@ -70,3 +72,11 @@ offset_left = 299.99997
 offset_top = 4979.9995
 offset_right = 299.99997
 offset_bottom = 4979.9995
+
+[node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
+position = Vector2(597, 339.00003)
+scale = Vector2(0.2, 0.2)
+
+[node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
+position = Vector2(263, 393)
+scale = Vector2(0.2, 0.2)
