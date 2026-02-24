@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dhcpwihoy37ve"
-path="res://.godot/imported/redGhost.png-71022b2d4c361478a28f1d59dba2e125.ctex"
+uid="uid://cqwfrgl4ytsg2"
+path="res://.godot/imported/Ghost_Vulnerable_White_02.png-988d509a6146ef2f93fe921afc621cee.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/redGhost.png"
-dest_files=["res://.godot/imported/redGhost.png-71022b2d4c361478a28f1d59dba2e125.ctex"]
+source_file="res://assets/ghost/Ghost_Vulnerable_White_02.png"
+dest_files=["res://.godot/imported/Ghost_Vulnerable_White_02.png-988d509a6146ef2f93fe921afc621cee.ctex"]
 
 [params]
 

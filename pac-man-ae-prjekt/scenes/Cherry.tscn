@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://k7duxcuh3yal"]
 
 [ext_resource type="Texture2D" uid="uid://co5883harvj60" path="res://assets/Cherry.png" id="1_5xt6h"]
-[ext_resource type="Script" uid="uid://dfkuddsjgdi7q" path="res://scripts/Cherry.gd" id="1_xobih"]
+[ext_resource type="Script" path="res://scripts/Cherry.gd" id="1_xobih"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nedoi"]
 

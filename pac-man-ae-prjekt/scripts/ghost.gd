@@ -1,21 +1,30 @@
 extends CharacterBody2D
 
-@export var speed: float = 200.0
-# We start by moving Right
-var current_direction: Vector2 = Vector2.RIGHT
+@export var speed: float = 160.0
+@export var tile_size: int = 32
 
-func _physics_process(_delta):
-	# 1. Apply the current direction to velocity
+var current_direction = Vector2.RIGHT
+var last_position = Vector2.ZERO
+
+func _ready():
+	randomize()
+	position = (position / tile_size).floor() * tile_size + Vector2(tile_size/2, tile_size/2)
+	last_position = position
+
+func _physics_process(_delta: float) -> void:
 	velocity = current_direction * speed
-	
-	# 2. Move the ghost. move_and_slide returns 'true' if it hit something
 	move_and_slide()
+
+	if position.distance_to(last_position) < 0.5:
+		_on_stuck()
 	
-	# 3. Check if we hit a wall in this frame
-	if is_on_wall():
-		# This flips the direction: if it was 1, it becomes -1. If -1, it becomes 1.
-		current_direction.x *= -1 
-		
-		# Optional: Flip the visual sprite to face the new direction
-		if has_node("Sprite2D"):
-			$Sprite2D.flip_h = current_direction.x < 0
+	last_position = position
+
+func _on_stuck():
+	var directions = [Vector2.RIGHT, Vector2.LEFT, Vector2.UP, Vector2.DOWN]
+	directions.shuffle()
+	
+	for dir in directions:
+		if not test_move(transform, dir * 5):
+			current_direction = dir
+			return
