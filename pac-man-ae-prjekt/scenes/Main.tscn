@@ -11,10 +11,10 @@
 [ext_resource type="PackedScene" uid="uid://bnkraxqow0grd" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
-[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
+[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
-[ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/GameOver.tscn" id="14_mwfav"]
+[ext_resource type="PackedScene" path="res://scenes/GameOver.tscn" id="14_mwfav"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
 radius = 8.0
