@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://d1x4am2b63mm8"]
+[gd_scene format=3 uid="uid://c3o7q7tan05fu"]
 
-[ext_resource type="Script" uid="uid://f1r0vhra7dv0" path="res://scripts/ghost.gd" id="1_l5lq6"]
-[ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/redGhost.png" id="2_bbnym"]
+[ext_resource type="Script" uid="uid://f1r0vhra7dv0" path="res://scripts/Ghost.gd" id="1_l5lq6"]
+[ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/ghost/redGhost.png" id="2_bbnym"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l5lq6"]
 

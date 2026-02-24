@@ -1,16 +1,23 @@
 [gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
-[ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
+[ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/player.tscn" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
-[ext_resource type="PackedScene" uid="uid://d1x4am2b63mm8" path="res://scenes/ghost.tscn" id="7_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://c3o7q7tan05fu" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/Healthbar.tscn" id="7_nxtc6"]
+[ext_resource type="PackedScene" uid="uid://bnkraxqow0grd" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
+[ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
+[ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
+radius = 8.0
 
 [node name="Main" type="Node2D" unique_id=1344439806]
+position = Vector2(2, 0)
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
 position = Vector2(884, 486.99997)
@@ -60,8 +67,11 @@ playback_type = 1
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
 
 [node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
-position = Vector2(75.46582, 731.4829)
+position = Vector2(-184, 728)
 up_direction = Vector2(0.7071068, -0.7071068)
+
+[node name="redGhost" parent="Ghost" unique_id=212608622 instance=ExtResource("7_wp0k4")]
+position = Vector2(-108, 278)
 
 [node name="Healthbar" type="CanvasLayer" parent="." unique_id=833753433]
 scale = Vector2(0.2, 0.2)
@@ -80,3 +90,45 @@ scale = Vector2(0.2, 0.2)
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
 position = Vector2(263, 393)
 scale = Vector2(0.2, 0.2)
+
+[node name="Ghosts" type="Node" parent="." unique_id=715394714]
+
+[node name="Ghost" type="Area2D" parent="Ghosts" unique_id=1605568809]
+position = Vector2(959, 345)
+
+[node name="BodySprite" type="Sprite2D" parent="Ghosts/Ghost" unique_id=36168776]
+texture_filter = 1
+scale = Vector2(2, 2)
+texture = ExtResource("11_bjd11")
+
+[node name="EyesSprite" type="Sprite2D" parent="Ghosts/Ghost" unique_id=1604759687]
+scale = Vector2(2, 2)
+texture = ExtResource("12_qmy6f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ghosts/Ghost" unique_id=777309223]
+position = Vector2(0, 1)
+shape = SubResource("CircleShape2D_mwfav")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Ghost" unique_id=1597949417]
+
+[node name="MovementTargets" type="Node" parent="." unique_id=1414464541]
+
+[node name="Node" type="Node" parent="MovementTargets" unique_id=700854276]
+
+[node name="RedGhost" type="Node" parent="MovementTargets/Node" unique_id=896090901]
+
+[node name="Scattor" type="Node" parent="MovementTargets/Node/RedGhost" unique_id=997617214]
+
+[node name="Red1" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=1929529934]
+
+[node name="Red2" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=702778303]
+
+[node name="Red3" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=394343550]
+
+[node name="Red4" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=1154230704]
+
+[node name="BlueGhost" type="Node" parent="MovementTargets/Node" unique_id=472132593]
+
+[node name="YellowGhost" type="Node" parent="MovementTargets/Node" unique_id=1601326669]
+
+[node name="PinkYellow" type="Node" parent="MovementTargets/Node" unique_id=117685107]

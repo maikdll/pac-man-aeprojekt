@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://yl6lupiynlhi"]
 
-[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://assets/Pacman.png" id="1_3vyb7"]
+[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bdn2g6hofykro" path="res://scripts/PacMan.gd" id="1_g2els"]
 [ext_resource type="AudioStream" uid="uid://dtdaaqb80olry" path="res://assets/Sound/pacman_chomp.wav" id="3_8orjn"]
 [ext_resource type="Texture2D" uid="uid://f7c4fg6k6v4h" path="res://assets/PacmanHalbmund.png" id="3_ccyln"]

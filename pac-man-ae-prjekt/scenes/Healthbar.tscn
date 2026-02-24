@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://c1512qgi04htt"]
 
-[ext_resource type="Script" uid="uid://bxtxgovh0rw5i" path="res://scripts/healthbar.gd" id="1_2mw6h"]
-[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://assets/Pacman.png" id="1_flqgd"]
+[ext_resource type="Script" path="res://scenes/healthbar.gd" id="1_2mw6h"]
+[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_flqgd"]
 
 [node name="Healthbar" type="Control" unique_id=309987989]
 layout_mode = 3

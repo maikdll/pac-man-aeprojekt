@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dppjtcj5xame3"
-path="res://.godot/imported/blueGhost.png-80d281bbf43fd8dd1dee32d07827a0c8.ctex"
+uid="uid://biof5c7nnvrw2"
+path="res://.godot/imported/Ghost_Eyes_Down.png-76acfd1761828c1722c4ed855f881bc4.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/blueGhost.png"
-dest_files=["res://.godot/imported/blueGhost.png-80d281bbf43fd8dd1dee32d07827a0c8.ctex"]
+source_file="res://assets/Ghost_Eyes_Down.png"
+dest_files=["res://.godot/imported/Ghost_Eyes_Down.png-76acfd1761828c1722c4ed855f881bc4.ctex"]
 
 [params]
 
