@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://otgpjpy1qp06"]
+
+[ext_resource type="Script" uid="uid://dqbiruaacwiuk" path="res://scripts/BigPoint.gd" id="1_hp0mt"]
+[ext_resource type="Texture2D" uid="uid://bwbkyjip3y3g6" path="res://assets/Point.png" id="2_eguf1"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_jk3o3"]
+
+[node name="BigPoints" type="Area2D" unique_id=419111269 groups=["BigPoint", "Points"]]
+script = ExtResource("1_hp0mt")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=804615187]
+scale = Vector2(2, 2)
+shape = SubResource("CircleShape2D_jk3o3")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=615239309]
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_eguf1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

@@ -2,8 +2,9 @@
 
 [ext_resource type="Script" uid="uid://bxtxgovh0rw5i" path="res://scripts/healthbar.gd" id="1_2mw6h"]
 [ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://assets/Pacman.png" id="1_flqgd"]
+[ext_resource type="AudioStream" uid="uid://qxjd8mawiaa1" path="res://assets/Sound/pacman_death.wav" id="3_0tsam"]
 
-[node name="Healthbar" type="Control" unique_id=309987989]
+[node name="Healthbar" type="Control" unique_id=309987989 groups=["ui"]]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_2mw6h")
@@ -24,3 +25,6 @@ texture = ExtResource("1_flqgd")
 [node name="TextureRect3" type="TextureRect" parent="HBoxContainer" unique_id=1754045592]
 layout_mode = 2
 texture = ExtResource("1_flqgd")
+
+[node name="AudioDeath" type="AudioStreamPlayer" parent="." unique_id=1670390634]
+stream = ExtResource("3_0tsam")
