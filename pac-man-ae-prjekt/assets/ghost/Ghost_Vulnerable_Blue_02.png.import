@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1vbbukx7ankf"
-path="res://.godot/imported/Pacman.png-4cbbb47d3a9a7bfee708c6b51cf451db.ctex"
+uid="uid://q8h1nal7oaem"
+path="res://.godot/imported/Ghost_Vulnerable_Blue_02.png-bf0fc80bcb1dca92fcfe49a6f60b28fb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Pacman.png"
-dest_files=["res://.godot/imported/Pacman.png-4cbbb47d3a9a7bfee708c6b51cf451db.ctex"]
+source_file="res://assets/ghost/Ghost_Vulnerable_Blue_02.png"
+dest_files=["res://.godot/imported/Ghost_Vulnerable_Blue_02.png-bf0fc80bcb1dca92fcfe49a6f60b28fb.ctex"]
 
 [params]
 
