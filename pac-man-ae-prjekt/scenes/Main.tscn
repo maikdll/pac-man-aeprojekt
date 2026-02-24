@@ -77,7 +77,8 @@ playback_type = 1
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
 
 [node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
-position = Vector2(75.46582, 731.4829)
+position = Vector2(573, 761)
+scale = Vector2(0.2, 0.2)
 up_direction = Vector2(0.7071068, -0.7071068)
 
 [node name="Healthbar" type="CanvasLayer" parent="." unique_id=833753433]
