@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bllj3qhce545k"]
 
-[ext_resource type="Script" uid="uid://c4qmn0p7c2ve3" path="res://scenes/start_menu.gd" id="1_fb70i"]
+[ext_resource type="Script" uid="uid://c4qmn0p7c2ve3" path="res://scripts/start_menu.gd" id="1_fb70i"]
 
 [node name="StartMenu" type="Control" unique_id=840002153]
 layout_mode = 3
@@ -39,5 +39,27 @@ offset_bottom = 379.0
 theme_override_font_sizes/font_size = 32
 text = "Spiel Starten
 "
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1058339349]
+layout_mode = 0
+offset_left = 381.0
+offset_top = 108.0
+offset_right = 421.0
+offset_bottom = 239.0
+
+[node name="HighscoreLabel" type="Label" parent="VBoxContainer" unique_id=1355962699]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="VBoxContainer" unique_id=1389739709]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer" unique_id=1320040227]
+layout_mode = 2
+
+[node name="Label4" type="Label" parent="VBoxContainer" unique_id=491904818]
+layout_mode = 2
+
+[node name="Label5" type="Label" parent="VBoxContainer" unique_id=1365307981]
+layout_mode = 2
 
 [connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
