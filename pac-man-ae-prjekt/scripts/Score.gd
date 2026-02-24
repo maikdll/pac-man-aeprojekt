@@ -4,3 +4,6 @@ extends CanvasLayer
 
 func _process(_delta):
 	label.text = str(Global.score)
+	
+func _ready():
+	Global.score = 0

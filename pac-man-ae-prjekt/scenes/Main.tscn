@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
+[ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/GameOver.tscn" id="14_mwfav"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
 radius = 8.0
@@ -20,8 +21,8 @@ radius = 8.0
 [node name="Main" type="Node2D" unique_id=1344439806]
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(884, 486.99997)
-scale = Vector2(0.14, 0.14)
+position = Vector2(469, 314)
+scale = Vector2(0.13, 0.13)
 
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
 
@@ -66,10 +67,12 @@ position = Vector2(315, 295)
 scale = Vector2(0.3, 0.3)
 
 [node name="BigPoints" parent="AllPoints" unique_id=517526663 instance=ExtResource("10_lhr70")]
-position = Vector2(129, 400)
+position = Vector2(138, 397)
+scale = Vector2(0.8, 0.8)
 
 [node name="BigPoints2" parent="AllPoints" unique_id=1883604226 instance=ExtResource("10_lhr70")]
 position = Vector2(1732, 370)
+scale = Vector2(0.8, 0.8)
 
 [node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
 scale = Vector2(2, 2)
@@ -83,7 +86,7 @@ playback_type = 1
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
 
 [node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
-position = Vector2(573, 761)
+position = Vector2(967, 353)
 scale = Vector2(0.2, 0.2)
 up_direction = Vector2(0.7071068, -0.7071068)
 
@@ -105,8 +108,8 @@ position = Vector2(597, 339.00003)
 scale = Vector2(0.2, 0.2)
 
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
-position = Vector2(263, 393)
-scale = Vector2(0.2, 0.2)
+position = Vector2(193, 682)
+scale = Vector2(0.12, 0.12)
 
 [node name="Ghosts" type="Node" parent="." unique_id=715394714]
 
@@ -149,3 +152,5 @@ shape = SubResource("CircleShape2D_mwfav")
 [node name="YellowGhost" type="Node" parent="MovementTargets/Node" unique_id=1601326669]
 
 [node name="PinkYellow" type="Node" parent="MovementTargets/Node" unique_id=117685107]
+
+[node name="GameOver" parent="." unique_id=1670354731 instance=ExtResource("14_mwfav")]
