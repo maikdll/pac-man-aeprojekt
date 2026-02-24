@@ -6,7 +6,8 @@ extends CanvasLayer
 func _on_ready() -> void:
 	hide()
 
-func setGameOverLabel() -> void:
+func setGameOver() -> void:
+	Global.isGameStopped = true
 	show()
 
 
