@@ -3,24 +3,12 @@
 [ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bdn2g6hofykro" path="res://scripts/PacMan.gd" id="1_g2els"]
 [ext_resource type="AudioStream" uid="uid://dtdaaqb80olry" path="res://assets/Sound/pacman_chomp.wav" id="3_8orjn"]
-[ext_resource type="Texture2D" uid="uid://f7c4fg6k6v4h" path="res://assets/PacmanHalbmund.png" id="3_ccyln"]
 [ext_resource type="AudioStream" uid="uid://0frjqed17tj8" path="res://assets/Sound/pacman_eatfruit.wav" id="5_w6g3e"]
+[ext_resource type="AudioStream" uid="uid://duucgngg4xh7t" path="res://assets/Sound/pacman_eatghost.wav" id="6_poqqj"]
+[ext_resource type="AudioStream" uid="uid://dopso212aqcl7" path="res://assets/Sound/pacman_intermission.wav" id="7_ukuct"]
+[ext_resource type="AudioStream" uid="uid://qxjd8mawiaa1" path="res://assets/Sound/pacman_death.wav" id="8_ldvso"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_lmhyd"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_3vyb7")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_ccyln")
-}],
-"loop": true,
-"name": &"Essen",
-"speed": 5.0
-}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lmhyd"]
 
@@ -30,29 +18,35 @@ script = ExtResource("1_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=880179392]
 modulate = Color(1, 0, 1, 1)
-position = Vector2(24, 0)
-scale = Vector2(14, 14)
+scale = Vector2(16, 16)
 shape = SubResource("CircleShape2D_3vyb7")
 
-[node name="Sprite2D" type="AnimatedSprite2D" parent="." unique_id=1233176498]
-position = Vector2(-9.536743e-07, 0)
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1136085556]
+position = Vector2(-10.000001, 0)
 scale = Vector2(0.9735554, 0.9656469)
-sprite_frames = SubResource("SpriteFrames_lmhyd")
-animation = &"Essen"
-frame_progress = 0.36822826
+texture = ExtResource("1_3vyb7")
 
 [node name="Area2D" type="Area2D" parent="." unique_id=945533948]
+scale = Vector2(1.1, 1.1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1893822101]
-scale = Vector2(14, 14)
+scale = Vector2(16, 16)
 shape = SubResource("CircleShape2D_lmhyd")
 
 [node name="AudioEatingPoints" type="AudioStreamPlayer" parent="." unique_id=1346993533]
 stream = ExtResource("3_8orjn")
-autoplay = true
 
 [node name="AudioEatingFruit" type="AudioStreamPlayer" parent="." unique_id=1454676347]
 stream = ExtResource("5_w6g3e")
-autoplay = true
+
+[node name="AudioEatingGhost" type="AudioStreamPlayer" parent="." unique_id=1350570512]
+stream = ExtResource("6_poqqj")
+
+[node name="AudioIntermission" type="AudioStreamPlayer" parent="." unique_id=1128220149]
+stream = ExtResource("7_ukuct")
+
+[node name="AudioDead" type="AudioStreamPlayer" parent="." unique_id=795481420]
+stream = ExtResource("8_ldvso")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
