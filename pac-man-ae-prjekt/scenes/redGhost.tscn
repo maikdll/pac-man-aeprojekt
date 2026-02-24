@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bnkraxqow0grd"]
 
-[ext_resource type="Script" uid="uid://f1r0vhra7dv0" path="res://scripts/ghost.gd" id="1_l5lq6"]
-[ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/redGhost.png" id="2_bbnym"]
+[ext_resource type="Script" uid="uid://f1r0vhra7dv0" path="res://scripts/Ghost.gd" id="1_l5lq6"]
+[ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/ghost/redGhost.png" id="2_bbnym"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_l5lq6"]
 
@@ -9,6 +9,7 @@
 script = ExtResource("1_l5lq6")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1481200487]
+position = Vector2(30, 23)
 texture = ExtResource("2_bbnym")
 region_rect = Rect2(158.22223, -2.8518524, 0.29629517, 0)
 
