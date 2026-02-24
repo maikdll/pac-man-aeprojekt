@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://bllj3qhce545k"]
+
+[ext_resource type="Script" uid="uid://c4qmn0p7c2ve3" path="res://scenes/start_menu.gd" id="1_fb70i"]
+
+[node name="StartMenu" type="Control" unique_id=840002153]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_fb70i")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1657566722]
+layout_mode = 0
+offset_left = -2181.0
+offset_top = -1736.0
+offset_right = 997818.0
+offset_bottom = 98263.0
+color = Color(0.012617188, 0.012617188, 0.012617188, 1)
+
+[node name="Label" type="Label" parent="." unique_id=894867961]
+layout_mode = 0
+offset_left = 809.0
+offset_top = 70.0
+offset_right = 1022.0
+offset_bottom = 145.0
+theme_override_font_sizes/font_size = 32
+text = "PAC-MAN by Schwarz Digits
+
+Lehrwerkstatt"
+
+[node name="Button" type="Button" parent="." unique_id=1625888278]
+layout_mode = 0
+offset_left = 811.0
+offset_top = 326.0
+offset_right = 1015.0
+offset_bottom = 379.0
+theme_override_font_sizes/font_size = 32
+text = "Spiel Starten
+"
+
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
