@@ -6,22 +6,22 @@ var next_direction = Vector2.RIGHT
 var is_invincible = false
 
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_pressed("ui_right"):
-		next_direction = Vector2.RIGHT
-	elif Input.is_action_pressed("ui_left"):
-		next_direction = Vector2.LEFT
-	elif Input.is_action_pressed("ui_down"):
-		next_direction = Vector2.DOWN
-	elif Input.is_action_pressed("ui_up"):
-		next_direction = Vector2.UP
-	var can_turn = not test_move(transform, next_direction * 10)
-	if next_direction != current_direction and can_turn:
-		velocity = (current_direction * 0.5 + next_direction).normalized() * SPEED
-		current_direction = next_direction
-	else:
-		if is_on_wall() and can_turn:
+	if Global.isGameStopped == false:
+		if Input.is_action_pressed("ui_right"):
+			next_direction = Vector2.RIGHT
+		elif Input.is_action_pressed("ui_left"):
+			next_direction = Vector2.LEFT
+		elif Input.is_action_pressed("ui_down"):
+			next_direction = Vector2.DOWN
+		elif Input.is_action_pressed("ui_up"):
+			next_direction = Vector2.UP
+		var can_turn = not test_move(transform, next_direction * 10)
+		if next_direction != current_direction and can_turn:
+			velocity = (current_direction * 0.5 + next_direction).normalized() * SPEED
 			current_direction = next_direction
-		
+		else:
+			if is_on_wall() and can_turn:
+				current_direction = next_direction
 		velocity = current_direction * SPEED
 
 	if move_and_slide():
