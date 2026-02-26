@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://yl6lupiynlhi"]
+[gd_scene format=3 uid="uid://cnjypthnhveik"]
 
 [ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bdn2g6hofykro" path="res://scripts/PacMan.gd" id="1_g2els"]
