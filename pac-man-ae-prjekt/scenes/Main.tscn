@@ -16,6 +16,7 @@
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="16_cvmbd"]
+[ext_resource type="PackedScene" uid="uid://bayq7bmawvdqj" path="res://scenes/NikoGhost.tscn" id="17_ft6cd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
 radius = 8.0
@@ -165,3 +166,18 @@ offset_top = 958.0
 offset_right = 1901.0
 offset_bottom = 958.0
 scale = Vector2(0.2, 0.2)
+
+[node name="NikosGhosts" type="Node2D" parent="." unique_id=1427829987]
+scale = Vector2(0.25, 0.25)
+
+[node name="NikoGhost2" parent="NikosGhosts" unique_id=1182016807 instance=ExtResource("17_ft6cd")]
+position = Vector2(3996, 812)
+
+[node name="NikoGhost" parent="NikosGhosts" unique_id=92256405 instance=ExtResource("17_ft6cd")]
+position = Vector2(1628, 3244)
+
+[node name="NikoGhost3" parent="NikosGhosts" unique_id=1832316900 instance=ExtResource("17_ft6cd")]
+position = Vector2(2340, 3448)
+
+[node name="NikoGhost4" parent="NikosGhosts" unique_id=183876816 instance=ExtResource("17_ft6cd")]
+position = Vector2(4068, 3480)
