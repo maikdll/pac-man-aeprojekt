@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://duva5mu53bj6k"]
+
+[ext_resource type="Script" path="res://scripts/nikosGhost.gd" id="1_a73n8"]
+[ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/ghost/redGhost.png" id="1_dw051"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
+
+[node name="NikoGhost" type="CharacterBody2D" unique_id=1182016807]
+script = ExtResource("1_a73n8")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]
+texture = ExtResource("1_dw051")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081]
+scale = Vector2(7.28, 7.28)
+shape = SubResource("CircleShape2D_a73n8")
