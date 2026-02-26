@@ -15,9 +15,30 @@
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
 [ext_resource type="PackedScene" path="res://scenes/GameOver.tscn" id="14_mwfav"]
+[ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
+[ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
+[ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
 radius = 8.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cvmbd"]
+shader = ExtResource("16_cvmbd")
+shader_parameter/curvature = 10.0
+shader_parameter/chromatic_aberration = 1.0
+shader_parameter/scanline_intensity = 0.5
+shader_parameter/grille_intensity = 0.3
+shader_parameter/vignette_intensity = 0.458000021755
+shader_parameter/brightness = 1.2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1nqs0"]
+shader = ExtResource("17_bb450")
+shader_parameter/shake_power = 0.0010000000475
+shader_parameter/shake_speed = 1.2640000600399999
+shader_parameter/color_split = 0.0030000001425
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
+shader = ExtResource("18_nfivy")
 
 [node name="Main" type="Node2D" unique_id=1344439806]
 script = ExtResource("1_3p2gp")
@@ -26,6 +47,11 @@ script = ExtResource("1_3p2gp")
 position = Vector2(837, 488)
 scale = Vector2(0.13, 0.13)
 collision_mask = 3
+
+[node name="Camera_Follow" type="Camera2D" parent="PacMan" unique_id=1885405831]
+visible = false
+enabled = false
+zoom = Vector2(2.5, 2.5)
 
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
 
@@ -157,3 +183,31 @@ shape = SubResource("CircleShape2D_mwfav")
 [node name="PinkYellow" type="Node" parent="MovementTargets/Node" unique_id=117685107]
 
 [node name="GameOver" parent="." unique_id=1670354731 instance=ExtResource("14_mwfav")]
+
+[node name="CRT_Filters" type="CanvasLayer" parent="." unique_id=425641187]
+
+[node name="ColorRect" type="ColorRect" parent="CRT_Filters" unique_id=2081419701]
+material = SubResource("ShaderMaterial_cvmbd")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect2" type="ColorRect" parent="CRT_Filters" unique_id=1905903493]
+visible = false
+material = SubResource("ShaderMaterial_1nqs0")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect3" type="ColorRect" parent="CRT_Filters" unique_id=230262109]
+visible = false
+material = SubResource("ShaderMaterial_1iba3")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
