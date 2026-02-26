@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 300.0
+var SPEED = (Global.speedPlayer * 300.0)
 var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false
@@ -52,6 +52,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	is_invincible = true
 	$AudioEatingGhost.play()
 	Global.health -= 1
-	get_tree().call_group("ui", "update_ui", Global.health)
+	get_tree().call_group("ui", "update_healthbar", Global.health)
 	await get_tree().create_timer(2.0).timeout
 	is_invincible = false

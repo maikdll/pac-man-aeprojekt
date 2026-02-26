@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://dn55oxhhcrvao"]
+
+[ext_resource type="Script" uid="uid://dmi13vdyd4xgt" path="res://scripts/UI/fruitbar.gd" id="1_vfvgn"]
+[ext_resource type="Texture2D" uid="uid://co5883harvj60" path="res://assets/Cherry.png" id="2_0dgqd"]
+[ext_resource type="Texture2D" uid="uid://c1whlleljmgfm" path="res://assets/Strawberry.png" id="3_biw7l"]
+
+[node name="Fruitbar" type="Control" unique_id=309987989 groups=["ui"]]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_vfvgn")
+cherry = ExtResource("2_0dgqd")
+strawberry = ExtResource("3_biw7l")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=777731238]
+layout_direction = 3
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+alignment = 2
+
+[node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=106071364]
+layout_mode = 2
+texture = ExtResource("3_biw7l")
+
+[node name="TextureRect2" type="TextureRect" parent="HBoxContainer" unique_id=106062728]
+layout_mode = 2
+texture = ExtResource("3_biw7l")
+
+[node name="TextureRect3" type="TextureRect" parent="HBoxContainer" unique_id=1364688958]
+layout_mode = 2
+texture = ExtResource("3_biw7l")
+
+[node name="TextureRect4" type="TextureRect" parent="HBoxContainer" unique_id=1368695907]
+layout_mode = 2
+texture = ExtResource("3_biw7l")
+
+[node name="TextureRect5" type="TextureRect" parent="HBoxContainer" unique_id=548359678]
+layout_mode = 2
+texture = ExtResource("3_biw7l")
+
+[node name="TextureRect7" type="TextureRect" parent="HBoxContainer" unique_id=1888060605]
+layout_mode = 2
+texture = ExtResource("2_0dgqd")
+
+[node name="TextureRect8" type="TextureRect" parent="HBoxContainer" unique_id=91374900]
+layout_mode = 2
+texture = ExtResource("2_0dgqd")
