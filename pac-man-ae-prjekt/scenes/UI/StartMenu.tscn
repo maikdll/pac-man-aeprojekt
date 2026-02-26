@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bllj3qhce545k"]
 
-[ext_resource type="Script" uid="uid://c4qmn0p7c2ve3" path="res://scripts/start_menu.gd" id="1_fb70i"]
+[ext_resource type="Script" uid="uid://c4qmn0p7c2ve3" path="res://scripts/UI/start_menu.gd" id="1_fb70i"]
 
 [node name="StartMenu" type="Control" unique_id=840002153]
 layout_mode = 3

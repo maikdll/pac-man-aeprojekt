@@ -1,20 +1,21 @@
 [gd_scene format=3 uid="uid://by5uja8lgq3ml"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_3p2gp"]
+[ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
-[ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/Score.tscn" id="3_0bbpv"]
+[ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://d1x4am2b63mm8" path="res://scenes/ghost.tscn" id="7_jlsqs"]
-[ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/Healthbar.tscn" id="7_nxtc6"]
-[ext_resource type="PackedScene" uid="uid://bnkraxqow0grd" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
+[ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/UI/Healthbar.tscn" id="7_nxtc6"]
+[ext_resource type="PackedScene" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
-[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
+[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
-[ext_resource type="PackedScene" path="res://scenes/GameOver.tscn" id="14_mwfav"]
+[ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
+[ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="16_cvmbd"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
 radius = 8.0
@@ -30,51 +31,51 @@ collision_mask = 3
 [node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
 
 [node name="Points" parent="AllPoints" unique_id=1780295708 instance=ExtResource("2_rvslj")]
-position = Vector2(432, 388)
+position = Vector2(410.00003, 406)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points2" parent="AllPoints" unique_id=419111269 instance=ExtResource("2_rvslj")]
-position = Vector2(331, 613)
+position = Vector2(442, 410)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points3" parent="AllPoints" unique_id=595074538 instance=ExtResource("2_rvslj")]
-position = Vector2(504, 733.00006)
+position = Vector2(470.00003, 403)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points4" parent="AllPoints" unique_id=525224730 instance=ExtResource("2_rvslj")]
-position = Vector2(811, 231)
+position = Vector2(503, 412)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points5" parent="AllPoints" unique_id=918174456 instance=ExtResource("2_rvslj")]
-position = Vector2(1266, 317)
+position = Vector2(540, 410)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points6" parent="AllPoints" unique_id=419853865 instance=ExtResource("2_rvslj")]
-position = Vector2(1266, 658)
+position = Vector2(570, 416)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points7" parent="AllPoints" unique_id=1551199428 instance=ExtResource("2_rvslj")]
-position = Vector2(1703, 562)
+position = Vector2(596, 408)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points8" parent="AllPoints" unique_id=2066434182 instance=ExtResource("2_rvslj")]
-position = Vector2(1039, 813)
+position = Vector2(628, 407.00006)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points9" parent="AllPoints" unique_id=911625849 instance=ExtResource("2_rvslj")]
-position = Vector2(697, 701)
+position = Vector2(666, 407)
 scale = Vector2(0.3, 0.3)
 
 [node name="Points10" parent="AllPoints" unique_id=576592602 instance=ExtResource("2_rvslj")]
-position = Vector2(315, 295)
+position = Vector2(704, 400)
 scale = Vector2(0.3, 0.3)
 
 [node name="BigPoints" parent="AllPoints" unique_id=517526663 instance=ExtResource("10_lhr70")]
-position = Vector2(138, 397)
+position = Vector2(412.99997, 327)
 scale = Vector2(0.8, 0.8)
 
 [node name="BigPoints2" parent="AllPoints" unique_id=1883604226 instance=ExtResource("10_lhr70")]
-position = Vector2(1732, 370)
+position = Vector2(408.00012, 267)
 scale = Vector2(0.8, 0.8)
 
 [node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
@@ -107,8 +108,8 @@ offset_right = 299.99997
 offset_bottom = 4979.9995
 
 [node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
-position = Vector2(597, 339.00003)
-scale = Vector2(0.2, 0.2)
+position = Vector2(584, 316)
+scale = Vector2(0.1, 0.1)
 
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
 position = Vector2(193, 682)
@@ -157,3 +158,10 @@ shape = SubResource("CircleShape2D_mwfav")
 [node name="PinkYellow" type="Node" parent="MovementTargets/Node" unique_id=117685107]
 
 [node name="GameOver" parent="." unique_id=1670354731 instance=ExtResource("14_mwfav")]
+
+[node name="Fruitbar" parent="." unique_id=1322165916 instance=ExtResource("16_cvmbd")]
+offset_left = 1901.0
+offset_top = 958.0
+offset_right = 1901.0
+offset_bottom = 958.0
+scale = Vector2(0.2, 0.2)

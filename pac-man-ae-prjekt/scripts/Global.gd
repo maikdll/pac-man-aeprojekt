@@ -1,8 +1,11 @@
 extends Node
 
+var level = 1
 var health = 3
 var score = 0
 var isGameStopped = false;
+var speedGhost = 1;
+var speedPlayer = 1;
 
 const SAVE_PATH = "user://leaderboard.save"
 var leaderboard = [
