@@ -6,18 +6,18 @@
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
-[ext_resource type="PackedScene" uid="uid://d1x4am2b63mm8" path="res://scenes/ghost.tscn" id="7_jlsqs"]
+[ext_resource type="PackedScene" uid="uid://c3o7q7tan05fu" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/UI/Healthbar.tscn" id="7_nxtc6"]
-[ext_resource type="PackedScene" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
+[ext_resource type="PackedScene" uid="uid://bnkraxqow0grd" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
-[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
+[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
-[ext_resource type="Shader" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
-[ext_resource type="Shader" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
+[ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
+[ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
@@ -46,7 +46,7 @@ script = ExtResource("1_3p2gp")
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
 position = Vector2(837, 488)
-scale = Vector2(0.13, 0.13)
+scale = Vector2(0.1, 0.1)
 collision_mask = 3
 
 [node name="Camera_Follow" type="Camera2D" parent="PacMan" unique_id=1885405831]
@@ -104,16 +104,12 @@ scale = Vector2(0.8, 0.8)
 position = Vector2(408.00012, 267)
 scale = Vector2(0.8, 0.8)
 
-[node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
-scale = Vector2(2, 2)
-transform = Transform2D(2, 0, 0, 2, 0, 0)
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
 stream = ExtResource("4_rarhs")
 autoplay = true
 playback_type = 1
 
-[node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
+[node name="Level_1" parent="." unique_id=1766636500 instance=ExtResource("5_vcsgt")]
 
 [node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
 position = Vector2(967, 353)
@@ -128,10 +124,11 @@ scale = Vector2(0.2, 0.2)
 transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
 
 [node name="Healthbar" parent="Healthbar" unique_id=309987989 instance=ExtResource("7_nxtc6")]
-offset_left = 299.99997
-offset_top = 4979.9995
-offset_right = 299.99997
-offset_bottom = 4979.9995
+offset_left = 925.0
+offset_top = 2450.0
+offset_right = 925.0
+offset_bottom = 2450.0
+scale = Vector2(0.5, 0.5)
 
 [node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
 position = Vector2(584, 316)
@@ -219,3 +216,5 @@ offset_bottom = 958.0
 scale = Vector2(0.2, 0.2)
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
+
+[node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
