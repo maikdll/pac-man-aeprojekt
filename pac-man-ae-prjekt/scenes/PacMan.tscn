@@ -12,7 +12,7 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lmhyd"]
 
-[node name="PacMan" type="CharacterBody2D" unique_id=1073800312]
+[node name="PacMan" type="CharacterBody2D" unique_id=1073800312 groups=["PacMan"]]
 scale = Vector2(0.3, 0.3)
 script = ExtResource("1_g2els")
 
