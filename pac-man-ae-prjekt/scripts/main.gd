@@ -14,6 +14,7 @@ func _ready():
 	if tile_map and tile_map_schwarz:
 		setup_grid()
 		spawn_points()
+		restrict_grid_for_ghosts()
 
 func setup_grid():
 	var full_rect = tile_map.get_used_rect().merge(tile_map_schwarz.get_used_rect())
@@ -68,6 +69,8 @@ func spawn_points():
 					if astar_grid.is_point_solid(cell + Vector2i(dx, dy)):
 						touches_wall = true
 						break
+				if touches_wall:
+					break
 						
 			if touches_wall:
 				continue
@@ -76,3 +79,33 @@ func spawn_points():
 			points_container.add_child(point)
 			var local_center = tile_map.map_to_local(cell)
 			point.global_position = tile_map.to_global(local_center)
+
+func restrict_grid_for_ghosts():
+	var edge_cells_to_block = []
+	var region = astar_grid.region
+	
+	for x in range(region.position.x, region.end.x):
+		for y in range(region.position.y, region.end.y):
+			var cell = Vector2i(x, y)
+			
+			if astar_grid.is_point_solid(cell):
+				continue
+				
+			var touches_wall = false
+			
+			for dx in [-1, 0, 1]:
+				for dy in [-1, 0, 1]:
+					if dx == 0 and dy == 0:
+						continue
+						
+					if astar_grid.is_point_solid(cell + Vector2i(dx, dy)):
+						touches_wall = true
+						break
+				if touches_wall:
+					break
+					
+			if touches_wall:
+				edge_cells_to_block.append(cell)
+			
+	for cell in edge_cells_to_block:
+		astar_grid.set_point_solid(cell, true)
