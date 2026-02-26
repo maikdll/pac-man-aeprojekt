@@ -18,7 +18,7 @@ func _ready():
 	add_child(timer)
 
 func update_path():
-	var new_path = main_node.get_path_to_pacman(global_position, pacman.position)
+	var new_path = main_node.get_path_to_pacman(global_position, pacman.global_position)
 	
 	if new_path.is_empty():
 		return
@@ -39,10 +39,9 @@ func set_next_target():
 func _process(delta):
 	if current_path.is_empty(): return
 	
-	position = position.move_toward(target_position, speed * delta)
+	global_position = global_position.move_toward(target_position, speed * delta)
 	
-	if position.distance_to(target_position) < 1.0:
+	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
-			

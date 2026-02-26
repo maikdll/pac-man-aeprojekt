@@ -14,9 +14,9 @@ script = ExtResource("1_fb70i")
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1657566722]
 layout_mode = 0
 offset_left = -2181.0
-offset_top = -1736.0
+offset_top = -1737.0
 offset_right = 997818.0
-offset_bottom = 98263.0
+offset_bottom = 98262.0
 color = Color(0.012617188, 0.012617188, 0.012617188, 1)
 
 [node name="Label" type="Label" parent="." unique_id=894867961]
