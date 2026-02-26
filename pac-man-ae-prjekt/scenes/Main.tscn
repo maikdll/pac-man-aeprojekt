@@ -14,11 +14,11 @@
 [ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
 [ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
 [ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
-[ext_resource type="PackedScene" path="res://scenes/GameOver.tscn" id="14_mwfav"]
+[ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
-[ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
-[ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
-[ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="16_cvmbd"]
+[ext_resource type="Shader" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
+[ext_resource type="Shader" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
+[ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
 radius = 8.0
@@ -35,7 +35,7 @@ shader_parameter/brightness = 1.2
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1nqs0"]
 shader = ExtResource("17_bb450")
 shader_parameter/shake_power = 0.0010000000475
-shader_parameter/shake_speed = 1.2640000600399999
+shader_parameter/shake_speed = 1.26400006004
 shader_parameter/color_split = 0.0030000001425
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
@@ -183,8 +183,6 @@ shape = SubResource("CircleShape2D_mwfav")
 
 [node name="PinkYellow" type="Node" parent="MovementTargets/Node" unique_id=117685107]
 
-[node name="GameOver" parent="." unique_id=1670354731 instance=ExtResource("14_mwfav")]
-
 [node name="CRT_Filters" type="CanvasLayer" parent="." unique_id=425641187]
 
 [node name="ColorRect" type="ColorRect" parent="CRT_Filters" unique_id=2081419701]
@@ -212,9 +210,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-[node name="Fruitbar" parent="." unique_id=1322165916 instance=ExtResource("16_cvmbd")]
+
+[node name="Fruitbar" parent="." unique_id=1322165916 instance=ExtResource("19_fruit")]
 offset_left = 1901.0
 offset_top = 958.0
 offset_right = 1901.0
 offset_bottom = 958.0
 scale = Vector2(0.2, 0.2)
+
+[node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
