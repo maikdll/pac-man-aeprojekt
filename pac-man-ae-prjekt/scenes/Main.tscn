@@ -6,22 +6,16 @@
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
-[ext_resource type="PackedScene" uid="uid://d1x4am2b63mm8" path="res://scenes/ghost.tscn" id="7_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/UI/Healthbar.tscn" id="7_nxtc6"]
-[ext_resource type="PackedScene" path="res://scenes/redGhost.tscn" id="7_wp0k4"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
-[ext_resource type="Texture2D" uid="uid://bwh3pnp6rcycn" path="res://assets/ghost/Ghost_Body_01.png" id="11_bjd11"]
-[ext_resource type="Texture2D" uid="uid://deils1feqjyhx" path="res://assets/ghost/Ghost_Eyes_Down.png" id="12_qmy6f"]
 [ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
 [ext_resource type="Shader" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
+[ext_resource type="PackedScene" uid="uid://cb63edwxi4rqq" path="res://scenes/NikoGhost.tscn" id="17_ft6cd"]
 [ext_resource type="Shader" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_mwfav"]
-radius = 8.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cvmbd"]
 shader = ExtResource("16_cvmbd")
@@ -41,8 +35,10 @@ shader_parameter/color_split = 0.0030000001425
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
 shader = ExtResource("18_nfivy")
 
-[node name="Main" type="Node2D" unique_id=1344439806]
+[node name="Main" type="Node2D" unique_id=1344439806 node_paths=PackedStringArray("tile_map", "tile_map_schwarz")]
 script = ExtResource("1_3p2gp")
+tile_map = NodePath("Level_1/MapLayer")
+tile_map_schwarz = NodePath("Level_1/Schwarz_Layer")
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
 position = Vector2(837, 488)
@@ -115,14 +111,6 @@ playback_type = 1
 
 [node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
 
-[node name="Ghost" parent="." unique_id=251117665 instance=ExtResource("7_jlsqs")]
-position = Vector2(967, 353)
-scale = Vector2(0.2, 0.2)
-up_direction = Vector2(0.7071068, -0.7071068)
-
-[node name="redGhost" parent="Ghost" unique_id=212608622 instance=ExtResource("7_wp0k4")]
-position = Vector2(-108, 278)
-
 [node name="Healthbar" type="CanvasLayer" parent="." unique_id=833753433]
 scale = Vector2(0.2, 0.2)
 transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
@@ -140,26 +128,6 @@ scale = Vector2(0.1, 0.1)
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
 position = Vector2(193, 682)
 scale = Vector2(0.12, 0.12)
-
-[node name="Ghosts" type="Node" parent="." unique_id=715394714]
-
-[node name="Ghost" type="Area2D" parent="Ghosts" unique_id=1605568809]
-position = Vector2(959, 345)
-
-[node name="BodySprite" type="Sprite2D" parent="Ghosts/Ghost" unique_id=36168776]
-texture_filter = 1
-scale = Vector2(2, 2)
-texture = ExtResource("11_bjd11")
-
-[node name="EyesSprite" type="Sprite2D" parent="Ghosts/Ghost" unique_id=1604759687]
-scale = Vector2(2, 2)
-texture = ExtResource("12_qmy6f")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Ghosts/Ghost" unique_id=777309223]
-position = Vector2(0, 1)
-shape = SubResource("CircleShape2D_mwfav")
-
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="Ghosts/Ghost" unique_id=1597949417]
 
 [node name="MovementTargets" type="Node" parent="." unique_id=1414464541]
 
@@ -219,3 +187,21 @@ offset_bottom = 958.0
 scale = Vector2(0.2, 0.2)
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
+
+[node name="NikosGhosts" type="Node2D" parent="." unique_id=1655358273]
+
+[node name="NikoGhost" parent="NikosGhosts" unique_id=1182016807 instance=ExtResource("17_ft6cd")]
+position = Vector2(854, 345)
+scale = Vector2(0.28, 0.28)
+
+[node name="NikoGhost2" parent="NikosGhosts" unique_id=1599035509 instance=ExtResource("17_ft6cd")]
+position = Vector2(1065, 341)
+scale = Vector2(0.28, 0.28)
+
+[node name="NikoGhost3" parent="NikosGhosts" unique_id=559014101 instance=ExtResource("17_ft6cd")]
+position = Vector2(525, 644.99994)
+scale = Vector2(0.28, 0.28)
+
+[node name="NikoGhost4" parent="NikosGhosts" unique_id=262605809 instance=ExtResource("17_ft6cd")]
+position = Vector2(1518, 863)
+scale = Vector2(0.28, 0.28)
