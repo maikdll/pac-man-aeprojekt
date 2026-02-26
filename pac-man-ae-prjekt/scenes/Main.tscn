@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/UI/Healthbar.tscn" id="7_nxtc6"]
 [ext_resource type="PackedScene" uid="uid://k7duxcuh3yal" path="res://scenes/Cherry.tscn" id="8_jlsqs"]
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
-[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="10_lhr70"]
 [ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
 [ext_resource type="Shader" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
@@ -39,6 +38,8 @@ shader = ExtResource("18_nfivy")
 script = ExtResource("1_3p2gp")
 tile_map = NodePath("Level_1/MapLayer")
 tile_map_schwarz = NodePath("Level_1/Schwarz_Layer")
+point_scene = ExtResource("2_rvslj")
+point_spacing = 1
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
 position = Vector2(837, 488)
@@ -49,56 +50,6 @@ collision_mask = 3
 visible = false
 enabled = false
 zoom = Vector2(2.5, 2.5)
-
-[node name="AllPoints" type="Node2D" parent="." unique_id=362950204]
-
-[node name="Points" parent="AllPoints" unique_id=1780295708 instance=ExtResource("2_rvslj")]
-position = Vector2(410.00003, 406)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points2" parent="AllPoints" unique_id=419111269 instance=ExtResource("2_rvslj")]
-position = Vector2(442, 410)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points3" parent="AllPoints" unique_id=595074538 instance=ExtResource("2_rvslj")]
-position = Vector2(470.00003, 403)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points4" parent="AllPoints" unique_id=525224730 instance=ExtResource("2_rvslj")]
-position = Vector2(503, 412)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points5" parent="AllPoints" unique_id=918174456 instance=ExtResource("2_rvslj")]
-position = Vector2(540, 410)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points6" parent="AllPoints" unique_id=419853865 instance=ExtResource("2_rvslj")]
-position = Vector2(570, 416)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points7" parent="AllPoints" unique_id=1551199428 instance=ExtResource("2_rvslj")]
-position = Vector2(596, 408)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points8" parent="AllPoints" unique_id=2066434182 instance=ExtResource("2_rvslj")]
-position = Vector2(628, 407.00006)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points9" parent="AllPoints" unique_id=911625849 instance=ExtResource("2_rvslj")]
-position = Vector2(666, 407)
-scale = Vector2(0.3, 0.3)
-
-[node name="Points10" parent="AllPoints" unique_id=576592602 instance=ExtResource("2_rvslj")]
-position = Vector2(704, 400)
-scale = Vector2(0.3, 0.3)
-
-[node name="BigPoints" parent="AllPoints" unique_id=517526663 instance=ExtResource("10_lhr70")]
-position = Vector2(412.99997, 327)
-scale = Vector2(0.8, 0.8)
-
-[node name="BigPoints2" parent="AllPoints" unique_id=1883604226 instance=ExtResource("10_lhr70")]
-position = Vector2(408.00012, 267)
-scale = Vector2(0.8, 0.8)
 
 [node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
 scale = Vector2(2, 2)
@@ -205,3 +156,5 @@ scale = Vector2(0.28, 0.28)
 [node name="NikoGhost4" parent="NikosGhosts" unique_id=262605809 instance=ExtResource("17_ft6cd")]
 position = Vector2(1518, 863)
 scale = Vector2(0.28, 0.28)
+
+[node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
