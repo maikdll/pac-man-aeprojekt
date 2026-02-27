@@ -1,9 +1,10 @@
 [gd_scene format=3 uid="uid://d1344j6kkuk8s"]
 
-[ext_resource type="Script" uid="uid://lafc1t71f0gr" path="res://scripts/Strawberry.gd" id="1_0edw8"]
-[ext_resource type="Texture2D" uid="uid://c1whlleljmgfm" path="res://assets/Strawberry.png" id="2_0edw8"]
+[ext_resource type="Script" path="res://scripts/Strawberry.gd" id="1_0edw8"]
+[ext_resource type="Texture2D" uid="uid://b0f0p8aodfpkp" path="res://assets/PacManAssets-Items.png" id="2_0edw8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nedoi"]
+radius = 0.84999996
 
 [node name="Strawberry" type="Area2D" unique_id=723307072 groups=["Fruit"]]
 script = ExtResource("1_0edw8")
@@ -13,6 +14,9 @@ scale = Vector2(20, 20)
 shape = SubResource("CircleShape2D_nedoi")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1969056402 groups=["Fruit"]]
+scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_0edw8")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
