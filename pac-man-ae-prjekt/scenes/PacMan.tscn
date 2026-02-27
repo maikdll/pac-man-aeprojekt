@@ -9,6 +9,7 @@
 [ext_resource type="AudioStream" uid="uid://qxjd8mawiaa1" path="res://assets/Sound/pacman_death.wav" id="8_ldvso"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
+radius = 9.638553
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lmhyd"]
 
