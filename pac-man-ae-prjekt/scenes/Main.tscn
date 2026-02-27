@@ -55,26 +55,23 @@ visible = false
 enabled = false
 zoom = Vector2(2.5, 2.5)
 
-[node name="Score" parent="." unique_id=2022623734 instance=ExtResource("3_0bbpv")]
-scale = Vector2(2, 2)
-transform = Transform2D(2, 0, 0, 2, 0, 0)
-
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
 stream = ExtResource("4_rarhs")
 autoplay = true
 playback_type = 1
 
-[node name="Level_1" parent="." unique_id=489703342 instance=ExtResource("5_vcsgt")]
+[node name="Level_1" parent="." unique_id=1766636500 instance=ExtResource("5_vcsgt")]
 
 [node name="Healthbar" type="CanvasLayer" parent="." unique_id=833753433]
 scale = Vector2(0.2, 0.2)
 transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
 
 [node name="Healthbar" parent="Healthbar" unique_id=309987989 instance=ExtResource("7_nxtc6")]
-offset_left = 299.99997
-offset_top = 4979.9995
-offset_right = 299.99997
-offset_bottom = 4979.9995
+offset_left = 925.0
+offset_top = 2450.0
+offset_right = 925.0
+offset_bottom = 2450.0
+scale = Vector2(0.5, 0.5)
 
 [node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
 position = Vector2(584, 316)
@@ -109,6 +106,7 @@ scale = Vector2(0.12, 0.12)
 [node name="CRT_Filters" type="CanvasLayer" parent="." unique_id=425641187]
 
 [node name="ColorRect" type="ColorRect" parent="CRT_Filters" unique_id=2081419701]
+visible = false
 material = SubResource("ShaderMaterial_cvmbd")
 anchors_preset = 15
 anchor_right = 1.0
@@ -162,3 +160,5 @@ position = Vector2(957, 350.00003)
 scale = Vector2(0.27, 0.27)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
+
+[node name="Score" parent="." unique_id=1600717342 instance=ExtResource("3_0bbpv")]

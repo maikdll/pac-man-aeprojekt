@@ -6,10 +6,17 @@
 script = ExtResource("1_chgv4")
 
 [node name="Label" type="Label" parent="." unique_id=1877816283]
-offset_left = 57.0
-offset_top = 24.0
-offset_right = 158.0
-offset_bottom = 69.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -47.5
+offset_top = 3.0
+offset_right = 53.5
+offset_bottom = 48.0
+grow_horizontal = 2
+scale = Vector2(0.9, 0.9)
+size_flags_horizontal = 4
 theme_override_colors/font_color = Color(1, 0.33333334, 0.20392157, 1)
 theme_override_font_sizes/font_size = 32
 text = "SCORE"
+horizontal_alignment = 1
