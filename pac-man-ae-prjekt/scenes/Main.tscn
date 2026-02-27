@@ -38,7 +38,7 @@ shader_parameter/color_split = 0.0030000001425
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
 shader = ExtResource("18_nfivy")
 
-[node name="Main" type="Node2D" unique_id=1344439806 node_paths=PackedStringArray("tile_map1", "tile_map2", "tile_map3")]
+[node name="Main" type="Node2D" unique_id=1344439806 node_paths=PackedStringArray("tile_map1", "tile_map2", "tile_map3") groups=["Main"]]
 script = ExtResource("1_3p2gp")
 tile_map1 = NodePath("Level_1/MapLayer2")
 tile_map2 = NodePath("Level_1/Schwarz_Layer2")
@@ -129,7 +129,7 @@ position = Vector2(444, 435)
 scale = Vector2(0.23, 0.23)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]
-position = Vector2(783, 348)
+position = Vector2(766.00006, 358)
 scale = Vector2(0.15, 0.15)
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]

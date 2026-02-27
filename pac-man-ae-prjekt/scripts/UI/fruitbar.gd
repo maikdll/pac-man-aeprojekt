@@ -12,7 +12,6 @@ extends Control
 @export var key: Texture2D       
 
 func _ready():
-	print("Global Level ist: ", Global.level)
 	update_fruitbar()
 
 func update_fruitbar():

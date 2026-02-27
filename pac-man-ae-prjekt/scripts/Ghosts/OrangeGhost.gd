@@ -125,7 +125,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 70 * Global.speedGhostOrange * Global.speedGhost * delta)
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostOrange * Global.speedGhost * delta)
 	
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
