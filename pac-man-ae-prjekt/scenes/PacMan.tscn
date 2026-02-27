@@ -30,7 +30,7 @@ texture = ExtResource("1_3vyb7")
 scale = Vector2(1.1, 1.1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1893822101]
-scale = Vector2(15, 15)
+scale = Vector2(16.19, 16.19)
 shape = SubResource("CircleShape2D_lmhyd")
 
 [node name="AudioEatingPoints" type="AudioStreamPlayer" parent="." unique_id=1346993533]
