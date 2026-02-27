@@ -68,10 +68,10 @@ scale = Vector2(0.2, 0.2)
 transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
 
 [node name="Healthbar" parent="Healthbar" unique_id=309987989 instance=ExtResource("7_nxtc6")]
-offset_left = 925.0
-offset_top = 2450.0
-offset_right = 925.0
-offset_bottom = 2450.0
+offset_left = 850.0
+offset_top = 2420.0
+offset_right = 850.0
+offset_bottom = 2420.0
 scale = Vector2(0.5, 0.5)
 
 [node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
