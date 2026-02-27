@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-@export var speed = 80.0
 @export var wander_radius: float = 200.0 
 
 enum Mode { CHASE, SCATTER }
@@ -104,7 +103,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 1 * Global.speedGhostRed * Global.speedGhost)
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostRed * Global.speedGhost * delta)
 
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()

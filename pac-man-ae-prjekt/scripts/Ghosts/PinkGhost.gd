@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-@export var speed = 80.0
 @export var ambush_distance = 300.0 
 
 @export var scatter_anchor: Vector2 = Vector2(100, 100)
@@ -120,7 +119,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 70 * Global.speedGhostPink * Global.speedGhost * delta)
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostPink * Global.speedGhost * delta)
 	
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()

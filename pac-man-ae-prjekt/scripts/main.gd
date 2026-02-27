@@ -12,11 +12,13 @@ var astar_grid = AStarGrid2D.new()
 
 func _ready():
 	Global.isGameStopped = false
+	setDifficulty()
+	
 	if tile_map1 and tile_map2 and tile_map3:
 		setup_grid()
 		spawn_points()
 		restrict_grid_for_ghosts()
-
+		
 func setup_grid():
 	var full_rect = tile_map1.get_used_rect().merge(tile_map2.get_used_rect().merge(tile_map3.get_used_rect()))
 	
@@ -111,3 +113,36 @@ func restrict_grid_for_ghosts():
 			
 	for cell in edge_cells_to_block:
 		astar_grid.set_point_solid(cell, true)
+
+func checkAllPointsEaten():
+	var remaining_points = 0
+	for point in points_container.get_children():
+		if not point.is_queued_for_deletion():
+			remaining_points += 1
+	if remaining_points == 1:
+		print("Alle Punkte gegessen")
+		Global.isGameStopped = true
+		Global.level += 1
+		await get_tree().create_timer(2.0).timeout
+		get_tree().reload_current_scene()
+		
+func setDifficulty():
+	print(Global.level)
+	if Global.level == 1:
+		Global.speedPlayer = 1
+		Global.speedGhost = 0.6
+	elif Global.level >= 2 and Global.level <= 4:
+		Global.speedPlayer = 1.2
+		Global.speedGhost = 0.8
+	elif Global.level >= 5 and Global.level <= 10:
+		Global.speedPlayer = 1.4
+		Global.speedGhost = 1.0
+	elif Global.level >= 10 and Global.level <= 15:
+		Global.speedPlayer = 1.6
+		Global.speedGhost = 1.4
+	elif Global.level >= 15 and Global.level <= 20:
+		Global.speedPlayer = 2.0
+		Global.speedGhost = 1.8
+	else:
+		Global.speedPlayer = 1.8
+		Global.speedGhost = 2

@@ -1,6 +1,5 @@
 extends CharacterBody2D
 
-var SPEED = (Global.speedPlayer * 120.0)
 var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false
@@ -9,6 +8,7 @@ var isDying = false
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
 func ready():
+	get_tree().call_group("Main", "setDifficulty")
 	global_position = spawn_position
 
 func _physics_process(_delta: float) -> void:
@@ -23,12 +23,12 @@ func _physics_process(_delta: float) -> void:
 			next_direction = Vector2.UP
 		var can_turn = not test_move(transform, next_direction * 30)
 		if next_direction != current_direction and can_turn:
-			velocity = (current_direction * 0.5 + next_direction).normalized() * SPEED
+			velocity = (current_direction * 0.5 + next_direction).normalized() * Global.speedPlayer * 100
 			current_direction = next_direction
 		else:
 			if is_on_wall() and can_turn:
 				current_direction = next_direction
-		velocity = current_direction * SPEED
+		velocity = current_direction * Global.speedPlayer * 100
 
 	if Global.isGameStopped == false:
 		if move_and_slide():
@@ -41,6 +41,7 @@ func _physics_process(_delta: float) -> void:
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Points"):
 		$AudioEatingPoints.play()
+		get_tree().call_group("Main", "checkAllPointsEaten")
 	if area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
 	if area.is_in_group("BigPoint"):
