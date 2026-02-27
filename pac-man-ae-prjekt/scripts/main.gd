@@ -131,18 +131,33 @@ func setDifficulty():
 	if Global.level == 1:
 		Global.speedPlayer = 1
 		Global.speedGhost = 0.6
-	elif Global.level >= 2 and Global.level <= 4:
+	elif Global.level == 2:
 		Global.speedPlayer = 1.2
-		Global.speedGhost = 0.8
-	elif Global.level >= 5 and Global.level <= 10:
+		Global.speedGhost = 0.6
+	elif Global.level == 3:
 		Global.speedPlayer = 1.4
-		Global.speedGhost = 1.0
-	elif Global.level >= 10 and Global.level <= 15:
+		Global.speedGhost = 0.8
+	elif Global.level == 4:
 		Global.speedPlayer = 1.6
+		Global.speedGhost = 1
+	elif Global.level == 5:
+		Global.speedPlayer = 1.8
+		Global.speedGhost = 1.2
+	elif Global.level == 6:
+		Global.speedPlayer = 1.8
 		Global.speedGhost = 1.4
-	elif Global.level >= 15 and Global.level <= 20:
-		Global.speedPlayer = 2.0
+	elif Global.level == 7:
+		Global.speedPlayer = 1.8
+		Global.speedGhost = 1.6
+	elif Global.level == 8:
+		Global.speedPlayer = 2
+		Global.speedGhost = 1.6
+	elif Global.level == 9:
+		Global.speedPlayer = 2
 		Global.speedGhost = 1.8
+	elif Global.level == 10:
+		Global.speedPlayer = 2
+		Global.speedGhost = 2
 	else:
 		Global.speedPlayer = 1.8
 		Global.speedGhost = 2
