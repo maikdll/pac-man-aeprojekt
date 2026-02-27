@@ -12,11 +12,11 @@
 [ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://15m8lpws0bgc" path="res://scenes/Ghosts/Reddghost.tscn" id="16_ft6cd"]
-[ext_resource type="Shader" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
+[ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
 [ext_resource type="PackedScene" uid="uid://cb63edwxi4rqq" path="res://scenes/Ghosts/PinkGhost.tscn" id="17_ft6cd"]
 [ext_resource type="PackedScene" uid="uid://c3p72sik77tvb" path="res://scenes/Ghosts/OrangeGhost.tscn" id="17_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dehad3273gagl" path="res://scenes/Ghosts/CyanGhost.tscn" id="18_bb450"]
-[ext_resource type="Shader" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
+[ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cvmbd"]
@@ -37,15 +37,16 @@ shader_parameter/color_split = 0.0030000001425
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_1iba3"]
 shader = ExtResource("18_nfivy")
 
-[node name="Main" type="Node2D" unique_id=1344439806 node_paths=PackedStringArray("tile_map", "tile_map_schwarz")]
+[node name="Main" type="Node2D" unique_id=1344439806 node_paths=PackedStringArray("tile_map1", "tile_map2", "tile_map3")]
 script = ExtResource("1_3p2gp")
-tile_map = NodePath("Level_1/MapLayer")
-tile_map_schwarz = NodePath("Level_1/Schwarz_Layer")
+tile_map1 = NodePath("Level_1/MapLayer2")
+tile_map2 = NodePath("Level_1/Schwarz_Layer2")
+tile_map3 = NodePath("Level_1/Unsichtbare_Wände")
 point_scene = ExtResource("2_rvslj")
 point_spacing = 1
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(960, 481)
+position = Vector2(478, 233)
 scale = Vector2(0.13, 0.13)
 collision_mask = 3
 spawn_position = Vector2(960, 480)
@@ -74,34 +75,12 @@ offset_bottom = 2450.0
 scale = Vector2(0.5, 0.5)
 
 [node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
-position = Vector2(584, 316)
+position = Vector2(372, 231)
 scale = Vector2(0.1, 0.1)
 
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
-position = Vector2(193, 682)
+position = Vector2(688, 95.00006)
 scale = Vector2(0.12, 0.12)
-
-[node name="MovementTargets" type="Node" parent="." unique_id=1414464541]
-
-[node name="Node" type="Node" parent="MovementTargets" unique_id=700854276]
-
-[node name="RedGhost" type="Node" parent="MovementTargets/Node" unique_id=896090901]
-
-[node name="Scattor" type="Node" parent="MovementTargets/Node/RedGhost" unique_id=997617214]
-
-[node name="Red1" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=1929529934]
-
-[node name="Red2" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=702778303]
-
-[node name="Red3" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=394343550]
-
-[node name="Red4" type="Marker2D" parent="MovementTargets/Node/RedGhost/Scattor" unique_id=1154230704]
-
-[node name="BlueGhost" type="Node" parent="MovementTargets/Node" unique_id=472132593]
-
-[node name="YellowGhost" type="Node" parent="MovementTargets/Node" unique_id=1601326669]
-
-[node name="PinkYellow" type="Node" parent="MovementTargets/Node" unique_id=117685107]
 
 [node name="CRT_Filters" type="CanvasLayer" parent="." unique_id=425641187]
 
@@ -133,10 +112,10 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Fruitbar" parent="." unique_id=1322165916 instance=ExtResource("19_fruit")]
-offset_left = 1901.0
-offset_top = 958.0
-offset_right = 1901.0
-offset_bottom = 958.0
+offset_left = 993.0
+offset_top = 568.99994
+offset_right = 993.0
+offset_bottom = 568.99994
 scale = Vector2(0.2, 0.2)
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
@@ -144,21 +123,22 @@ scale = Vector2(0.2, 0.2)
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 instance=ExtResource("17_ft6cd")]
-position = Vector2(141.99988, 266)
+position = Vector2(44.999985, 436)
 scale = Vector2(0.18, 0.18)
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 instance=ExtResource("16_ft6cd")]
-position = Vector2(1520, 201)
+position = Vector2(444, 435)
 scale = Vector2(0.23, 0.23)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]
-position = Vector2(77, 871)
+position = Vector2(783, 348)
 scale = Vector2(0.15, 0.15)
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
-position = Vector2(957, 350.00003)
+position = Vector2(916, 360)
 scale = Vector2(0.27, 0.27)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
+position = Vector2(-0.99999994, 0.99999994)
 
 [node name="Score" parent="." unique_id=1600717342 instance=ExtResource("3_0bbpv")]

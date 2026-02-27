@@ -40,8 +40,8 @@ func pick_new_scatter_target():
 			randf_range(-wander_radius, wander_radius)
 		)
 		var test_target = global_position + random_offset
-		var local_pos = main_node.tile_map.to_local(test_target)
-		var map_pos = main_node.tile_map.local_to_map(local_pos)
+		var local_pos = main_node.tile_map1.to_local(test_target)
+		var map_pos = main_node.tile_map1.local_to_map(local_pos)
 		
 		if main_node.astar_grid.region.has_point(map_pos) and not main_node.astar_grid.is_point_solid(map_pos):
 			current_scatter_target = test_target
@@ -97,8 +97,8 @@ func set_next_target():
 	if current_path.is_empty(): return
 	var next_cell = current_path[0]
 	
-	var local_pos = main_node.tile_map.map_to_local(next_cell)
-	target_position = main_node.tile_map.to_global(local_pos)
+	var local_pos = main_node.tile_map1.map_to_local(next_cell)
+	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
 	if current_path.is_empty(): return
