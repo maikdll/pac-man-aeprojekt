@@ -5,6 +5,10 @@ var health = 3
 var score = 0
 var isGameStopped = false;
 var speedGhost = 1;
+var speedGhostRed = 1;
+var speedGhostCyan = 1;
+var speedGhostPink = 1;
+var speedGhostOrange = 1;
 var speedPlayer = 1;
 
 const SAVE_PATH = "user://leaderboard.save"
