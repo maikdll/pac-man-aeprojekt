@@ -30,8 +30,9 @@ func _physics_process(_delta: float) -> void:
 				current_direction = next_direction
 		velocity = current_direction * SPEED
 
-	if move_and_slide():
-		pass
+	if Global.isGameStopped == false:
+		if move_and_slide():
+			pass
 	
 	if velocity.length() > 0:
 		rotation = current_direction.angle()
@@ -51,13 +52,14 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if isDying:
 		return
-	if not body.is_in_group("geist"):
+	if not body.is_in_group("Ghost"):
 		return
 	
 	isDying = true
-	await get_tree().create_timer(1.0).timeout
 	$AudioEatingGhost.play()
 	Global.health -= 1
 	get_tree().call_group("ui", "update_healthbar", Global.health)
 	global_position = spawn_position
+	await get_tree().create_timer(1.0).timeout
 	isDying = false
+	
