@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://bnkraxqow0grd"]
+[gd_scene format=3 uid="uid://dowy80qkn1cvm"]
 
 [ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/ghost/redGhost.png" id="2_bbnym"]
-[ext_resource type="Script" uid="uid://bw1iali2cdimk" path="res://scripts/RedGhost.gd" id="2_cm0wj"]
+[ext_resource type="Script" uid="uid://bw1iali2cdimk" path="res://scripts/Ghosts/RedGhost.gd" id="2_cm0wj"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yq2ln"]
 
@@ -12,4 +12,5 @@ texture = ExtResource("2_bbnym")
 script = ExtResource("2_cm0wj")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=392682182]
+scale = Vector2(9.58, 9.58)
 shape = SubResource("CircleShape2D_yq2ln")

@@ -4,6 +4,12 @@ var SPEED = (Global.speedPlayer * 300.0)
 var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false
+var isDying = false
+
+@export var spawn_position: Vector2 = Vector2(400, 600)
+
+func ready():
+	global_position = spawn_position
 
 func _physics_process(_delta: float) -> void:
 	if Global.isGameStopped == false:
@@ -43,15 +49,15 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
-	if is_invincible or not body.is_in_group("Ghost"):
+	if isDying:
+		return
+	if not body.is_in_group("geist"):
 		return
 	
-	var tween = create_tween().set_loops(10)
-	tween.tween_property($Sprite2D, "modulate:a", 0.0, 0.1)
-	tween.tween_property($Sprite2D, "modulate:a", 1.0, 0.1)
-	is_invincible = true
+	isDying = true
+	await get_tree().create_timer(1.0).timeout
 	$AudioEatingGhost.play()
 	Global.health -= 1
 	get_tree().call_group("ui", "update_healthbar", Global.health)
-	await get_tree().create_timer(2.0).timeout
-	is_invincible = false
+	global_position = spawn_position
+	isDying = false

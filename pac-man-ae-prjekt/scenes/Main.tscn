@@ -11,12 +11,12 @@
 [ext_resource type="PackedScene" uid="uid://d1344j6kkuk8s" path="res://scenes/Strawberry.tscn" id="9_q8u5g"]
 [ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
-[ext_resource type="PackedScene" uid="uid://15m8lpws0bgc" path="res://scenes/Reddghost.tscn" id="16_ft6cd"]
-[ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
-[ext_resource type="PackedScene" uid="uid://cb63edwxi4rqq" path="res://scenes/PinkGhost.tscn" id="17_ft6cd"]
-[ext_resource type="PackedScene" uid="uid://c3p72sik77tvb" path="res://scenes/OrangeGhost.tscn" id="17_nfivy"]
-[ext_resource type="Script" uid="uid://bpfx5v4pej06f" path="res://scripts/OrangeGhost.gd" id="18_bb450"]
-[ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
+[ext_resource type="PackedScene" uid="uid://15m8lpws0bgc" path="res://scenes/Ghosts/Reddghost.tscn" id="16_ft6cd"]
+[ext_resource type="Shader" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
+[ext_resource type="PackedScene" uid="uid://cb63edwxi4rqq" path="res://scenes/Ghosts/PinkGhost.tscn" id="17_ft6cd"]
+[ext_resource type="PackedScene" uid="uid://c3p72sik77tvb" path="res://scenes/Ghosts/OrangeGhost.tscn" id="17_nfivy"]
+[ext_resource type="PackedScene" uid="uid://dehad3273gagl" path="res://scenes/Ghosts/CyanGhost.tscn" id="18_bb450"]
+[ext_resource type="Shader" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cvmbd"]
@@ -45,9 +45,10 @@ point_scene = ExtResource("2_rvslj")
 point_spacing = 1
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(837, 488)
-scale = Vector2(0.1, 0.1)
+position = Vector2(960, 481)
+scale = Vector2(0.13, 0.13)
 collision_mask = 3
+spawn_position = Vector2(960, 480)
 
 [node name="Camera_Follow" type="Camera2D" parent="PacMan" unique_id=1885405831]
 visible = false
@@ -143,20 +144,20 @@ scale = Vector2(0.2, 0.2)
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 instance=ExtResource("17_ft6cd")]
-position = Vector2(1122.9999, 487)
+position = Vector2(141.99988, 266)
 scale = Vector2(0.18, 0.18)
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 instance=ExtResource("16_ft6cd")]
-position = Vector2(966, 339)
+position = Vector2(1520, 201)
 scale = Vector2(0.23, 0.23)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]
-position = Vector2(1008.00006, 484)
+position = Vector2(77, 871)
 scale = Vector2(0.15, 0.15)
-script = ExtResource("18_bb450")
-panic_distance = 384.0
-resume_chase_distance = 550.0
-scatter_position = Vector2(100, 800)
+
+[node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
+position = Vector2(957, 350.00003)
+scale = Vector2(0.27, 0.27)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
 
