@@ -74,13 +74,11 @@ offset_right = 850.0
 offset_bottom = 2420.0
 scale = Vector2(0.5, 0.5)
 
-[node name="Fruit" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
-position = Vector2(372, 231)
-scale = Vector2(0.1, 0.1)
-
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
-position = Vector2(688, 95.00006)
-scale = Vector2(0.12, 0.12)
+position = Vector2(696, 96)
+
+[node name="Cherry" parent="." unique_id=723307072 instance=ExtResource("8_jlsqs")]
+position = Vector2(312, 224)
 
 [node name="CRT_Filters" type="CanvasLayer" parent="." unique_id=425641187]
 
