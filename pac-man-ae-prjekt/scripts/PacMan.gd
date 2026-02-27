@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var SPEED = (Global.speedPlayer * 300.0)
+var SPEED = (Global.speedPlayer * 120.0)
 var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false

@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-@export var speed = 80.0
-
 @export var panic_distance = 150.0 
 @export var resume_chase_distance = 500.0 
 
@@ -127,7 +125,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, speed * delta)
+		global_position = global_position.move_toward(target_position, 70 * Global.speedGhostOrange * Global.speedGhost * delta)
 	
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
