@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cb63edwxi4rqq"]
 
-[ext_resource type="Script" uid="uid://dsiknc1me8wjw" path="res://scripts/PinkGhost.gd" id="1_a73n8"]
+[ext_resource type="Script" uid="uid://dsiknc1me8wjw" path="res://scripts/Ghosts/PinkGhost.gd" id="1_a73n8"]
 [ext_resource type="Texture2D" uid="uid://cdif8qhfn8t7t" path="res://assets/ghost/pinkGhost.png" id="2_078ar"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
@@ -12,5 +12,5 @@ script = ExtResource("1_a73n8")
 texture = ExtResource("2_078ar")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
-scale = Vector2(8.37, 8.37)
+scale = Vector2(11.76, 11.76)
 shape = SubResource("CircleShape2D_a73n8")

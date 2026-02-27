@@ -1,7 +1,8 @@
 extends Node2D
 
-@export var tile_map: TileMapLayer 
-@export var tile_map_schwarz: TileMapLayer 
+@export var tile_map1: TileMapLayer 
+@export var tile_map2: TileMapLayer 
+@export var tile_map3: TileMapLayer 
 
 @export var point_scene: PackedScene
 @onready var points_container = $Points
@@ -11,13 +12,13 @@ var astar_grid = AStarGrid2D.new()
 
 func _ready():
 	Global.isGameStopped = false
-	if tile_map and tile_map_schwarz:
+	if tile_map1 and tile_map2 and tile_map3:
 		setup_grid()
 		spawn_points()
 		restrict_grid_for_ghosts()
 
 func setup_grid():
-	var full_rect = tile_map.get_used_rect().merge(tile_map_schwarz.get_used_rect())
+	var full_rect = tile_map1.get_used_rect().merge(tile_map2.get_used_rect().merge(tile_map3.get_used_rect()))
 	
 	astar_grid.region = full_rect
 	astar_grid.cell_size = Vector2(16, 16)
@@ -25,8 +26,9 @@ func setup_grid():
 	astar_grid.update()
 	astar_grid.fill_solid_region(astar_grid.region, false)
 
-	_add_walls_from_layer(tile_map)
-	_add_walls_from_layer(tile_map_schwarz)
+	_add_walls_from_layer(tile_map1)
+	_add_walls_from_layer(tile_map2)
+	_add_walls_from_layer(tile_map3)
 
 func _add_walls_from_layer(layer: TileMapLayer):
 	var cells = layer.get_used_cells()
@@ -34,11 +36,11 @@ func _add_walls_from_layer(layer: TileMapLayer):
 		astar_grid.set_point_solid(cell, true)
 
 func get_path_to_pacman(ghost_global_pos: Vector2, target_global_pos: Vector2) -> Array[Vector2i]:
-	var local_ghost = tile_map.to_local(ghost_global_pos)
-	var local_target = tile_map.to_local(target_global_pos)
+	var local_ghost = tile_map1.to_local(ghost_global_pos)
+	var local_target = tile_map1.to_local(target_global_pos)
 	
-	var start_cell = tile_map.local_to_map(local_ghost)
-	var end_cell = tile_map.local_to_map(local_target)
+	var start_cell = tile_map1.local_to_map(local_ghost)
+	var end_cell = tile_map1.local_to_map(local_target)
 	
 	if not astar_grid.region.has_point(start_cell) or not astar_grid.region.has_point(end_cell):
 		return []
@@ -77,8 +79,8 @@ func spawn_points():
 				
 			var point = point_scene.instantiate()
 			points_container.add_child(point)
-			var local_center = tile_map.map_to_local(cell)
-			point.global_position = tile_map.to_global(local_center)
+			var local_center = tile_map1.map_to_local(cell)
+			point.global_position = tile_map1.to_global(local_center)
 
 func restrict_grid_for_ghosts():
 	var edge_cells_to_block = []

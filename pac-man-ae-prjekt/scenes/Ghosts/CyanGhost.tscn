@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dehad3273gagl"]
+
+[ext_resource type="Script" uid="uid://4rgf57thvfu3" path="res://scripts/Ghosts/CyanGhost.gd" id="1_oclmk"]
+[ext_resource type="Texture2D" uid="uid://dppjtcj5xame3" path="res://assets/ghost/blueGhost.png" id="2_oclmk"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
+
+[node name="CyanGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost"]]
+script = ExtResource("1_oclmk")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]
+texture = ExtResource("2_oclmk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
+position = Vector2(0, -32.39)
+scale = Vector2(6.46, 6.46)
+shape = SubResource("CircleShape2D_a73n8")

@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://c3p72sik77tvb"]
 
-[ext_resource type="Script" uid="uid://dsiknc1me8wjw" path="res://scripts/PinkGhost.gd" id="1_k3lyp"]
+[ext_resource type="Script" uid="uid://bpfx5v4pej06f" path="res://scripts/Ghosts/OrangeGhost.gd" id="1_ttf47"]
 [ext_resource type="Texture2D" uid="uid://cyj2viv16o4kv" path="res://assets/ghost/yellowGhost.png" id="2_mfhfg"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
 
 [node name="OrangeGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost"]]
-script = ExtResource("1_k3lyp")
+script = ExtResource("1_ttf47")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]
 texture = ExtResource("2_mfhfg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
-scale = Vector2(8.37, 8.37)
+scale = Vector2(11.99, 11.99)
 shape = SubResource("CircleShape2D_a73n8")
