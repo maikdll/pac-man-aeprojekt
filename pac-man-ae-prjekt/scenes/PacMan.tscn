@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://yl6lupiynlhi"]
 
-[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bdn2g6hofykro" path="res://scripts/PacMan.gd" id="1_g2els"]
+[ext_resource type="Texture2D" uid="uid://jfmgpdvfvbd3" path="res://assets/animation/Arcade - Pac-Man.png" id="2_ldvso"]
 [ext_resource type="AudioStream" uid="uid://dtdaaqb80olry" path="res://assets/Sound/pacman_chomp.wav" id="3_8orjn"]
 [ext_resource type="AudioStream" uid="uid://0frjqed17tj8" path="res://assets/Sound/pacman_eatfruit.wav" id="5_w6g3e"]
 [ext_resource type="AudioStream" uid="uid://duucgngg4xh7t" path="res://assets/Sound/pacman_eatghost.wav" id="6_poqqj"]
@@ -9,9 +9,39 @@
 [ext_resource type="AudioStream" uid="uid://qxjd8mawiaa1" path="res://assets/Sound/pacman_death.wav" id="8_ldvso"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
-radius = 9.638553
+radius = 1.6064254
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_djf21"]
+atlas = ExtResource("2_ldvso")
+region = Rect2(0, 0, 32, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_to87l"]
+atlas = ExtResource("2_ldvso")
+region = Rect2(32, 0, 32, 34)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fb4f7"]
+atlas = ExtResource("2_ldvso")
+region = Rect2(64, 0, 32, 34)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_31m2r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_djf21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_to87l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fb4f7")
+}],
+"loop": true,
+"name": &"PacMan_Kauen",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_lmhyd"]
+radius = 1.49737
 
 [node name="PacMan" type="CharacterBody2D" unique_id=1073800312 groups=["PacMan"]]
 scale = Vector2(0.3, 0.3)
@@ -19,19 +49,20 @@ script = ExtResource("1_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=880179392]
 modulate = Color(1, 0, 1, 1)
-scale = Vector2(16.6, 16.6)
+scale = Vector2(13.5, 13.5)
 shape = SubResource("CircleShape2D_3vyb7")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1136085556]
-position = Vector2(-10.000001, 0)
-scale = Vector2(0.9735554, 0.9656469)
-texture = ExtResource("1_3vyb7")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1595947905]
+scale = Vector2(1.25, 1.25)
+sprite_frames = SubResource("SpriteFrames_31m2r")
+animation = &"PacMan_Kauen"
+autoplay = "PacMan_Kauen"
 
 [node name="Area2D" type="Area2D" parent="." unique_id=945533948]
 scale = Vector2(1.1, 1.1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1893822101]
-scale = Vector2(16.19, 16.19)
+scale = Vector2(13.5, 13.5)
 shape = SubResource("CircleShape2D_lmhyd")
 
 [node name="AudioEatingPoints" type="AudioStreamPlayer" parent="." unique_id=1346993533]
