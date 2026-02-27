@@ -4,11 +4,10 @@ extends Control
 
 func _ready():
 	Global.health = 3
-	update_healthbar(Global.health)
 
 func update_healthbar(current_health):
+	$AudioDeath.play()
 	if Global.health < 1:
-		$AudioDeath.play()
 		get_tree().call_group("GameOver", "setGameOver")
 		
 	for i in range(life_icons.size()):

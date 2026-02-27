@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
+[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
@@ -43,6 +44,7 @@ script = ExtResource("1_3p2gp")
 tile_map1 = NodePath("Level_1/MapLayer2")
 tile_map2 = NodePath("Level_1/Schwarz_Layer2")
 tile_map3 = NodePath("Level_1/Unsichtbare_Wände")
+big_point_scene = ExtResource("2_1nqs0")
 point_scene = ExtResource("2_rvslj")
 point_spacing = 1
 

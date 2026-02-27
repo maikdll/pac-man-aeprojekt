@@ -4,6 +4,7 @@ extends Node2D
 @export var tile_map2: TileMapLayer 
 @export var tile_map3: TileMapLayer 
 
+@export var big_point_scene: PackedScene
 @export var point_scene: PackedScene
 @onready var points_container = $Points
 @export var point_spacing: int = 2
@@ -48,13 +49,14 @@ func get_path_to_pacman(ghost_global_pos: Vector2, target_global_pos: Vector2) -
 		return []
 
 	return astar_grid.get_id_path(start_cell, end_cell)
-	
+
 func spawn_points():
 	points_container.global_position = Vector2.ZERO
 	for child in points_container.get_children():
 		child.queue_free()
 
 	var region = astar_grid.region
+	var points_placed = 0
 
 	for x in range(region.position.x, region.end.x):
 		for y in range(region.position.y, region.end.y):
@@ -75,11 +77,18 @@ func spawn_points():
 						break
 				if touches_wall:
 					break
-						
+					
 			if touches_wall:
 				continue
 				
-			var point = point_scene.instantiate()
+			points_placed += 1
+			var point
+			
+			if points_placed % 50 == 0:
+				point = big_point_scene.instantiate()
+			else:
+				point = point_scene.instantiate()
+				
 			points_container.add_child(point)
 			var local_center = tile_map1.map_to_local(cell)
 			point.global_position = tile_map1.to_global(local_center)
@@ -119,7 +128,7 @@ func checkAllPointsEaten():
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			remaining_points += 1
-	if remaining_points == 1:
+	if remaining_points == 420:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
 		Global.level += 1
