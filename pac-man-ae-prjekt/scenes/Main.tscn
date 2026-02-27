@@ -18,6 +18,7 @@
 [ext_resource type="PackedScene" uid="uid://dehad3273gagl" path="res://scenes/Ghosts/CyanGhost.tscn" id="18_bb450"]
 [ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
+[ext_resource type="PackedScene" uid="uid://b7ln6g7fh06wm" path="res://scenes/Portal/Portal.tscn" id="19_nfivy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_cvmbd"]
 shader = ExtResource("16_cvmbd")
@@ -135,10 +136,28 @@ position = Vector2(783, 348)
 scale = Vector2(0.15, 0.15)
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
-position = Vector2(916, 360)
+position = Vector2(916, 348)
 scale = Vector2(0.27, 0.27)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
 position = Vector2(-0.99999994, 0.99999994)
 
 [node name="Score" parent="." unique_id=1600717342 instance=ExtResource("3_0bbpv")]
+
+[node name="Portal" type="Node2D" parent="." unique_id=1431705158]
+
+[node name="PortalLeft" parent="Portal" unique_id=159004651 node_paths=PackedStringArray("target_spawn") instance=ExtResource("19_nfivy")]
+position = Vector2(-55.000004, 504.00003)
+scale = Vector2(4.21, 4.21)
+target_spawn = NodePath("../RightSpawnPoint")
+
+[node name="PortalRight" parent="Portal" unique_id=1639388074 node_paths=PackedStringArray("target_spawn") instance=ExtResource("19_nfivy")]
+position = Vector2(1032.9999, 502)
+scale = Vector2(4.21, 4.21)
+target_spawn = NodePath("../LeftSpawnPoint")
+
+[node name="RightSpawnPoint" type="Marker2D" parent="Portal" unique_id=1959470946]
+position = Vector2(928, 504)
+
+[node name="LeftSpawnPoint" type="Marker2D" parent="Portal" unique_id=1142789181]
+position = Vector2(28, 502)
