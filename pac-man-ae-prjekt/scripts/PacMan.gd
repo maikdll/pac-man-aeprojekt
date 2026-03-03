@@ -57,7 +57,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 	
 	isDying = true
-	$AudioEatingGhost.play()
 	Global.health -= 1
 	get_tree().call_group("ui", "update_healthbar", Global.health)
 	global_position = spawn_position
