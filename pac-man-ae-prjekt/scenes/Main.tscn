@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
+[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
@@ -127,7 +127,7 @@ position = Vector2(44.999985, 436)
 scale = Vector2(0.18, 0.18)
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 instance=ExtResource("16_ft6cd")]
-position = Vector2(382, 139)
+position = Vector2(383, 146)
 scale = Vector2(0.23, 0.23)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]

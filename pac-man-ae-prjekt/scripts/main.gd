@@ -72,9 +72,12 @@ func spawn_points():
 					if dx == 0 and dy == 0:
 						continue
 						
-					if astar_grid.is_point_solid(cell + Vector2i(dx, dy)):
-						touches_wall = true
-						break
+					var neighbor_cell = cell + Vector2i(dx, dy)
+					if astar_grid.is_in_boundsv(neighbor_cell):
+						
+						if astar_grid.is_point_solid(neighbor_cell):
+							touches_wall = true
+							break
 				if touches_wall:
 					break
 					
@@ -111,9 +114,12 @@ func restrict_grid_for_ghosts():
 					if dx == 0 and dy == 0:
 						continue
 						
-					if astar_grid.is_point_solid(cell + Vector2i(dx, dy)):
-						touches_wall = true
-						break
+					var neighbor_cell = cell + Vector2i(dx, dy)
+					if astar_grid.is_in_boundsv(neighbor_cell):
+						if astar_grid.is_point_solid(neighbor_cell):
+							touches_wall = true
+							break
+							
 				if touches_wall:
 					break
 					
