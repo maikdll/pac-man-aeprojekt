@@ -84,7 +84,7 @@ func spawn_points():
 			points_placed += 1
 			var point
 			
-			if points_placed % 50 == 0:
+			if points_placed % 60 == 0:
 				point = big_point_scene.instantiate()
 			else:
 				point = point_scene.instantiate()
@@ -128,7 +128,7 @@ func checkAllPointsEaten():
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			remaining_points += 1
-	if remaining_points == 1:
+	if remaining_points == 430:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
 		Global.level += 1
@@ -136,7 +136,7 @@ func checkAllPointsEaten():
 		get_tree().reload_current_scene()
 		
 func setDifficulty():
-	print(Global.level)
+	print("LEVEL: ", Global.level)
 	if Global.level == 1:
 		Global.speedPlayer = 1
 		Global.speedGhost = 0.6
