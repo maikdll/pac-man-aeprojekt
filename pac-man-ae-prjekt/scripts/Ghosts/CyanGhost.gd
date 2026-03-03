@@ -7,6 +7,8 @@ enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
 
+var isReady = false
+
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
 var current_scatter_target: Vector2 = Vector2.ZERO
@@ -32,6 +34,7 @@ func _ready():
 	
 	start_wave(Mode.SCATTER, 11.0)
 	update_path()
+	isReady = true
 
 func pick_new_scatter_target():
 	var current_dir = Vector2.ZERO
@@ -57,7 +60,8 @@ func pick_new_scatter_target():
 
 func start_wave(mode: Mode, duration: float):
 	current_mode = mode
-	wave_timer.start(duration)
+	if isReady:
+		wave_timer.start(duration)
 
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
