@@ -31,7 +31,7 @@ func setup_grid():
 
 	_add_walls_from_layer(tile_map1)
 	_add_walls_from_layer(tile_map2)
-	_add_walls_from_layer(tile_map3)
+	#_add_walls_from_layer(tile_map3) 
 
 func _add_walls_from_layer(layer: TileMapLayer):
 	var cells = layer.get_used_cells()
@@ -65,6 +65,9 @@ func spawn_points():
 			if astar_grid.is_point_solid(cell):
 				continue
 				
+			if tile_map3.get_cell_source_id(cell) != -1:  # Invisible Wand shouldn't be with points
+				continue
+				
 			var touches_wall = false
 			
 			for dx in [-1, 0, 1]:
@@ -72,9 +75,12 @@ func spawn_points():
 					if dx == 0 and dy == 0:
 						continue
 						
-					if astar_grid.is_point_solid(cell + Vector2i(dx, dy)):
-						touches_wall = true
-						break
+					var neighbor_cell = cell + Vector2i(dx, dy)
+					if astar_grid.is_in_boundsv(neighbor_cell):
+						
+						if astar_grid.is_point_solid(neighbor_cell):
+							touches_wall = true
+							break
 				if touches_wall:
 					break
 					
@@ -111,9 +117,12 @@ func restrict_grid_for_ghosts():
 					if dx == 0 and dy == 0:
 						continue
 						
-					if astar_grid.is_point_solid(cell + Vector2i(dx, dy)):
-						touches_wall = true
-						break
+					var neighbor_cell = cell + Vector2i(dx, dy)
+					if astar_grid.is_in_boundsv(neighbor_cell):
+						if astar_grid.is_point_solid(neighbor_cell):
+							touches_wall = true
+							break
+							
 				if touches_wall:
 					break
 					
@@ -128,7 +137,7 @@ func checkAllPointsEaten():
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			remaining_points += 1
-	if remaining_points == 430:
+	if remaining_points == 1:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
 		Global.level += 1
