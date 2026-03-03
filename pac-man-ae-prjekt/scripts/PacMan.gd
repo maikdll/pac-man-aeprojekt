@@ -17,6 +17,7 @@ func _process(delta):
 		intermission_time_left -= delta
 		if intermission_time_left <= 0:
 			Global.isIntermissionMode = false
+			get_tree().call_group("Main", "setDifficulty")
 
 func _physics_process(_delta: float) -> void:
 	if Global.isGameStopped == false:
@@ -52,9 +53,12 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
 	if area.is_in_group("BigPoint"):
+		print("Big point eaten!")
 		$AudioIntermission.play()
 		Global.isIntermissionMode = true
+		Global.speedGhost = Global.speedGhost / 2
 		intermission_time_left = 7.0
+		get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
 		
 		
 		
