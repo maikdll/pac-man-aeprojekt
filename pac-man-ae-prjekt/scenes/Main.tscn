@@ -127,7 +127,7 @@ position = Vector2(44.999985, 436)
 scale = Vector2(0.18, 0.18)
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 instance=ExtResource("16_ft6cd")]
-position = Vector2(444, 435)
+position = Vector2(382, 139)
 scale = Vector2(0.23, 0.23)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]

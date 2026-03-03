@@ -45,6 +45,9 @@ var small_dots: Array = []
 # ─── Textures ───
 var ghost_tex := []
 var scared_tex: Texture2D
+func _on_button_button_down() -> void:
+	Global.score = 0
+	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _ready():
 	ghost_tex = [
