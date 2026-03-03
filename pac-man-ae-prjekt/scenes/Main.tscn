@@ -111,14 +111,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Fruitbar" parent="." unique_id=1322165916 instance=ExtResource("19_fruit")]
-offset_left = 952.0
-offset_top = 432.00006
-offset_right = 952.0
-offset_bottom = 432.00006
-scale = Vector2(0.2, 0.2)
+[node name="Fruitbar" parent="." unique_id=27935861 instance=ExtResource("19_fruit")]
+offset_left = 674.0
+offset_top = 476.0
+offset_right = 674.0
+offset_bottom = 476.0
+size_flags_horizontal = 4
+size_flags_vertical = 8
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
+visible = false
 
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
