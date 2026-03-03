@@ -90,6 +90,10 @@ material = SubResource("ShaderMaterial_cvmbd")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -4.0
+offset_top = -10.0
+offset_right = -4.0
+offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -131,7 +135,7 @@ position = Vector2(444, 435)
 scale = Vector2(0.23, 0.23)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]
-position = Vector2(766.00006, 358)
+position = Vector2(764, 358)
 scale = Vector2(0.15, 0.15)
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
