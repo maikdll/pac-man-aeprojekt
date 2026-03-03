@@ -132,7 +132,7 @@ func _build_ui():
 	# Highscores (left-aligned text, block centered on screen)
 	hs_label = Label.new()
 	hs_label.add_theme_font_override("font", font)
-	hs_label.add_theme_font_size_override("font_size", 11)
+	hs_label.add_theme_font_size_override("font_size", 12)
 	hs_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	hs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	hs_label.position = Vector2(380, 400)
