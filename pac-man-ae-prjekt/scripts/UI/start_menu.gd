@@ -2,11 +2,11 @@ extends Control
 
 # ─── Animation Settings ───
 const ANIM_Y := 255.0
-const CHASE_SPEED := 110.0
-const HUNT_PAC_SPEED := 170.0
-const HUNT_GHOST_SPEED := 75.0
+const CHASE_SPEED := 180.0
+const HUNT_PAC_SPEED := 260.0
+const HUNT_GHOST_SPEED := 120.0
 const GHOST_GAP := 48.0
-const PELLET_X := 100.0
+const PELLET_X := 300.0
 
 # Manual scales: each ghost texture has different size & padding
 # Target: all ~34px tall to match Pac-Man
@@ -99,11 +99,11 @@ func _build_ui():
 	add_child(sub)
 
 	# Small dots in animation row
-	for i in range(18):
+	for i in range(14):
 		var dot = ColorRect.new()
 		dot.color = Color(1.0, 0.95, 0.6)
 		dot.size = Vector2(4, 4)
-		dot.position = Vector2(60 + i * 50, ANIM_Y - 2)
+		dot.position = Vector2(90 + i * 60, ANIM_Y - 2)
 		add_child(dot)
 		small_dots.append(dot)
 
@@ -180,7 +180,7 @@ func _reset():
 	eaten_count = 0
 
 	# Start off-screen right; ghosts follow Pac-Man
-	pac_x = 1060.0
+	pac_x = 870.0
 	for i in 4:
 		gx[i] = pac_x + GHOST_GAP * (i + 1)
 		ghosts[i].visible = true
@@ -246,7 +246,7 @@ func _do_hunt(delta: float):
 			_eat_ghost(i)
 
 	# Off-screen → loop
-	if pac_x > 1100:
+	if pac_x > 870:
 		phase = Phase.WAIT
 		get_tree().create_timer(1.5).timeout.connect(_reset)
 
