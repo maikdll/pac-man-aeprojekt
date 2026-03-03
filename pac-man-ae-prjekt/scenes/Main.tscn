@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
+[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
@@ -90,10 +90,6 @@ material = SubResource("ShaderMaterial_cvmbd")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -10.0
-offset_right = -4.0
-offset_bottom = -10.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -164,3 +160,21 @@ position = Vector2(976, 504)
 
 [node name="LeftSpawnPoint" type="Marker2D" parent="Portal" unique_id=1142789181]
 position = Vector2(-16, 504)
+
+[node name="Portal2" type="Node2D" parent="." unique_id=613437485]
+
+[node name="PortalLeft" parent="Portal2" unique_id=1552620073 node_paths=PackedStringArray("target_spawn") instance=ExtResource("19_nfivy")]
+position = Vector2(-80.00001, 40.00003)
+scale = Vector2(4.21, 4.21)
+target_spawn = NodePath("../RightSpawnPoint")
+
+[node name="PortalRight" parent="Portal2" unique_id=2027265650 node_paths=PackedStringArray("target_spawn") instance=ExtResource("19_nfivy")]
+position = Vector2(1040.0001, 40.000015)
+scale = Vector2(4.21, 4.21)
+target_spawn = NodePath("../LeftSpawnPoint")
+
+[node name="RightSpawnPoint" type="Marker2D" parent="Portal2" unique_id=80023096]
+position = Vector2(976, 40)
+
+[node name="LeftSpawnPoint" type="Marker2D" parent="Portal2" unique_id=1684579772]
+position = Vector2(-16, 40)
