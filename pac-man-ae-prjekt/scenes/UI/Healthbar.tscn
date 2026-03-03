@@ -1,30 +1,51 @@
 [gd_scene format=3 uid="uid://c1512qgi04htt"]
 
 [ext_resource type="Script" uid="uid://bxtxgovh0rw5i" path="res://scripts/UI/healthbar.gd" id="1_2mw6h"]
-[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_flqgd"]
+[ext_resource type="Texture2D" uid="uid://wf6iq15qjbk1" path="res://assets/health_pacman.png" id="2_jl2cl"]
 [ext_resource type="AudioStream" uid="uid://qxjd8mawiaa1" path="res://assets/Sound/pacman_death.wav" id="3_0tsam"]
 
 [node name="Healthbar" type="Control" unique_id=309987989 groups=["ui"]]
 layout_mode = 3
 anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 56.0
 script = ExtResource("1_2mw6h")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1129260043]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.8627451, 0.38039216, 1, 0)
+
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=777731238]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
 
 [node name="TextureRect" type="TextureRect" parent="HBoxContainer" unique_id=1056979255]
+custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture = ExtResource("1_flqgd")
+texture = ExtResource("2_jl2cl")
+stretch_mode = 5
 
 [node name="TextureRect2" type="TextureRect" parent="HBoxContainer" unique_id=477769671]
+custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture = ExtResource("1_flqgd")
+texture = ExtResource("2_jl2cl")
+stretch_mode = 5
 
 [node name="TextureRect3" type="TextureRect" parent="HBoxContainer" unique_id=1754045592]
+custom_minimum_size = Vector2(42, 42)
 layout_mode = 2
-texture = ExtResource("1_flqgd")
+texture = ExtResource("2_jl2cl")
+stretch_mode = 5
 
 [node name="AudioDeath" type="AudioStreamPlayer" parent="." unique_id=1670390634]
 stream = ExtResource("3_0tsam")
