@@ -10,6 +10,7 @@ var speedGhostCyan = 1;
 var speedGhostPink = 1;
 var speedGhostOrange = 1;
 var speedPlayer = 1;
+var isIntermissionMode = false;
 
 const SAVE_PATH = "user://leaderboard.save"
 var leaderboard = [
