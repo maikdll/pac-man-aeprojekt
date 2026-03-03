@@ -3,6 +3,8 @@ extends CharacterBody2D
 @export var scatter_anchor: Vector2 = Vector2(800, 800) 
 @export var wander_radius: float = 200.0 
 
+@export var spawnpoint: Marker2D;
+
 enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
@@ -18,6 +20,7 @@ var current_scatter_target: Vector2 = Vector2.ZERO
 @onready var blinky = get_tree().get_first_node_in_group("RedGhost")
 
 func _ready():
+	global_position = spawnpoint.global_position
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
 	
@@ -134,3 +137,7 @@ func _process(delta):
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
+
+func get_eaten():
+	global_position = spawnpoint.global_position
+	current_path.clear()

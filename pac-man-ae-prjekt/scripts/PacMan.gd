@@ -68,7 +68,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("Ghost"):
 		return
 	
-	print(Global.isIntermissionMode)
 	if Global.isIntermissionMode == false:
 		isDying = true
 		Global.health -= 1
@@ -77,3 +76,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		await get_tree().create_timer(1.0).timeout
 		isDying = false
 	
+	elif body.is_in_group("RedGhost"):
+		get_tree().call_group("RedGhost", "get_eaten")
+	elif body.is_in_group("PinkGhost"):
+		get_tree().call_group("PinkGhost", "get_eaten")
+	elif body.is_in_group("CyanGhost"):
+		get_tree().call_group("CyanGhost", "get_eaten")
+	elif body.is_in_group("OrangeGhost"):
+		get_tree().call_group("OrangeGhost", "get_eaten")

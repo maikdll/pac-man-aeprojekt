@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
+[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
@@ -122,21 +122,37 @@ scale = Vector2(0.2, 0.2)
 
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
-[node name="PinkGhost" parent="Ghosts" unique_id=1817535284 instance=ExtResource("17_ft6cd")]
-position = Vector2(44.999985, 436)
+[node name="PinkGhost" parent="Ghosts" unique_id=1817535284 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_ft6cd")]
+position = Vector2(510, 87)
 scale = Vector2(0.18, 0.18)
+spawnpoint = NodePath("../SpawnpointPink")
 
-[node name="RedGhost" parent="Ghosts" unique_id=1182016807 instance=ExtResource("16_ft6cd")]
-position = Vector2(382, 139)
+[node name="RedGhost" parent="Ghosts" unique_id=1182016807 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("16_ft6cd")]
+position = Vector2(479, 145)
 scale = Vector2(0.23, 0.23)
+spawnpoint = NodePath("../SpawnpointRed")
 
-[node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]
-position = Vector2(764, 358)
+[node name="OrangeGhost" parent="Ghosts" unique_id=384626397 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_nfivy")]
+position = Vector2(433, 87)
 scale = Vector2(0.15, 0.15)
+spawnpoint = NodePath("../SpawnpointOrange")
 
-[node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
-position = Vector2(916, 348)
+[node name="CyanGhost" parent="Ghosts" unique_id=67143669 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("18_bb450")]
+position = Vector2(470.00003, 96)
 scale = Vector2(0.27, 0.27)
+spawnpoint = NodePath("../SpawnpointCyan")
+
+[node name="SpawnpointRed" type="Marker2D" parent="Ghosts" unique_id=299624305]
+position = Vector2(479, 146)
+
+[node name="SpawnpointPink" type="Marker2D" parent="Ghosts" unique_id=1520132786]
+position = Vector2(470, 85)
+
+[node name="SpawnpointOrange" type="Marker2D" parent="Ghosts" unique_id=2074870821]
+position = Vector2(433, 86)
+
+[node name="SpawnpointCyan" type="Marker2D" parent="Ghosts" unique_id=878397398]
+position = Vector2(513, 84)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
 position = Vector2(-0.99999994, 0.99999994)
