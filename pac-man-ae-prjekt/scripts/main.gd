@@ -31,7 +31,7 @@ func setup_grid():
 
 	_add_walls_from_layer(tile_map1)
 	_add_walls_from_layer(tile_map2)
-	_add_walls_from_layer(tile_map3)
+	#_add_walls_from_layer(tile_map3) 
 
 func _add_walls_from_layer(layer: TileMapLayer):
 	var cells = layer.get_used_cells()
@@ -63,6 +63,9 @@ func spawn_points():
 			var cell = Vector2i(x, y)
 			
 			if astar_grid.is_point_solid(cell):
+				continue
+				
+			if tile_map3.get_cell_source_id(cell) != -1:  # Invisible Wand shouldn't be with points
 				continue
 				
 			var touches_wall = false

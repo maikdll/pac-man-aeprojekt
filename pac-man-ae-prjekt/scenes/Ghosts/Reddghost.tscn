@@ -11,6 +11,6 @@ script = ExtResource("1_njrqx")
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]
 texture = ExtResource("2_njrqx")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost", "RedGhost"]]
 scale = Vector2(10, 10)
 shape = SubResource("CircleShape2D_a73n8")

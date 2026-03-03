@@ -5,7 +5,7 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
 
-[node name="PinkGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost"]]
+[node name="PinkGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost", "PinkGhost"]]
 script = ExtResource("1_a73n8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]

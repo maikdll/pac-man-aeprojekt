@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dowy80qkn1cvm"]
+[gd_scene format=3 uid="uid://bnkraxqow0grd"]
 
 [ext_resource type="Texture2D" uid="uid://dhcpwihoy37ve" path="res://assets/ghost/redGhost.png" id="2_bbnym"]
 [ext_resource type="Script" uid="uid://bw1iali2cdimk" path="res://scripts/Ghosts/RedGhost.gd" id="2_cm0wj"]
@@ -11,6 +11,6 @@
 texture = ExtResource("2_bbnym")
 script = ExtResource("2_cm0wj")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=392682182]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=392682182 groups=["RedGhost"]]
 scale = Vector2(9.58, 9.58)
 shape = SubResource("CircleShape2D_yq2ln")
