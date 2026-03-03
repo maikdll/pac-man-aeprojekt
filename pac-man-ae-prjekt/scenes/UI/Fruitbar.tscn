@@ -38,6 +38,8 @@ region = Rect2(112, 0, 16, 16)
 [node name="Fruitbar" type="Control" unique_id=309987989 groups=["ui"]]
 layout_mode = 3
 anchors_preset = 0
+offset_right = 128.0
+offset_bottom = 56.0
 script = ExtResource("1_vfvgn")
 cherry = SubResource("AtlasTexture_biw7l")
 strawberry = SubResource("AtlasTexture_in6ie")
@@ -48,6 +50,20 @@ galaxian = SubResource("AtlasTexture_naib4")
 bell = SubResource("AtlasTexture_hvvoy")
 key = SubResource("AtlasTexture_sg57j")
 
+[node name="ColorRect" type="ColorRect" parent="." unique_id=229666446]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.8627451, 0.38039216, 1, 0)
+
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=777731238]
-layout_mode = 0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 alignment = 1

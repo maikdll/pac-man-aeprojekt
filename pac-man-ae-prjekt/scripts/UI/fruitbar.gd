@@ -52,6 +52,6 @@ func add_icon(texture):
 	var new_icon = TextureRect.new()
 	new_icon.texture = texture
 	new_icon.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	new_icon.custom_minimum_size = Vector2(44, 44)
+	new_icon.custom_minimum_size = Vector2(42, 42)
 	new_icon.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	container.add_child(new_icon)

@@ -111,13 +111,11 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Fruitbar" parent="." unique_id=27935861 instance=ExtResource("19_fruit")]
-offset_left = 674.0
-offset_top = 476.0
-offset_right = 674.0
-offset_bottom = 476.0
-size_flags_horizontal = 4
-size_flags_vertical = 8
+[node name="Fruitbar" parent="." unique_id=2104236344 instance=ExtResource("19_fruit")]
+offset_left = 680.0
+offset_top = 472.0
+offset_right = 808.0
+offset_bottom = 528.0
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
 visible = false
