@@ -128,7 +128,7 @@ func checkAllPointsEaten():
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			remaining_points += 1
-	if remaining_points == 420:
+	if remaining_points == 1:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
 		Global.level += 1
@@ -169,4 +169,4 @@ func setDifficulty():
 		Global.speedGhost = 2
 	else:
 		Global.speedPlayer = 1.8
-		Global.speedGhost = 2
+		Global.speedGhost = 2 + (Global.level -10) / 10.0

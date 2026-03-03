@@ -4,12 +4,19 @@ var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false
 var isDying = false
+var intermission_time_left = 0.0
 
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
 func ready():
 	get_tree().call_group("Main", "setDifficulty")
 	global_position = spawn_position
+
+func _process(delta):
+	if intermission_time_left > 0:
+		intermission_time_left -= delta
+		if intermission_time_left <= 0:
+			Global.isIntermissionMode = false
 
 func _physics_process(_delta: float) -> void:
 	if Global.isGameStopped == false:
@@ -46,7 +53,8 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		$AudioEatingFruit.play()
 	if area.is_in_group("BigPoint"):
 		$AudioIntermission.play()
-		
+		Global.isIntermissionMode = true
+		intermission_time_left = 7.0
 		
 		
 		
@@ -56,10 +64,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("Ghost"):
 		return
 	
-	isDying = true
-	Global.health -= 1
-	get_tree().call_group("ui", "update_healthbar", Global.health)
-	global_position = spawn_position
-	await get_tree().create_timer(1.0).timeout
-	isDying = false
+	print(Global.isIntermissionMode)
+	if Global.isIntermissionMode == false:
+		isDying = true
+		Global.health -= 1
+		get_tree().call_group("ui", "update_healthbar", Global.health)
+		global_position = spawn_position
+		await get_tree().create_timer(1.0).timeout
+		isDying = false
 	
