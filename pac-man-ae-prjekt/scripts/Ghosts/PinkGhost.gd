@@ -12,6 +12,7 @@ var current_mode = Mode.SCATTER
 var wave_timer: Timer
 var current_scatter_target: Vector2 = Vector2.ZERO
 
+var is_eaten = false;
 var isReady = false;
 
 var current_path: Array[Vector2i] = []
@@ -19,14 +20,6 @@ var target_position: Vector2
 
 @onready var main_node = get_tree().root.get_node("Main")
 @onready var pacman = get_tree().get_first_node_in_group("PacMan")
-@onready var eyes: Sprite2D = $Eyes
-
-var eye_textures := {
-	"right": preload("res://assets/ghost/Ghost_Eyes_Right.png"),
-	"left": preload("res://assets/ghost/Ghost_Eyes_Left.png"),
-	"up": preload("res://assets/ghost/Ghost_Eyes_Up.png"),
-	"down": preload("res://assets/ghost/Ghost_Eyes_Down.png"),
-}
 
 func _ready():
 	global_position = spawnpoint.global_position
@@ -133,23 +126,19 @@ func set_next_target():
 
 func _process(delta):
 	if current_path.is_empty(): return
-
-	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostPink * Global.speedGhost * delta)
 	
+	if Global.isGameStopped == false:
+		# 1. Der Geist bewegt sich
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		
+		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
+		get_direction()
+	
+	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
-
-	_update_eyes()
-
-func _update_eyes():
-	var dir = (target_position - global_position).normalized()
-	if abs(dir.x) >= abs(dir.y):
-		eyes.texture = eye_textures["right"] if dir.x > 0 else eye_textures["left"]
-	else:
-		eyes.texture = eye_textures["down"] if dir.y > 0 else eye_textures["up"]
 
 func get_eaten():
 	global_position = spawnpoint.global_position
@@ -157,13 +146,19 @@ func get_eaten():
 
 func get_direction():
 	var direction = target_position - global_position
+	
+	# Kleine Sicherung: Wenn er schon quasi exakt auf dem Ziel steht, 
+	# soll er sich nicht mehr drehen (verhindert wildes Flackern)
+	if direction.length() < 0.5:
+		return
+		
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
-			print("Rechts")
+			$AnimatedSprite2D.play("Rechts")
 		else:
-			print("Links")
+			$AnimatedSprite2D.play("Links")
 	else:
 		if direction.y > 0:
-			print("Unten")
+			$AnimatedSprite2D.play("Unten")
 		else:
-			print("Oben")
+			$AnimatedSprite2D.play("Oben")

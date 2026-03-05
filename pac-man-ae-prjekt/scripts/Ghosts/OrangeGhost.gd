@@ -12,6 +12,7 @@ enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
 
+var is_eaten = false;
 var isReady = false;
 
 var current_path: Array[Vector2i] = []
@@ -22,14 +23,6 @@ var is_panicking: bool = false
 
 @onready var main_node = get_tree().root.get_node("Main")
 @onready var pacman = get_tree().get_first_node_in_group("PacMan")
-@onready var eyes: Sprite2D = $Eyes
-
-var eye_textures := {
-	"right": preload("res://assets/ghost/Ghost_Eyes_Right.png"),
-	"left": preload("res://assets/ghost/Ghost_Eyes_Left.png"),
-	"up": preload("res://assets/ghost/Ghost_Eyes_Up.png"),
-	"down": preload("res://assets/ghost/Ghost_Eyes_Down.png"),
-}
 
 func _ready():
 	global_position = spawnpoint.global_position
@@ -140,18 +133,35 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostOrange * Global.speedGhost * delta)
+		# 1. Der Geist bewegt sich
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		
+		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
+		get_direction()
 	
+	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
 
-	_update_eyes()
+func get_eaten():
+	global_position = spawnpoint.global_position
+	current_path.clear()
 
-func _update_eyes():
-	var dir = (target_position - global_position).normalized()
-	if abs(dir.x) >= abs(dir.y):
-		eyes.texture = eye_textures["right"] if dir.x > 0 else eye_textures["left"]
+func get_direction():
+	var direction = target_position - global_position
+
+	if direction.length() < 0.5:
+		return
+
+	if abs(direction.x) > abs(direction.y):
+		if direction.x > 0:
+			$AnimatedSprite2D.play("Rechts")
+		else:
+			$AnimatedSprite2D.play("Links")
 	else:
-		eyes.texture = eye_textures["down"] if dir.y > 0 else eye_textures["up"]
+		if direction.y > 0:
+			$AnimatedSprite2D.play("Unten")
+		else:
+			$AnimatedSprite2D.play("Oben")
