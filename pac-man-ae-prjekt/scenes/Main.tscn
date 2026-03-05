@@ -118,36 +118,32 @@ visible = false
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_ft6cd")]
-position = Vector2(510, 87)
-scale = Vector2(0.18, 0.18)
+position = Vector2(520, 88)
 spawnpoint = NodePath("../SpawnpointPink")
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("16_ft6cd")]
 position = Vector2(479, 145)
-scale = Vector2(0.23, 0.23)
 spawnpoint = NodePath("../SpawnpointRed")
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_nfivy")]
-position = Vector2(433, 87)
-scale = Vector2(0.15, 0.15)
+position = Vector2(439, 88)
 spawnpoint = NodePath("../SpawnpointOrange")
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("18_bb450")]
-position = Vector2(470.00003, 97)
-scale = Vector2(0.27, 0.27)
+position = Vector2(479, 88)
 spawnpoint = NodePath("../SpawnpointCyan")
 
 [node name="SpawnpointRed" type="Marker2D" parent="Ghosts" unique_id=299624305]
 position = Vector2(479, 146)
 
 [node name="SpawnpointPink" type="Marker2D" parent="Ghosts" unique_id=1520132786]
-position = Vector2(470, 85)
+position = Vector2(479, 88)
 
 [node name="SpawnpointOrange" type="Marker2D" parent="Ghosts" unique_id=2074870821]
-position = Vector2(433, 86)
+position = Vector2(439, 88)
 
 [node name="SpawnpointCyan" type="Marker2D" parent="Ghosts" unique_id=878397398]
-position = Vector2(513, 84)
+position = Vector2(520, 88)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
 position = Vector2(-0.99999994, 0.99999994)
