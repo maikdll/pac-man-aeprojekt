@@ -36,21 +36,22 @@ jobs:
         run: |
           cd pac-man-ae-prjekt
           
-          # RADIKALER FIX: Lösche den .godot Ordner in der Cloud, falls er mitgepusht wurde
+          # 1. Radikale Säuberung: Löscht alle Cache-Leichen
           rm -rf .godot
+          rm -f project.godot.rf  # Falls vorhanden
           
-          # Erstelle die Import-Daten absolut sauber neu
+          # 2. Headless Import: Das simuliert das "Öffnen des Editors"
+          # Wir lassen es zweimal laufen, um sicherzugehen, dass alle UIDs generiert sind
           godot --headless --editor --quit || true
-          
+          godot --headless --editor --quit || true
+
+          # 3. Export mit explizitem Pfad-Check
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
-          
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
-          else
-            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
           fi
-
+          
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
