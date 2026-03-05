@@ -35,21 +35,18 @@ jobs:
       - name: Run-Export
         run: |
           cd pac-man-ae-prjekt
-          
-          # 1. Radikale Säuberung: Löscht alle Cache-Leichen
+          # Radikal alles löschen
           rm -rf .godot
-          rm -f project.godot.rf  # Falls vorhanden
           
-          # 2. Headless Import: Das simuliert das "Öffnen des Editors"
-          # Wir lassen es zweimal laufen, um sicherzugehen, dass alle UIDs generiert sind
+          # 1. Schritt: Importieren aller Assets (Szenen, Bilder, Scripte)
           godot --headless --editor --quit || true
+          
+          # 2. Schritt: Nochmal zur Sicherheit (Godot braucht manchmal zwei Anläufe für Szenen-Referenzen)
           godot --headless --editor --quit || true
 
-          # 3. Export mit explizitem Pfad-Check
+          # 3. Schritt: Export
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
-          elif [ "${{ matrix.platform }}" = "macOS" ]; then
-            godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
           fi
           
       - name: Upload
