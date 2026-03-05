@@ -10,34 +10,41 @@ jobs:
   export:
     name: Export für ${{ matrix.platform }}
     runs-on: ubuntu-latest
-
+    
     container:
-      image: barichello/godot-ci:4.6.1 
+      image: barichello/godot-ci:4.6.1 # Deine perfekt angepasste Version!
       
     strategy:
       matrix:
-        # Diese Namen MÜSSEN exakt mit den Namen eurer Presets in Godot übereinstimmen!
-        platform: [Windows Desktop, macOS, Linux]
+        # Jetzt mit sauberen Namen ohne Leerzeichen und Schrägstriche
+        platform: [Windows, macOS, Linux]
 
     steps:
       - name: 1. Code auschecken
         uses: actions/checkout@v4
 
-      - name: 2. Export-Ordner vorbereiten
+      - name: 2. Fehlende Linux-Pakete installieren (Schriftarten-Fix)
+        run: apt-get update && apt-get install -y fontconfig
+
+      - name: 3. Export-Ordner vorbereiten
         run: mkdir -p build/${{ matrix.platform }}
 
-      - name: 3. Godot Export ausführen
-        # Godot läuft hier unsichtbar im Hintergrund (--headless) und exportiert das Spiel
+      - name: 4. Godot Export ausführen
         run: |
+          # WICHTIG: Falls eure project.godot nicht direkt im Hauptverzeichnis des GitHub-Repos liegt,
+          # entferne das '#' vor der nächsten Zeile und trage den Ordnernamen deines Spiels ein:
+          # cd Name_Eures_Ordners
+
+          # Der Befehl '--path .' sagt Godot genau, wo es suchen soll
           if [ "${{ matrix.platform }}" = "macOS" ]; then
-            godot --headless --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.zip
+            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.zip
           elif [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.exe
+            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.exe
           else
-            godot --headless --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.x86_64
+            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.x86_64
           fi
 
-      - name: 4. Fertiges Spiel als Download bereitstellen
+      - name: 5. Fertiges Spiel als Download bereitstellen
         uses: actions/upload-artifact@v4
         with:
           name: GodotGame-${{ matrix.platform }}

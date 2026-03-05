@@ -5,6 +5,8 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_m2tgh"]
 
 [node name="PortalLeft" type="Area2D" unique_id=159004651]
+collision_layer = 15
+collision_mask = 15
 script = ExtResource("1_y7at4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1494311076]

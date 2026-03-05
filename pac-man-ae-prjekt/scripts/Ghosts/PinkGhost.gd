@@ -12,6 +12,7 @@ var current_mode = Mode.SCATTER
 var wave_timer: Timer
 var current_scatter_target: Vector2 = Vector2.ZERO
 
+var is_eaten = false;
 var isReady = false;
 
 var current_path: Array[Vector2i] = []
@@ -125,14 +126,19 @@ func set_next_target():
 
 func _process(delta):
 	if current_path.is_empty(): return
-
-	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostPink * Global.speedGhost * delta)
 	
+	if Global.isGameStopped == false:
+		# 1. Der Geist bewegt sich
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		
+		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
+		get_direction()
+	
+	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
-	if not current_path.is_empty():
-		set_next_target()
+		if not current_path.is_empty():
+			set_next_target()
 		
 func get_eaten():
 	global_position = spawnpoint.global_position
@@ -140,13 +146,19 @@ func get_eaten():
 	
 func get_direction():
 	var direction = target_position - global_position
+	
+	# Kleine Sicherung: Wenn er schon quasi exakt auf dem Ziel steht, 
+	# soll er sich nicht mehr drehen (verhindert wildes Flackern)
+	if direction.length() < 0.5:
+		return
+		
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
-			print("Rechts")
+			$AnimatedSprite2D.play("Rechts")
 		else:
-			print("Links")
+			$AnimatedSprite2D.play("Links")
 	else:
 		if direction.y > 0:
-			print("Unten")
+			$AnimatedSprite2D.play("Unten")
 		else:
-			print("Oben")
+			$AnimatedSprite2D.play("Oben")

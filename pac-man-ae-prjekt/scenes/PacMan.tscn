@@ -44,6 +44,7 @@ radius = 1.49737
 
 [node name="PacMan" type="CharacterBody2D" unique_id=1073800312 groups=["PacMan"]]
 scale = Vector2(0.3, 0.3)
+collision_layer = 2
 script = ExtResource("1_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=880179392]
@@ -59,6 +60,8 @@ autoplay = "PacMan_Kauen"
 
 [node name="Area2D" type="Area2D" parent="." unique_id=945533948]
 scale = Vector2(1.1, 1.1)
+collision_layer = 0
+collision_mask = 12
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1893822101]
 scale = Vector2(13.5, 13.5)
