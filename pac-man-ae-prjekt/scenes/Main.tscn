@@ -124,6 +124,7 @@ spawnpoint = NodePath("../SpawnpointPink")
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("16_ft6cd")]
 position = Vector2(479, 145)
 spawnpoint = NodePath("../SpawnpointRed")
+chase_distance = 650.0
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_nfivy")]
 position = Vector2(439, 88)

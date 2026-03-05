@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var wander_radius: float = 200.0 
 @export var spawnpoint: Marker2D;
+@export var chase_distance: float = 250.0
 
 enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
@@ -63,9 +64,10 @@ func start_wave(mode: Mode, duration: float):
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
 		print("Blinky: Angriff")
-		if(Global.remainingPoints < 50):
+		if(Global.remainingPoints < 100):
 			start_wave(Mode.CHASE, 200.0) 
 		else:
+			print("BLINKY SUPER ANGRIFF!")
 			start_wave(Mode.CHASE, 20.0) 
 			Global.speedGhostRed = Global.speedGhostRed + 0.4
 	else:
@@ -82,7 +84,10 @@ func update_path():
 	
 	var current_target = Vector2.ZERO
 	
-	if current_mode == Mode.CHASE:
+	var distance_to_pacman = global_position.distance_to(pacman.global_position)
+	var is_pacman_near = distance_to_pacman <= chase_distance
+	
+	if current_mode == Mode.CHASE and is_pacman_near:
 		current_target = pacman.global_position
 	else:
 		if global_position.distance_to(current_scatter_target) < 32.0:
@@ -115,13 +120,10 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		# 1. Der Geist bewegt sich
 		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
 		
-		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
 		get_direction()
 	
-	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
@@ -132,22 +134,15 @@ func get_eaten():
 	current_path.clear()
 
 func get_direction():
-	# --- NEU: ANGST-MODUS (Intermission) ---
-	# Wenn Intermission aktiv ist UND der Geist noch nicht gegessen wurde:
 	if Global.isIntermissionMode and not is_eaten:
 		
-		# Der Geist schaut bei Pac-Man auf den dynamischen Blink-Timer!
 		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
 			$AnimatedSprite2D.play("ScaredBlink")
 		else:
-			# Ansonsten normales, blaues Angst-Gesicht
 			$AnimatedSprite2D.play("Scared")
 			
-		return # WICHTIG: Wir brechen die Funktion hier mit 'return' ab! 
-			   # Dadurch werden die Richtungen (Unten/Oben) komplett ignoriert.
-	# ---------------------------------------
-
-	# --- Normale Bewegung ---
+		return 
+			
 	var direction = target_position - global_position
 	
 	if direction.length() < 0.5:

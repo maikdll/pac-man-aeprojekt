@@ -45,7 +45,7 @@ radius = 1.49737
 
 [node name="PacMan" type="CharacterBody2D" unique_id=1073800312 groups=["PacMan"]]
 scale = Vector2(0.3, 0.3)
-collision_layer = 2
+collision_layer = 10
 script = ExtResource("1_g2els")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=880179392]
