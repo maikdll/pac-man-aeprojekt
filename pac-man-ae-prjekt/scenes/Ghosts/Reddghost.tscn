@@ -20,11 +20,6 @@ texture = ExtResource("3_eyes")
 texture_filter = 0
 z_index = 1
 
-<<<<<<< HEAD
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
-scale = Vector2(0.9, 0.9)
-=======
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost", "RedGhost"]]
-scale = Vector2(10, 10)
->>>>>>> main
+scale = Vector2(0.9, 0.9)
 shape = SubResource("CircleShape2D_a73n8")

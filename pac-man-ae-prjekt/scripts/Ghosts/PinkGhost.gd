@@ -139,7 +139,6 @@ func _process(delta):
 	
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
-<<<<<<< HEAD
 		if not current_path.is_empty():
 			set_next_target()
 
@@ -151,14 +150,11 @@ func _update_eyes():
 		eyes.texture = eye_textures["right"] if dir.x > 0 else eye_textures["left"]
 	else:
 		eyes.texture = eye_textures["down"] if dir.y > 0 else eye_textures["up"]
-=======
-	if not current_path.is_empty():
-		set_next_target()
-		
+
 func get_eaten():
 	global_position = spawnpoint.global_position
 	current_path.clear()
-	
+
 func get_direction():
 	var direction = target_position - global_position
 	if abs(direction.x) > abs(direction.y):
@@ -171,4 +167,3 @@ func get_direction():
 			print("Unten")
 		else:
 			print("Oben")
->>>>>>> main
