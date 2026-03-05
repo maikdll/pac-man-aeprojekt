@@ -12,6 +12,7 @@ var current_mode = Mode.SCATTER
 var wave_timer: Timer
 var current_scatter_target: Vector2 = Vector2.ZERO
 
+var is_eaten = false;
 var isReady = false;
 
 var current_path: Array[Vector2i] = []
