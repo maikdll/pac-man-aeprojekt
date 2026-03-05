@@ -16,7 +16,7 @@ config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [autoload]
 
-Global="*uid://708xk1jl38ed"
+Global="*res://scripts/Global.gd"
 
 [display]
 
