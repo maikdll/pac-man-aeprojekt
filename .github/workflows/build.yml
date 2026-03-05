@@ -36,14 +36,15 @@ jobs:
         run: |
           cd pac-man-ae-prjekt
           
-          # 1. Zwinge Godot, die Importe komplett neu zu generieren
+          # RADIKALER FIX: Lösche den .godot Ordner in der Cloud, falls er mitgepusht wurde
+          rm -rf .godot
+          
+          # Erstelle die Import-Daten absolut sauber neu
           godot --headless --editor --quit || true
           
-          # 2. Export-Befehle
-          # Wir nutzen hier keine Pfad-Angabe im Preset, sondern übergeben sie direkt
           if [ "${{ matrix.platform }}" = "Windows" ]; then
-            # Wir nennen die Datei direkt 'game.exe'
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+          
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
           else
