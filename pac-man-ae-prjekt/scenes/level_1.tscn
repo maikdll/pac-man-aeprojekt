@@ -456,7 +456,7 @@ texture = ExtResource("1_014kd")
 7:4/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_rus8k"]
-physics_layer_0/collision_layer = 2
+physics_layer_0/collision_layer = 1
 physics_layer_1/collision_layer = 1
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "DickeWand"
