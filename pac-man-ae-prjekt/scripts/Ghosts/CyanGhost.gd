@@ -147,7 +147,7 @@ func _process(delta):
 func get_eaten():
 	global_position = spawnpoint.global_position
 	current_path.clear()
-	
+
 func get_direction():
 	var direction = target_position - global_position
 	

@@ -148,15 +148,13 @@ func _process(delta):
 func get_eaten():
 	global_position = spawnpoint.global_position
 	current_path.clear()
-	
+
 func get_direction():
 	var direction = target_position - global_position
-	
-	# Kleine Sicherung: Wenn er schon quasi exakt auf dem Ziel steht, 
-	# soll er sich nicht mehr drehen (verhindert wildes Flackern)
+
 	if direction.length() < 0.5:
 		return
-		
+
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
 			$AnimatedSprite2D.play("Rechts")
