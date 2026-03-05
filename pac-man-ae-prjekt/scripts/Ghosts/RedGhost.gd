@@ -122,11 +122,11 @@ func _process(delta):
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
-			
+
 func get_eaten():
 	global_position = spawnpoint.global_position
 	current_path.clear()
-	
+
 func get_direction():
 	var direction = target_position - global_position
 	
@@ -145,4 +145,3 @@ func get_direction():
 			$AnimatedSprite2D.play("Unten")
 		else:
 			$AnimatedSprite2D.play("Oben")
-	
