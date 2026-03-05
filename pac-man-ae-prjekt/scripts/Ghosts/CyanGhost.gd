@@ -149,10 +149,24 @@ func get_eaten():
 	current_path.clear()
 
 func get_direction():
+	# --- NEU: ANGST-MODUS (Intermission) ---
+	# Wenn Intermission aktiv ist UND der Geist noch nicht gegessen wurde:
+	if Global.isIntermissionMode and not is_eaten:
+		
+		# Der Geist schaut bei Pac-Man auf den dynamischen Blink-Timer!
+		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
+			$AnimatedSprite2D.play("ScaredBlink")
+		else:
+			# Ansonsten normales, blaues Angst-Gesicht
+			$AnimatedSprite2D.play("Scared")
+			
+		return # WICHTIG: Wir brechen die Funktion hier mit 'return' ab! 
+			   # Dadurch werden die Richtungen (Unten/Oben) komplett ignoriert.
+	# ---------------------------------------
+
+	# --- ALTE LOGIK: Normale Bewegung ---
 	var direction = target_position - global_position
 	
-	# Kleine Sicherung: Wenn er schon quasi exakt auf dem Ziel steht, 
-	# soll er sich nicht mehr drehen (verhindert wildes Flackern)
 	if direction.length() < 0.5:
 		return
 		
