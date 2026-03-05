@@ -1,18 +1,100 @@
 [gd_scene format=3 uid="uid://dehad3273gagl"]
 
 [ext_resource type="Script" uid="uid://4rgf57thvfu3" path="res://scripts/Ghosts/CyanGhost.gd" id="1_oclmk"]
-[ext_resource type="Texture2D" uid="uid://dppjtcj5xame3" path="res://assets/ghost/blueGhost.png" id="2_oclmk"]
+[ext_resource type="Texture2D" uid="uid://bbujjbqpibbga" path="res://assets/Pac-Man - Miscellaneous - General Sprites.png" id="2_oclmk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oclmk"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(484, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hyw4r"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(500, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1oavj"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(532, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ng81g"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(516, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lk5n4"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(452, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tahux"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(468, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_518nu"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(548, 96, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s5dyk"]
+atlas = ExtResource("2_oclmk")
+region = Rect2(564, 96, 14, 14)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hyw4r"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oclmk")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hyw4r")
+}],
+"loop": true,
+"name": &"Links",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1oavj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ng81g")
+}],
+"loop": true,
+"name": &"Oben",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lk5n4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tahux")
+}],
+"loop": true,
+"name": &"Rechts",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_518nu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_s5dyk")
+}],
+"loop": true,
+"name": &"Unten",
+"speed": 8.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
+radius = 3.7151704
 
 [node name="CyanGhost" type="CharacterBody2D" unique_id=1182016807 groups=["CyanGhost", "Ghost"]]
 collision_layer = 4
 script = ExtResource("1_oclmk")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]
-texture = ExtResource("2_oclmk")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=981668526]
+scale = Vector2(2.5, 2.5)
+sprite_frames = SubResource("SpriteFrames_hyw4r")
+animation = &"Links"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
-position = Vector2(0, -32.39)
+position = Vector2(0, 2)
 scale = Vector2(6.46, 6.46)
 shape = SubResource("CircleShape2D_a73n8")

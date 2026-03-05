@@ -111,8 +111,13 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostRed * Global.speedGhost * delta)
-
+		# 1. Der Geist bewegt sich
+		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		
+		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
+		get_direction()
+	
+	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
@@ -125,14 +130,20 @@ func get_eaten():
 	
 func get_direction():
 	var direction = target_position - global_position
+	
+	# Kleine Sicherung: Wenn er schon quasi exakt auf dem Ziel steht, 
+	# soll er sich nicht mehr drehen (verhindert wildes Flackern)
+	if direction.length() < 0.5:
+		return
+		
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
-			print("Rechts")
+			$AnimatedSprite2D.play("Rechts")
 		else:
-			print("Links")
+			$AnimatedSprite2D.play("Links")
 	else:
 		if direction.y > 0:
-			print("Unten")
+			$AnimatedSprite2D.play("Unten")
 		else:
-			print("Oben")
+			$AnimatedSprite2D.play("Oben")
 	
