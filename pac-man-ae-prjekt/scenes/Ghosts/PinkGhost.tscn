@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cb63edwxi4rqq"]
 
 [ext_resource type="Script" uid="uid://dsiknc1me8wjw" path="res://scripts/Ghosts/PinkGhost.gd" id="1_a73n8"]
-[ext_resource type="Texture2D" uid="uid://cdif8qhfn8t7t" path="res://assets/ghost/pinkGhost.png" id="2_078ar"]
+[ext_resource type="Texture2D" path="res://assets/ghost/Ghost_Body_01.png" id="2_body"]
+[ext_resource type="Texture2D" path="res://assets/ghost/Ghost_Eyes_Right.png" id="3_eyes"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
 
@@ -9,8 +10,16 @@
 script = ExtResource("1_a73n8")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=120418888]
-texture = ExtResource("2_078ar")
+modulate = Color(1, 0.72, 0.84, 1)
+texture = ExtResource("2_body")
+texture_filter = 0
+
+[node name="Eyes" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("3_eyes")
+texture_filter = 0
+z_index = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
-scale = Vector2(11.76, 11.76)
+scale = Vector2(0.9, 0.9)
 shape = SubResource("CircleShape2D_a73n8")

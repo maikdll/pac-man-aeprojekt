@@ -15,6 +15,14 @@ var target_position: Vector2
 
 @onready var main_node = get_tree().root.get_node("Main")
 @onready var pacman = get_tree().get_first_node_in_group("PacMan")
+@onready var eyes: Sprite2D = $Eyes
+
+var eye_textures := {
+	"right": preload("res://assets/ghost/Ghost_Eyes_Right.png"),
+	"left": preload("res://assets/ghost/Ghost_Eyes_Left.png"),
+	"up": preload("res://assets/ghost/Ghost_Eyes_Up.png"),
+	"down": preload("res://assets/ghost/Ghost_Eyes_Down.png"),
+}
 
 func _ready():
 	await get_tree().create_timer(0.1).timeout
@@ -123,5 +131,14 @@ func _process(delta):
 	
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
-	if not current_path.is_empty():
-		set_next_target()
+		if not current_path.is_empty():
+			set_next_target()
+
+	_update_eyes()
+
+func _update_eyes():
+	var dir = (target_position - global_position).normalized()
+	if abs(dir.x) >= abs(dir.y):
+		eyes.texture = eye_textures["right"] if dir.x > 0 else eye_textures["left"]
+	else:
+		eyes.texture = eye_textures["down"] if dir.y > 0 else eye_textures["up"]

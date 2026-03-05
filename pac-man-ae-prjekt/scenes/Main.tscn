@@ -124,19 +124,19 @@ scale = Vector2(0.2, 0.2)
 
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 instance=ExtResource("17_ft6cd")]
 position = Vector2(44.999985, 436)
-scale = Vector2(0.18, 0.18)
+scale = Vector2(2.5, 2.5)
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 instance=ExtResource("16_ft6cd")]
 position = Vector2(444, 435)
-scale = Vector2(0.23, 0.23)
+scale = Vector2(2.5, 2.5)
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 instance=ExtResource("17_nfivy")]
 position = Vector2(766.00006, 358)
-scale = Vector2(0.15, 0.15)
+scale = Vector2(2.5, 2.5)
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
 position = Vector2(916, 348)
-scale = Vector2(0.27, 0.27)
+scale = Vector2(2.5, 2.5)
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
 position = Vector2(-0.99999994, 0.99999994)
