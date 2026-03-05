@@ -3,49 +3,35 @@ name: Build Godot Game (Cross-Platform)
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
   export:
     name: Export für ${{ matrix.platform }}
     runs-on: ubuntu-latest
     
-    container:
-      image: barichello/godot-ci:4.6.1 # Deine perfekt angepasste Version!
-      
     strategy:
+      fail-fast: false
       matrix:
-        # Jetzt mit sauberen Namen ohne Leerzeichen und Schrägstriche
-        platform: [Windows, macOS, Linux]
+        platform: [Windows, Linux, macOS]
 
     steps:
       - name: 1. Code auschecken
         uses: actions/checkout@v4
 
-      - name: 2. Fehlende Linux-Pakete installieren (Schriftarten-Fix)
-        run: apt-get update && apt-get install -y fontconfig
+      - name: 2. Godot Export (Automated Tool)
+        # Dieses Tool übernimmt das Template-Handling und den Headless-Export
+        uses: firebelley/godot-export@v5.2.1
+        with:
+          godot_executable_download_url: https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_linux_headless.64.zip
+          godot_export_templates_download_url: https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+          relative_project_path: ./pac-man-ae-prjekt
+          archive_export_output: true
+          # Diese Namen MÜSSEN exakt so in deiner export_presets.cfg stehen:
+          export_preset_name: ${{ matrix.platform }}
 
-      - name: 3. Export-Ordner vorbereiten
-        run: mkdir -p build/${{ matrix.platform }}
-
-      - name: 4. Godot Export ausführen
-        run: |
-          # WICHTIG: Falls eure project.godot nicht direkt im Hauptverzeichnis des GitHub-Repos liegt,
-          # entferne das '#' vor der nächsten Zeile und trage den Ordnernamen deines Spiels ein:
-          # cd Name_Eures_Ordners
-
-          # Der Befehl '--path .' sagt Godot genau, wo es suchen soll
-          if [ "${{ matrix.platform }}" = "macOS" ]; then
-            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.zip
-          elif [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.exe
-          else
-            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.x86_64
-          fi
-
-      - name: 5. Fertiges Spiel als Download bereitstellen
+      - name: 3. Artefakte hochladen
         uses: actions/upload-artifact@v4
         with:
           name: GodotGame-${{ matrix.platform }}
-          path: build/${{ matrix.platform }}/
+          # Das Tool legt die Dateien standardmäßig in 'out' ab
+          path: /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/out/${{ matrix.platform }}
