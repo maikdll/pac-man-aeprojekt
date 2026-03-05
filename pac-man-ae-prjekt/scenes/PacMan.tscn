@@ -5,6 +5,7 @@
 [ext_resource type="AudioStream" uid="uid://dtdaaqb80olry" path="res://assets/Sound/pacman_chomp.wav" id="3_8orjn"]
 [ext_resource type="AudioStream" uid="uid://0frjqed17tj8" path="res://assets/Sound/pacman_eatfruit.wav" id="5_w6g3e"]
 [ext_resource type="AudioStream" uid="uid://duucgngg4xh7t" path="res://assets/Sound/pacman_eatghost.wav" id="6_poqqj"]
+[ext_resource type="AudioStream" uid="uid://qxjd8mawiaa1" path="res://assets/Sound/pacman_death.wav" id="7_ldvso"]
 [ext_resource type="AudioStream" uid="uid://dopso212aqcl7" path="res://assets/Sound/pacman_intermission.wav" id="7_ukuct"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
@@ -78,6 +79,9 @@ stream = ExtResource("6_poqqj")
 
 [node name="AudioIntermission" type="AudioStreamPlayer" parent="." unique_id=1128220149]
 stream = ExtResource("7_ukuct")
+
+[node name="AudioDeath" type="AudioStreamPlayer" parent="." unique_id=1783420147]
+stream = ExtResource("7_ldvso")
 
 [connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
