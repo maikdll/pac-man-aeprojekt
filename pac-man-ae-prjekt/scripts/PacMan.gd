@@ -106,19 +106,19 @@ func get_intermission_times(level: int) -> Dictionary:
 	var blink_time = 0.0
 	
 	if level == 1:
-		total_time = 6.0; blink_time = 2.0
+		total_time = 8.0; blink_time = 4.0
 	elif level == 2:
-		total_time = 5.0; blink_time = 2.0
+		total_time = 7.0; blink_time = 3.5
 	elif level == 3:
-		total_time = 4.0; blink_time = 2.0
+		total_time = 6.0; blink_time = 3.0
 	elif level == 4:
-		total_time = 3.0; blink_time = 2.0
+		total_time = 5.0; blink_time = 2.5
 	elif level >= 5 and level <= 8:
 		# Extrem kurz, fast sofortiges Blinken
-		total_time = 2.0; blink_time = 2.0
+		total_time = 4.0; blink_time = 2.0
 	elif level >= 9 and level <= 16:
 		# Ultra kurz
-		total_time = 1.0; blink_time = 1.0
+		total_time = 3.0; blink_time = 1.5
 	else:
 		# Level 17+: Geister werden GAR NICHT mehr blau!
 		total_time = 0.0; blink_time = 0.0
