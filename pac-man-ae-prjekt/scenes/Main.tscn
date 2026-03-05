@@ -133,7 +133,7 @@ scale = Vector2(0.15, 0.15)
 spawnpoint = NodePath("../SpawnpointOrange")
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("18_bb450")]
-position = Vector2(470.00003, 96)
+position = Vector2(470.00003, 97)
 scale = Vector2(0.27, 0.27)
 spawnpoint = NodePath("../SpawnpointCyan")
 

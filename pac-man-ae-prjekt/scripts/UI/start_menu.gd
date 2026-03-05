@@ -47,6 +47,7 @@ var ghost_tex := []
 var scared_tex: Texture2D
 func _on_button_button_down() -> void:
 	Global.score = 0
+	Global.health = 3 
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _ready():
