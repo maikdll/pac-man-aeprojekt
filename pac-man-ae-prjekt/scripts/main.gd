@@ -145,6 +145,7 @@ func checkAllPointsEaten():
 		
 func setDifficulty():
 	print("LEVEL: ", Global.level)
+	print(Global.speedPlayer)
 	if Global.level == 1:
 		Global.speedPlayer = 1
 		Global.speedGhost = 0.6

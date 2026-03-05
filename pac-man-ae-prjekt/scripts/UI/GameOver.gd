@@ -4,7 +4,9 @@ func _on_ready() -> void:
 	hide()
 
 func setGameOver() -> void:
+	print("setGameOver()")
 	Global.isGameStopped = true
+	print("isGameStopped: ", Global.isGameStopped)
 	show()
 	$NameInput.grab_focus()
 
