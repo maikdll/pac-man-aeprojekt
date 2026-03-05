@@ -13,6 +13,7 @@ var astar_grid = AStarGrid2D.new()
 
 func _ready():
 	Global.isGameStopped = false
+	Global.isIntermissionMode = false
 	setDifficulty()
 	
 	if tile_map1 and tile_map2 and tile_map3:
