@@ -27,6 +27,30 @@ region = Rect2(452, 112, 14, 14)
 atlas = ExtResource("2_ttf47")
 region = Rect2(468, 112, 14, 14)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_8h0pg"]
+atlas = ExtResource("2_ttf47")
+region = Rect2(580, 64, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_38ec4"]
+atlas = ExtResource("2_ttf47")
+region = Rect2(596, 64, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wccnw"]
+atlas = ExtResource("2_ttf47")
+region = Rect2(580, 64, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7sqjd"]
+atlas = ExtResource("2_ttf47")
+region = Rect2(612, 64, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtdsn"]
+atlas = ExtResource("2_ttf47")
+region = Rect2(596, 64, 14, 14)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a45pn"]
+atlas = ExtResource("2_ttf47")
+region = Rect2(628, 64, 14, 14)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_wfxji"]
 atlas = ExtResource("2_ttf47")
 region = Rect2(548, 112, 14, 14)
@@ -72,6 +96,34 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_8h0pg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_38ec4")
+}],
+"loop": true,
+"name": &"Scared",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wccnw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7sqjd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gtdsn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a45pn")
+}],
+"loop": true,
+"name": &"ScaredBlink",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_wfxji")
 }, {
 "duration": 1.0,
@@ -92,7 +144,7 @@ script = ExtResource("1_ttf47")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=90889191]
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_1tcea")
-animation = &"Rechts"
+animation = &"ScaredBlink"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
 position = Vector2(0, 3)
