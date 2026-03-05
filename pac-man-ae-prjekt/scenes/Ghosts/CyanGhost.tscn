@@ -86,6 +86,7 @@ animations = [{
 radius = 3.7151704
 
 [node name="CyanGhost" type="CharacterBody2D" unique_id=1182016807 groups=["CyanGhost", "Ghost"]]
+collision_layer = 4
 script = ExtResource("1_oclmk")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=981668526]

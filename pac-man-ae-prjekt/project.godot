@@ -43,6 +43,13 @@ down={
 "events": []
 }
 
+[layer_names]
+
+2d_physics/layer_1="Waende"
+2d_physics/layer_2="PacMan"
+2d_physics/layer_3="Ghosts"
+2d_physics/layer_4="Punkte"
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

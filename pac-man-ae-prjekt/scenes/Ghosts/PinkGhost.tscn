@@ -86,6 +86,7 @@ animations = [{
 radius = 2.0425868
 
 [node name="PinkGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost", "PinkGhost"]]
+collision_layer = 4
 script = ExtResource("1_a73n8")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=917628422]

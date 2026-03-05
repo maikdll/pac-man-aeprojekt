@@ -7,6 +7,8 @@ enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
 
+var is_eaten = false;
+
 var isReady = false
 
 var current_path: Array[Vector2i] = []
@@ -122,6 +124,7 @@ func _process(delta):
 			set_next_target()
 			
 func get_eaten():
+	
 	global_position = spawnpoint.global_position
 	current_path.clear()
 	
