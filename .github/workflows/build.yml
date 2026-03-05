@@ -1,0 +1,51 @@
+name: Build-Godot
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  export:
+    name: Export-${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [Windows, Linux, macOS]
+
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup-Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+          wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+          unzip Godot_v4.3-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/4.3.stable/
+          rm Godot_v4.3-stable_export_templates.tpz
+
+      - name: Build-Folders
+        run: mkdir -p build/${{ matrix.platform }}
+
+      - name: Run-Export
+        run: |
+          cd pac-man-ae-prjekt
+          godot --headless --editor --quit || true
+          if [ "${{ matrix.platform }}" = "Windows" ]; then
+            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+          elif [ "${{ matrix.platform }}" = "macOS" ]; then
+            godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
+          else
+            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
+          fi
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: GodotGame-${{ matrix.platform }}
+          path: build/${{ matrix.platform }}/
