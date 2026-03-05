@@ -153,8 +153,8 @@ func get_direction():
 	# Wenn Intermission aktiv ist UND der Geist noch nicht gegessen wurde:
 	if Global.isIntermissionMode and not is_eaten:
 		
-		# Wenn nur noch 2.5 Sekunden oder weniger übrig sind -> Blinken!
-		if pacman != null and pacman.intermission_time_left <= 2.5:
+		# Der Geist schaut bei Pac-Man auf den dynamischen Blink-Timer!
+		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
 			$AnimatedSprite2D.play("ScaredBlink")
 		else:
 			# Ansonsten normales, blaues Angst-Gesicht
