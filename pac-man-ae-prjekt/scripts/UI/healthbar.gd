@@ -2,10 +2,14 @@ extends Control
 
 @onready var life_icons = $HBoxContainer.get_children()
 
-func update_healthbar(current_health):
-	$AudioDeath.play()
+func update_healthbar():
 	if Global.health < 1:
 		get_tree().call_group("GameOver", "setGameOver")
 		
 	for i in range(life_icons.size()):
-		life_icons[i].visible = i < current_health
+		life_icons[i].visible = i < Global.health
+		
+
+
+func _on_ready() -> void:
+	update_healthbar()

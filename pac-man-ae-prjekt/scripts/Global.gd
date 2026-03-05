@@ -11,7 +11,7 @@ var speedGhostPink = 1;
 var speedGhostOrange = 1;
 var speedPlayer = 1;
 var isIntermissionMode = false;
-var eatGhostScore = 400;
+var eatGhostScore = 200;
 
 const SAVE_PATH = "user://leaderboard.save"
 var leaderboard = [

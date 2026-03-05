@@ -83,9 +83,10 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 				
 				
 func killPacman():
+	$AudioDeath.play()
 	isDying = true
 	Global.health -= 1
-	get_tree().call_group("ui", "update_healthbar", Global.health)
+	get_tree().call_group("ui", "update_healthbar")
 	global_position = spawn_position
 	await get_tree().create_timer(1.0).timeout
 	isDying = false
