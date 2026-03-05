@@ -1,0 +1,61 @@
+name: Build Godot Game (Cross-Platform)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  export:
+    name: Export für ${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    container:
+      image: barichello/godot-ci:4.3
+      
+    strategy:
+      fail-fast: false # Ganz wichtig: Windows läuft weiter, auch wenn Mac stirbt
+      matrix:
+        platform: [Windows, Linux, macOS]
+
+    steps:
+      - name: 1. Code auschecken
+        uses: actions/checkout@v4
+
+      - name: 2. System-Tools installieren
+        run: apt-get update && apt-get install -y fontconfig wget unzip
+
+      - name: 3. Templates an den richtigen Ort schieben
+        # Wir laden sie einmal und legen sie in den Ordner, den Godot 4.3 erwartet
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+          wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+          unzip Godot_v4.3-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/4.3.stable/
+          rm Godot_v4.3-stable_export_templates.tpz
+
+      - name: 4. Ordner erstellen
+        run: mkdir -p build/${{ matrix.platform }}
+
+      - name: 5. Der "Erzwungene" Export
+        # Wir nutzen --headless und --quit um Hänger zu vermeiden
+        run: |
+          cd pac-man-ae-prjekt
+          
+          # Schritt A: Import-Daten generieren (verhindert den 6-Minuten-Hänger)
+          godot --headless --editor --quit || true
+          
+          # Schritt B: Der eigentliche Export-Befehl
+          # ACHTUNG: Die Namen "Windows", "Linux" und "macOS" müssen EXAKT so in Godot stehen!
+          if [ "${{ matrix.platform }}" = "Windows" ]; then
+            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+          elif [ "${{ matrix.platform }}" = "macOS" ]; then
+            godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
+          else
+            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
+          fi
+
+      - name: 6. Artefakte hochladen
+        if: always() # Lädt auch hoch, wenn der Export Warnungen hatte
+        uses: actions/upload-artifact@v4
+        with:
+          name: GodotGame-${{ matrix.platform }}
+          path: build/${{ matrix.platform }}/
