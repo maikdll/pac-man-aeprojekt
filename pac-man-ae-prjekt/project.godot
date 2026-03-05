@@ -11,12 +11,12 @@ config_version=5
 [application]
 
 config/name="PacManAePrjekt"
-run/main_scene="uid://bllj3qhce545k"
+run/main_scene="res://StartMenu.tscn"
 config/features=PackedStringArray("4.6", "GL Compatibility")
 
 [autoload]
 
-Global="*uid://708xk1jl38ed"
+Global="*res://scripts/Global.gd"
 
 [display]
 
