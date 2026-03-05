@@ -8,15 +8,16 @@ const HUNT_GHOST_SPEED := 120.0
 const GHOST_GAP := 48.0
 const PELLET_X := 300.0
 
-const GH_SCALES := [
-	Vector2(0.19, 0.19),   
-	Vector2(0.30, 0.30),  
-	Vector2(0.15, 0.15),   
-	Vector2(0.14, 0.14),   
-]
-const SCARED_SCALE := Vector2(2.1, 2.1)  
+# All ghosts now use 16×16 pixel art body with color modulate
+const GH_SCALE := Vector2(2.2, 2.2)  # Uniform scale for 16×16 → ~35px
+const SCARED_SCALE := Vector2(2.2, 2.2)
 const PELLET_SCALE := Vector2(0.03, 0.03)
-const GH_Y_ADJ := [2.0, 10.0, 1.0, 2.0]
+const GH_COLORS := [
+	Color(1, 0, 0),        # Red
+	Color(0, 1, 1),        # Cyan
+	Color(1, 0.72, 0.84),  # Pink
+	Color(1, 0.65, 0),     # Orange
+]
 
 # ─── Animation State ───
 enum Phase { CHASE, HUNT, WAIT }
@@ -28,10 +29,15 @@ var ghosts_scared := false
 var ghosts_eaten := [false, false, false, false]
 var eaten_count := 0
 var blink_timer := 0.0
+var pac_frame := 0
+var pac_frame_timer := 0.0
+const PAC_FRAME_SPEED := 0.12
+var pac_frames: Array = []
 
 # ─── Nodes ───
 var pac: Sprite2D
 var ghosts: Array = []
+var ghost_eyes: Array = []
 var pellet_sprite: Sprite2D
 var play_label: Label
 var hs_label: Label
@@ -40,9 +46,11 @@ var small_dots: Array = []
 # ─── Textures ───
 var ghost_tex := []
 var scared_tex: Texture2D
+var eyes_tex: Texture2D
+
 func _on_button_button_down() -> void:
 	start_game()
-	
+
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		start_game()
@@ -53,13 +61,11 @@ func start_game():
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _ready():
-	ghost_tex = [
-		load("res://assets/ghost/redGhost.png"),
-		load("res://assets/ghost/blueGhost.png"),
-		load("res://assets/ghost/pinkGhost.png"),
-		load("res://assets/ghost/yellowGhost.png"),
-	]
+	var body_tex = load("res://assets/ghost/Ghost_Body_01.png")
+	for i in 4:
+		ghost_tex.append(body_tex)
 	scared_tex = load("res://assets/ghost/Ghost_Vulnerable_Blue_01.png")
+	eyes_tex = load("res://assets/ghost/Ghost_Eyes_Left.png")
 	_build_ui()
 	_build_anim_sprites()
 	_reset()
@@ -105,11 +111,11 @@ func _build_ui():
 	add_child(sub)
 
 	# Small dots in animation row
-	for i in range(14):
+	for i in range(19):
 		var dot = ColorRect.new()
 		dot.color = Color(1.0, 0.95, 0.6)
 		dot.size = Vector2(4, 4)
-		dot.position = Vector2(90 + i * 60, ANIM_Y - 2)
+		dot.position = Vector2(5 + i * 52, ANIM_Y - 2)
 		add_child(dot)
 		small_dots.append(dot)
 
@@ -138,7 +144,7 @@ func _build_ui():
 	# Highscores (left-aligned text, block centered on screen)
 	hs_label = Label.new()
 	hs_label.add_theme_font_override("font", font)
-	hs_label.add_theme_font_size_override("font_size", 11)
+	hs_label.add_theme_font_size_override("font_size", 12)
 	hs_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	hs_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
 	hs_label.position = Vector2(380, 400)
@@ -148,25 +154,39 @@ func _build_ui():
 #  ANIMATION SPRITES
 # ═══════════════════════════════════════
 func _build_anim_sprites():
-	# Pac-Man (atlas frame: open mouth)
+	# Pac-Man (3 frames: wide open, closed, half open)
+	var pac_atlas = load("res://assets/animation/Arcade - Pac-Man.png")
+	# 3 frames at 32px wide each (matching PacMan.tscn regions)
+	for i in 3:
+		var at = AtlasTexture.new()
+		at.atlas = pac_atlas
+		at.region = Rect2(i * 32, 0, 32, 34)
+		pac_frames.append(at)
+
 	pac = Sprite2D.new()
-	var atlas = AtlasTexture.new()
-	atlas.atlas = load("res://assets/animation/Arcade - Pac-Man.png")
-	atlas.region = Rect2(32, 0, 32, 34)
-	pac.texture = atlas
+	pac.texture = pac_frames[0]
 	pac.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	pac.z_index = 5
 	add_child(pac)
 
-	# 4 Ghosts
+	# 4 Ghosts (pixel art body with color modulate + eyes)
 	for i in 4:
 		var g = Sprite2D.new()
 		g.texture = ghost_tex[i]
-		g.scale = GH_SCALES[i]
+		g.scale = GH_SCALE
+		g.modulate = GH_COLORS[i]
 		g.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		g.z_index = 4
 		add_child(g)
 		ghosts.append(g)
+
+		var e = Sprite2D.new()
+		e.texture = eyes_tex
+		e.scale = GH_SCALE
+		e.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		e.z_index = 5
+		add_child(e)
+		ghost_eyes.append(e)
 
 	# Power Pellet (big ball)
 	pellet_sprite = Sprite2D.new()
@@ -186,16 +206,20 @@ func _reset():
 	eaten_count = 0
 
 	# Start off-screen right; ghosts follow Pac-Man
-	pac_x = 870.0
+	pac_x = 1000.0
 	for i in 4:
 		gx[i] = pac_x + GHOST_GAP * (i + 1)
 		ghosts[i].visible = true
 		ghosts[i].texture = ghost_tex[i]
-		ghosts[i].scale = GH_SCALES[i]
+		ghosts[i].scale = GH_SCALE
+		ghosts[i].modulate = GH_COLORS[i]
+		ghost_eyes[i].visible = true
+		ghost_eyes[i].texture = load("res://assets/ghost/Ghost_Eyes_Left.png")
 
 	pac.scale.x = -1.0  # Face left
 	pellet_sprite.visible = true
-	pellet_sprite.position = Vector2(PELLET_X, ANIM_Y)
+	var pellet_x = randf_range(100.0, 700.0)
+	pellet_sprite.position = Vector2(pellet_x, ANIM_Y)
 
 	# Restore dots
 	for dot in small_dots:
@@ -205,6 +229,13 @@ func _process(delta: float):
 	# Blinking "PLAY GAME"
 	blink_timer += delta
 	play_label.visible = fmod(blink_timer, 1.2) < 0.9
+
+	# Pac-Man mouth animation
+	pac_frame_timer += delta
+	if pac_frame_timer >= PAC_FRAME_SPEED:
+		pac_frame_timer = 0.0
+		pac_frame = (pac_frame + 1) % 3
+		pac.texture = pac_frames[pac_frame]
 
 	match phase:
 		Phase.CHASE:
@@ -226,7 +257,7 @@ func _do_chase(delta: float):
 			dot.visible = false
 
 	# Pac-Man reaches the power pellet
-	if pac_x <= PELLET_X + 15:
+	if pac_x <= pellet_sprite.position.x + 15:
 		_begin_hunt()
 
 func _begin_hunt():
@@ -236,9 +267,11 @@ func _begin_hunt():
 	move_dir = 1.0
 	pac.scale.x = 1.0  # Face right
 
-	for g in ghosts:
-		g.texture = scared_tex
-		g.scale = SCARED_SCALE
+	for i in 4:
+		ghosts[i].texture = scared_tex
+		ghosts[i].scale = SCARED_SCALE
+		ghosts[i].modulate = Color.WHITE
+		ghost_eyes[i].visible = false
 
 func _do_hunt(delta: float):
 	pac_x += move_dir * HUNT_PAC_SPEED * delta
@@ -252,13 +285,13 @@ func _do_hunt(delta: float):
 			_eat_ghost(i)
 
 	# Off-screen → loop
-	if pac_x > 870:
-		phase = Phase.WAIT
-		get_tree().create_timer(1.5).timeout.connect(_reset)
+	if pac_x > 1000:
+		_reset()
 
 func _eat_ghost(i: int):
 	ghosts_eaten[i] = true
 	ghosts[i].visible = false
+	ghost_eyes[i].visible = false
 	eaten_count += 1
 	var scores = [200, 400, 800, 1600]
 	_show_score(scores[eaten_count - 1], gx[i])
@@ -282,8 +315,8 @@ func _show_score(score: int, x_pos: float):
 func _sync_positions():
 	pac.position = Vector2(pac_x, ANIM_Y)
 	for i in 4:
-		var y_adj = GH_Y_ADJ[i] if not ghosts_scared else 0.0
-		ghosts[i].position = Vector2(gx[i], ANIM_Y + y_adj)
+		ghosts[i].position = Vector2(gx[i], ANIM_Y)
+		ghost_eyes[i].position = Vector2(gx[i], ANIM_Y - 2)
 
 # ═══════════════════════════════════════
 #  NAVIGATION & SCORES
