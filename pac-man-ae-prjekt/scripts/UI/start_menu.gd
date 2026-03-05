@@ -8,19 +8,14 @@ const HUNT_GHOST_SPEED := 120.0
 const GHOST_GAP := 48.0
 const PELLET_X := 300.0
 
-# Manual scales: each ghost texture has different size & padding
-# Target: all ~34px tall to match Pac-Man
 const GH_SCALES := [
-	Vector2(0.19, 0.19),   # Red     275×183  (fills canvas, wider than tall)
-	Vector2(0.30, 0.30),   # Cyan    192×192  (pixel art with padding)
-	Vector2(0.15, 0.15),   # Pink    223×226  (fills canvas well)
-	Vector2(0.14, 0.14),   # Orange  209×241  (fills canvas well)
+	Vector2(0.19, 0.19),   
+	Vector2(0.30, 0.30),  
+	Vector2(0.15, 0.15),   
+	Vector2(0.14, 0.14),   
 ]
-const SCARED_SCALE := Vector2(2.1, 2.1)   # 16×16
+const SCARED_SCALE := Vector2(2.1, 2.1)  
 const PELLET_SCALE := Vector2(0.03, 0.03)
-
-# Y-offset per ghost to align bottoms on same line
-# Positive = shift down, Negative = shift up
 const GH_Y_ADJ := [2.0, 10.0, 1.0, 2.0]
 
 # ─── Animation State ───
@@ -46,6 +41,13 @@ var small_dots: Array = []
 var ghost_tex := []
 var scared_tex: Texture2D
 func _on_button_button_down() -> void:
+	start_game()
+	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept"):
+		start_game()
+
+func start_game():
 	Global.score = 0
 	Global.health = 3 
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
@@ -287,7 +289,7 @@ func _sync_positions():
 #  NAVIGATION & SCORES
 # ═══════════════════════════════════════
 func _on_play():
-	get_tree().change_scene_to_file("res://scenes/Main.tscn")
+	start_game()
 
 func _load_scores():
 	Global.load_leaderboard()
@@ -296,3 +298,4 @@ func _load_scores():
 		var e = Global.leaderboard[i]
 		text += str(i + 1) + ". " + e["name"] + ": " + str(e["score"]) + "\n"
 	hs_label.text = text
+	
