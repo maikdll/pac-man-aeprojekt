@@ -56,13 +56,10 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("BigPoint"):
 		print("Big point eaten!")
 		
-		# Hol dir die Zeiten für das aktuelle Level
 		var times = get_intermission_times(Global.level)
 		intermission_time_left = times["total"]
 		intermission_blink_time = times["blink"]
 		
-		# Nur wenn die Zeit größer als 0 ist, schalten wir den Modus ein 
-		# (Ab Level 17 passiert nämlich gar nichts mehr!)
 		if intermission_time_left > 0:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
