@@ -12,10 +12,6 @@ var speedGhostOrange = 1;
 var speedPlayer = 1;
 var isIntermissionMode = false;
 var eatGhostScore = 400;
-var redGhostEaten = false;
-var orangeGhostEaten = false;
-var cyanGhostEaten = false;
-var pinkGhostEaten = false;
 
 const SAVE_PATH = "user://leaderboard.save"
 var leaderboard = [

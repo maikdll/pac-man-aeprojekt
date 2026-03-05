@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://k7duxcuh3yal"]
 
-[ext_resource type="Script" path="res://scripts/Cherry.gd" id="1_xobih"]
+[ext_resource type="Script" uid="uid://dfkuddsjgdi7q" path="res://scripts/Cherry.gd" id="1_xobih"]
 [ext_resource type="Texture2D" uid="uid://b0f0p8aodfpkp" path="res://assets/PacManAssets-Items.png" id="2_fxyaf"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_nedoi"]
 radius = 20.0
 
 [node name="Cherry" type="Area2D" unique_id=723307072 groups=["Fruit"]]
+collision_layer = 8
+collision_mask = 2
 script = ExtResource("1_xobih")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=636033379 groups=["Fruit"]]
