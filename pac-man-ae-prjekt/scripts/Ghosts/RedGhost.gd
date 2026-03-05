@@ -63,7 +63,11 @@ func start_wave(mode: Mode, duration: float):
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
 		print("Blinky: Angriff")
-		start_wave(Mode.CHASE, 20.0) 
+		if(Global.remainingPoints < 50):
+			start_wave(Mode.CHASE, 200.0) 
+		else:
+			start_wave(Mode.CHASE, 20.0) 
+			Global.speedGhostRed = Global.speedGhostRed + 0.4
 	else:
 		print("Blinky: Wandern")
 		start_wave(Mode.SCATTER, 10.0)
