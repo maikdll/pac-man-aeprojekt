@@ -10,41 +10,46 @@ jobs:
   export:
     name: Export für ${{ matrix.platform }}
     runs-on: ubuntu-latest
-    
     container:
-      image: barichello/godot-ci:4.6.1 # Deine perfekt angepasste Version!
+      image: barichello/godot-ci:4.3 
       
     strategy:
       matrix:
-        # Jetzt mit sauberen Namen ohne Leerzeichen und Schrägstriche
         platform: [Windows, macOS, Linux]
 
     steps:
       - name: 1. Code auschecken
         uses: actions/checkout@v4
 
-      - name: 2. Fehlende Linux-Pakete installieren (Schriftarten-Fix)
-        run: apt-get update && apt-get install -y fontconfig
+      - name: 2. Abhängigkeiten installieren
+        run: apt-get update && apt-get install -y fontconfig wget unzip
 
-      - name: 3. Export-Ordner vorbereiten
+      - name: 3. Export Templates vorbereiten
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
+          wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
+          unzip Godot_v4.3-stable_export_templates.tpz
+          mv templates/* ~/.local/share/godot/export_templates/4.3.stable/
+          rm Godot_v4.3-stable_export_templates.tpz
+
+      - name: 4. Export-Ordner vorbereiten
         run: mkdir -p build/${{ matrix.platform }}
 
-      - name: 4. Godot Export ausführen
+      - name: 5. Godot Export ausführen
         run: |
-          # WICHTIG: Falls eure project.godot nicht direkt im Hauptverzeichnis des GitHub-Repos liegt,
-          # entferne das '#' vor der nächsten Zeile und trage den Ordnernamen deines Spiels ein:
-          # cd Name_Eures_Ordners
-
-          # Der Befehl '--path .' sagt Godot genau, wo es suchen soll
+          cd pac-man-ae-prjekt
+          
+          # Wir fügen --no-window hinzu und ignorieren Fehler beim Re-Import
           if [ "${{ matrix.platform }}" = "macOS" ]; then
-            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.zip
+            # MacOS braucht oft eine explizite Aufforderung, Signierung zu ignorieren
+            godot --headless --path . --export-release "${{ matrix.platform }}" ../build/${{ matrix.platform }}/game.zip --no-window
           elif [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.exe
+            godot --headless --path . --export-release "${{ matrix.platform }}" ../build/${{ matrix.platform }}/game.exe --no-window
           else
-            godot --headless --path . --export-release "${{ matrix.platform }}" build/${{ matrix.platform }}/game.x86_64
+            godot --headless --path . --export-release "${{ matrix.platform }}" ../build/${{ matrix.platform }}/game.x86_64 --no-window
           fi
 
-      - name: 5. Fertiges Spiel als Download bereitstellen
+      - name: 6. Artefakte hochladen
         uses: actions/upload-artifact@v4
         with:
           name: GodotGame-${{ matrix.platform }}
