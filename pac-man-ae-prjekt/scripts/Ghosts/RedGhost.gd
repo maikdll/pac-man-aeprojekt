@@ -124,7 +124,6 @@ func _process(delta):
 			set_next_target()
 			
 func get_eaten():
-	
 	global_position = spawnpoint.global_position
 	current_path.clear()
 	
