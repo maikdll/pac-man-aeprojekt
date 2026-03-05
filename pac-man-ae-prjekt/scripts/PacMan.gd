@@ -56,11 +56,11 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		print("Big point eaten!")
 		$AudioIntermission.play()
 		Global.isIntermissionMode = true
+		get_tree().call_group("Ghost", "set", "is_eaten", false)
+		Global.eatGhostScore = 400;
 		Global.speedGhost = Global.speedGhost / 2
 		intermission_time_left = 7.0
 		get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
-		
-		
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if isDying:
@@ -69,18 +69,25 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 	
 	if Global.isIntermissionMode == false:
-		isDying = true
-		Global.health -= 1
-		get_tree().call_group("ui", "update_healthbar", Global.health)
-		global_position = spawn_position
-		await get_tree().create_timer(1.0).timeout
-		isDying = false
+		killPacman()
+		
+	if Global.isIntermissionMode == true:
+		if body.is_in_group("Ghost"):
+			if body.is_eaten == false:
+				body.get_eaten()
+				body.is_eaten = true
+				Global.score += Global.eatGhostScore
+				Global.eatGhostScore *= 2
+			elif body.is_eaten == true:
+				killPacman()
+				
+				
+func killPacman():
+	isDying = true
+	Global.health -= 1
+	get_tree().call_group("ui", "update_healthbar", Global.health)
+	global_position = spawn_position
+	await get_tree().create_timer(1.0).timeout
+	isDying = false
 	
-	elif body.is_in_group("RedGhost"):
-		get_tree().call_group("RedGhost", "get_eaten")
-	elif body.is_in_group("PinkGhost"):
-		get_tree().call_group("PinkGhost", "get_eaten")
-	elif body.is_in_group("CyanGhost"):
-		get_tree().call_group("CyanGhost", "get_eaten")
-	elif body.is_in_group("OrangeGhost"):
-		get_tree().call_group("OrangeGhost", "get_eaten")
+	
