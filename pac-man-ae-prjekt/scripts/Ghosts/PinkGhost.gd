@@ -137,3 +137,16 @@ func _process(delta):
 func get_eaten():
 	global_position = spawnpoint.global_position
 	current_path.clear()
+	
+func get_direction():
+	var direction = target_position - global_position
+	if abs(direction.x) > abs(direction.y):
+		if direction.x > 0:
+			print("Rechts")
+		else:
+			print("Links")
+	else:
+		if direction.y > 0:
+			print("Unten")
+		else:
+			print("Oben")
