@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dhenwexqobrj2" path="res://scripts/main.gd" id="1_3p2gp"]
 [ext_resource type="PackedScene" uid="uid://yl6lupiynlhi" path="res://scenes/PacMan.tscn" id="1_elqb8"]
-[ext_resource type="PackedScene" uid="uid://otgpjpy1qp06" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
+[ext_resource type="PackedScene" path="res://scenes/BigPoints.tscn" id="2_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://c6huaj228fla1" path="res://scenes/Points.tscn" id="2_rvslj"]
 [ext_resource type="PackedScene" uid="uid://df7wcdjnldlt4" path="res://scenes/UI/Score.tscn" id="3_0bbpv"]
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
@@ -66,16 +66,11 @@ playback_type = 1
 
 [node name="Level_1" parent="." unique_id=1766636500 instance=ExtResource("5_vcsgt")]
 
-[node name="Healthbar" type="CanvasLayer" parent="." unique_id=833753433]
-scale = Vector2(0.2, 0.2)
-transform = Transform2D(0.2, 0, 0, 0.2, 0, 0)
-
-[node name="Healthbar" parent="Healthbar" unique_id=309987989 instance=ExtResource("7_nxtc6")]
-offset_left = 850.0
-offset_top = 2420.0
-offset_right = 850.0
-offset_bottom = 2420.0
-scale = Vector2(0.5, 0.5)
+[node name="Healthbar" parent="." unique_id=309987989 instance=ExtResource("7_nxtc6")]
+offset_left = 152.0
+offset_top = 472.0
+offset_right = 280.0
+offset_bottom = 528.0
 
 [node name="Strawberry" parent="." unique_id=1383056201 instance=ExtResource("9_q8u5g")]
 position = Vector2(696, 96)
@@ -111,17 +106,18 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Fruitbar" parent="." unique_id=1322165916 instance=ExtResource("19_fruit")]
-offset_left = 952.0
-offset_top = 432.00006
-offset_right = 952.0
-offset_bottom = 432.00006
-scale = Vector2(0.2, 0.2)
+[node name="Fruitbar" parent="." unique_id=2104236344 instance=ExtResource("19_fruit")]
+offset_left = 680.0
+offset_top = 472.0
+offset_right = 808.0
+offset_bottom = 528.0
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
+visible = false
 
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
+<<<<<<< HEAD
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 instance=ExtResource("17_ft6cd")]
 position = Vector2(44.999985, 436)
 scale = Vector2(2.5, 2.5)
@@ -137,6 +133,39 @@ scale = Vector2(2.5, 2.5)
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 instance=ExtResource("18_bb450")]
 position = Vector2(916, 348)
 scale = Vector2(2.5, 2.5)
+=======
+[node name="PinkGhost" parent="Ghosts" unique_id=1817535284 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_ft6cd")]
+position = Vector2(510, 87)
+scale = Vector2(0.18, 0.18)
+spawnpoint = NodePath("../SpawnpointPink")
+
+[node name="RedGhost" parent="Ghosts" unique_id=1182016807 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("16_ft6cd")]
+position = Vector2(479, 145)
+scale = Vector2(0.23, 0.23)
+spawnpoint = NodePath("../SpawnpointRed")
+
+[node name="OrangeGhost" parent="Ghosts" unique_id=384626397 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_nfivy")]
+position = Vector2(433, 87)
+scale = Vector2(0.15, 0.15)
+spawnpoint = NodePath("../SpawnpointOrange")
+
+[node name="CyanGhost" parent="Ghosts" unique_id=67143669 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("18_bb450")]
+position = Vector2(470.00003, 97)
+scale = Vector2(0.27, 0.27)
+spawnpoint = NodePath("../SpawnpointCyan")
+
+[node name="SpawnpointRed" type="Marker2D" parent="Ghosts" unique_id=299624305]
+position = Vector2(479, 146)
+
+[node name="SpawnpointPink" type="Marker2D" parent="Ghosts" unique_id=1520132786]
+position = Vector2(470, 85)
+
+[node name="SpawnpointOrange" type="Marker2D" parent="Ghosts" unique_id=2074870821]
+position = Vector2(433, 86)
+
+[node name="SpawnpointCyan" type="Marker2D" parent="Ghosts" unique_id=878397398]
+position = Vector2(513, 84)
+>>>>>>> main
 
 [node name="Points" parent="." unique_id=419111269 instance=ExtResource("2_rvslj")]
 position = Vector2(-0.99999994, 0.99999994)
@@ -160,3 +189,21 @@ position = Vector2(976, 504)
 
 [node name="LeftSpawnPoint" type="Marker2D" parent="Portal" unique_id=1142789181]
 position = Vector2(-16, 504)
+
+[node name="Portal2" type="Node2D" parent="." unique_id=613437485]
+
+[node name="PortalLeft" parent="Portal2" unique_id=1552620073 node_paths=PackedStringArray("target_spawn") instance=ExtResource("19_nfivy")]
+position = Vector2(-80.00001, 40.00003)
+scale = Vector2(4.21, 4.21)
+target_spawn = NodePath("../RightSpawnPoint")
+
+[node name="PortalRight" parent="Portal2" unique_id=2027265650 node_paths=PackedStringArray("target_spawn") instance=ExtResource("19_nfivy")]
+position = Vector2(1040.0001, 40.000015)
+scale = Vector2(4.21, 4.21)
+target_spawn = NodePath("../LeftSpawnPoint")
+
+[node name="RightSpawnPoint" type="Marker2D" parent="Portal2" unique_id=80023096]
+position = Vector2(976, 40)
+
+[node name="LeftSpawnPoint" type="Marker2D" parent="Portal2" unique_id=1684579772]
+position = Vector2(-16, 40)

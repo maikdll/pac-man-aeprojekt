@@ -8,6 +8,7 @@ const HUNT_GHOST_SPEED := 120.0
 const GHOST_GAP := 48.0
 const PELLET_X := 300.0
 
+<<<<<<< HEAD
 # All ghosts now use 16×16 pixel art body with color modulate
 const GH_SCALE := Vector2(2.2, 2.2)  # Uniform scale for 16×16 → ~35px
 const SCARED_SCALE := Vector2(2.2, 2.2)
@@ -18,6 +19,17 @@ const GH_COLORS := [
 	Color(1, 0.72, 0.84),  # Pink
 	Color(1, 0.65, 0),     # Orange
 ]
+=======
+const GH_SCALES := [
+	Vector2(0.19, 0.19),   
+	Vector2(0.30, 0.30),  
+	Vector2(0.15, 0.15),   
+	Vector2(0.14, 0.14),   
+]
+const SCARED_SCALE := Vector2(2.1, 2.1)  
+const PELLET_SCALE := Vector2(0.03, 0.03)
+const GH_Y_ADJ := [2.0, 10.0, 1.0, 2.0]
+>>>>>>> main
 
 # ─── Animation State ───
 enum Phase { CHASE, HUNT, WAIT }
@@ -46,7 +58,21 @@ var small_dots: Array = []
 # ─── Textures ───
 var ghost_tex := []
 var scared_tex: Texture2D
+<<<<<<< HEAD
 var eyes_tex: Texture2D
+=======
+func _on_button_button_down() -> void:
+	start_game()
+	
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_accept"):
+		start_game()
+
+func start_game():
+	Global.score = 0
+	Global.health = 3 
+	get_tree().change_scene_to_file("res://scenes/Main.tscn")
+>>>>>>> main
 
 func _ready():
 	var body_tex = load("res://assets/ghost/Ghost_Body_01.png")
@@ -310,7 +336,7 @@ func _sync_positions():
 #  NAVIGATION & SCORES
 # ═══════════════════════════════════════
 func _on_play():
-	get_tree().change_scene_to_file("res://scenes/Main.tscn")
+	start_game()
 
 func _load_scores():
 	Global.load_leaderboard()
@@ -319,3 +345,4 @@ func _load_scores():
 		var e = Global.leaderboard[i]
 		text += str(i + 1) + ". " + e["name"] + ": " + str(e["score"]) + "\n"
 	hs_label.text = text
+	

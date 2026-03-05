@@ -2,9 +2,6 @@ extends Control
 
 @onready var life_icons = $HBoxContainer.get_children()
 
-func _ready():
-	Global.health = 3
-
 func update_healthbar(current_health):
 	$AudioDeath.play()
 	if Global.health < 1:

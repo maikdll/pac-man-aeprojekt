@@ -1,10 +1,13 @@
 extends CharacterBody2D
 
 @export var wander_radius: float = 200.0 
+@export var spawnpoint: Marker2D;
 
 enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
+
+var isReady = false
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -23,6 +26,7 @@ var eye_textures := {
 }
 
 func _ready():
+	global_position = spawnpoint.global_position
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
 	
@@ -39,6 +43,7 @@ func _ready():
 	
 	start_wave(Mode.SCATTER, 7.0)
 	update_path()
+	isReady = true
 
 func pick_new_scatter_target():
 	for i in range(30):
@@ -58,7 +63,8 @@ func pick_new_scatter_target():
 
 func start_wave(mode: Mode, duration: float):
 	current_mode = mode
-	wave_timer.start(duration)
+	if isReady:
+		wave_timer.start(duration)
 
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
@@ -117,6 +123,7 @@ func _process(delta):
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
+<<<<<<< HEAD
 
 	_update_eyes()
 
@@ -126,3 +133,23 @@ func _update_eyes():
 		eyes.texture = eye_textures["right"] if dir.x > 0 else eye_textures["left"]
 	else:
 		eyes.texture = eye_textures["down"] if dir.y > 0 else eye_textures["up"]
+=======
+			
+func get_eaten():
+	global_position = spawnpoint.global_position
+	current_path.clear()
+	
+func get_direction():
+	var direction = target_position - global_position
+	if abs(direction.x) > abs(direction.y):
+		if direction.x > 0:
+			print("Rechts")
+		else:
+			print("Links")
+	else:
+		if direction.y > 0:
+			print("Unten")
+		else:
+			print("Oben")
+	
+>>>>>>> main

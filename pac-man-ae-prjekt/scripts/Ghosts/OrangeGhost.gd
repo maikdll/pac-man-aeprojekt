@@ -3,12 +3,16 @@ extends CharacterBody2D
 @export var panic_distance = 150.0 
 @export var resume_chase_distance = 500.0 
 
+@export var spawnpoint: Marker2D;
+
 @export var scatter_anchor: Vector2 = Vector2(100, 800)
 @export var wander_radius: float = 200.0 
 
 enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
+
+var isReady = false;
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -28,6 +32,7 @@ var eye_textures := {
 }
 
 func _ready():
+	global_position = spawnpoint.global_position
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
 	
@@ -44,6 +49,7 @@ func _ready():
 	
 	start_wave(Mode.SCATTER, 10.0)
 	update_path()
+	isReady = true;
 
 func pick_new_scatter_target():
 	var current_dir = Vector2.ZERO
@@ -69,7 +75,8 @@ func pick_new_scatter_target():
 
 func start_wave(mode: Mode, duration: float):
 	current_mode = mode
-	wave_timer.start(duration)
+	if isReady:
+		wave_timer.start(duration)
 
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
