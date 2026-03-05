@@ -1,4 +1,4 @@
-name: Build-Godot
+name: Build-Godot-Complete
 
 on:
   push:
@@ -35,10 +35,15 @@ jobs:
       - name: Run-Export
         run: |
           cd pac-man-ae-prjekt
+          # Import erzwingen
           godot --headless --editor --quit || true
+          
+          # Export-Befehle mit absolutem Zielpfad im Build-Ordner
           if [ "${{ matrix.platform }}" = "Windows" ]; then
+            # Windows braucht .exe UND .pck
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
+            # macOS wird als .zip exportiert
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
           else
             godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
@@ -48,4 +53,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: GodotGame-${{ matrix.platform }}
+          # Wir laden den ganzen Ordner hoch, damit .pck Dateien nicht fehlen!
           path: build/${{ matrix.platform }}/
