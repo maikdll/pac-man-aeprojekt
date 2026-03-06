@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bllj3qhce545k"]
 
 [ext_resource type="Script" uid="uid://c4qmn0p7c2ve3" path="res://scripts/UI/start_menu.gd" id="1_fb70i"]
+[ext_resource type="AudioStream" uid="uid://cfetl5j4gbr3m" path="res://scenes/UI/MenuMusik.mp3" id="2_yi547"]
 
 [node name="StartMenu" type="Control" unique_id=840002153]
 layout_mode = 3
@@ -10,3 +11,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_fb70i")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=892707292]
+stream = ExtResource("2_yi547")
+autoplay = true
