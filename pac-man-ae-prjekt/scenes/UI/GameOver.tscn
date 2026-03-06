@@ -5,30 +5,4 @@
 [node name="GameOver" type="CanvasLayer" unique_id=1008604839 groups=["GameOver"]]
 script = ExtResource("1_6bcno")
 
-[node name="Label" type="Label" parent="." unique_id=1338116822]
-offset_left = 125.0
-offset_top = 375.0
-offset_right = 859.0
-offset_bottom = 550.0
-theme_override_colors/font_color = Color(1, 0.33333334, 0.20392157, 1)
-theme_override_font_sizes/font_size = 128
-text = "GAME OVER"
-
-[node name="NameInput" type="LineEdit" parent="." unique_id=2027349331]
-offset_left = 366.0
-offset_top = 304.0
-offset_right = 562.0
-offset_bottom = 381.0
-theme_override_font_sizes/font_size = 50
-placeholder_text = "Name"
-
-[node name="Button" type="Button" parent="NameInput" unique_id=561679693]
-layout_mode = 0
-offset_left = 182.0
-offset_top = 23.0
-offset_right = 273.0
-offset_bottom = 54.0
-text = "Bestätigen"
-
 [connection signal="ready" from="." to="." method="_on_ready"]
-[connection signal="pressed" from="NameInput/Button" to="." method="_on_button_pressed"]
