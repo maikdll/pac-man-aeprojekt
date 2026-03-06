@@ -58,6 +58,7 @@ func _input(event: InputEvent) -> void:
 func start_game():
 	Global.score = 0
 	Global.health = 3
+	Global.spawn_points = true;
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _ready():
@@ -154,9 +155,7 @@ func _build_ui():
 #  ANIMATION SPRITES
 # ═══════════════════════════════════════
 func _build_anim_sprites():
-	# Pac-Man (3 frames: wide open, closed, half open)
 	var pac_atlas = load("res://assets/animation/Arcade - Pac-Man.png")
-	# 3 frames at 32px wide each (matching PacMan.tscn regions)
 	for i in 3:
 		var at = AtlasTexture.new()
 		at.atlas = pac_atlas
@@ -169,7 +168,6 @@ func _build_anim_sprites():
 	pac.z_index = 5
 	add_child(pac)
 
-	# 4 Ghosts (pixel art body with color modulate + eyes)
 	for i in 4:
 		var g = Sprite2D.new()
 		g.texture = ghost_tex[i]
@@ -188,7 +186,6 @@ func _build_anim_sprites():
 		add_child(e)
 		ghost_eyes.append(e)
 
-	# Power Pellet (big ball)
 	pellet_sprite = Sprite2D.new()
 	pellet_sprite.texture = load("res://assets/Point.png")
 	pellet_sprite.scale = PELLET_SCALE
@@ -221,16 +218,13 @@ func _reset():
 	var pellet_x = randf_range(100.0, 700.0)
 	pellet_sprite.position = Vector2(pellet_x, ANIM_Y)
 
-	# Restore dots
 	for dot in small_dots:
 		dot.visible = true
 
 func _process(delta: float):
-	# Blinking "PLAY GAME"
 	blink_timer += delta
 	play_label.visible = fmod(blink_timer, 1.2) < 0.9
 
-	# Pac-Man mouth animation
 	pac_frame_timer += delta
 	if pac_frame_timer >= PAC_FRAME_SPEED:
 		pac_frame_timer = 0.0
@@ -251,12 +245,10 @@ func _do_chase(delta: float):
 	for i in 4:
 		gx[i] += move_dir * spd
 
-	# Pac-Man eats dots he passes
 	for dot in small_dots:
 		if dot.visible and abs(pac_x - dot.position.x) < 12:
 			dot.visible = false
 
-	# Pac-Man reaches the power pellet
 	if pac_x <= pellet_sprite.position.x + 15:
 		_begin_hunt()
 
@@ -279,12 +271,10 @@ func _do_hunt(delta: float):
 		if not ghosts_eaten[i]:
 			gx[i] += move_dir * HUNT_GHOST_SPEED * delta
 
-	# Check if Pac-Man caught a ghost
 	for i in 4:
 		if not ghosts_eaten[i] and pac_x >= gx[i] - 12:
 			_eat_ghost(i)
 
-	# Off-screen → loop
 	if pac_x > 1000:
 		_reset()
 

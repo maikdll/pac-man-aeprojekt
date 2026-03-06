@@ -12,8 +12,10 @@ var speedGhostOrange = 1;
 var speedPlayer = 1;
 var isIntermissionMode = false;
 var eatGhostScore = 200;
-var dots_eaten = 0 # gefressene Punkte im Level
+var dots_eaten = 0 
 var remainingPoints = 500;
+var spawn_points = true;
+
 
 const SAVE_PATH = "user://leaderboard.save"
 var leaderboard = [

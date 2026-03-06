@@ -22,6 +22,9 @@ func _ready():
 		setup_grid()
 		spawn_points()
 		restrict_grid_for_ghosts()
+		if Global.spawn_points == true:
+			spawn_points()
+			Global.spawn_points = false;
 		
 func setup_grid():
 	var full_rect = tile_map1.get_used_rect().merge(tile_map2.get_used_rect().merge(tile_map3.get_used_rect()))
@@ -34,7 +37,6 @@ func setup_grid():
 
 	_add_walls_from_layer(tile_map1)
 	_add_walls_from_layer(tile_map2)
-	#_add_walls_from_layer(tile_map3) 
 
 func _add_walls_from_layer(layer: TileMapLayer):
 	var cells = layer.get_used_cells()
@@ -68,7 +70,7 @@ func spawn_points():
 			if astar_grid.is_point_solid(cell):
 				continue
 				
-			if tile_map3.get_cell_source_id(cell) != -1:  # Invisible Wand shouldn't be with points
+			if tile_map3.get_cell_source_id(cell) != -1:
 				continue
 				
 			var touches_wall = false
@@ -148,6 +150,7 @@ func checkAllPointsEaten():
 		get_tree().call_group("PacMan", "stop_for_level_end")
 		
 		Global.level += 1
+		Global.spawn_points = true;
 		await get_tree().create_timer(2.0).timeout
 		get_tree().reload_current_scene()
 		
