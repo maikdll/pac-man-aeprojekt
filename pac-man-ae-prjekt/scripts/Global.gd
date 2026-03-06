@@ -33,6 +33,10 @@ func load_leaderboard():
 		var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
 		leaderboard = file.get_var()
 
+func _input(event):
+	if event is InputEventKey and event.pressed and event.keycode == KEY_Q:
+		get_tree().quit()
+
 func update_leaderboard(new_name: String):
 	leaderboard.append({"name": new_name, "score": Global.score})
 	
