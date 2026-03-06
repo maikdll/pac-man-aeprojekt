@@ -224,14 +224,26 @@ func get_direction():
 		
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
-			$AnimatedSprite2D.play("Rechts")
+			if is_eaten:
+				$AnimatedSprite2D.play("Augen_Rechts")
+			else:
+				$AnimatedSprite2D.play("Rechts")
 		else:
-			$AnimatedSprite2D.play("Links")
+			if is_eaten:
+				$AnimatedSprite2D.play("Augen_Links")
+			else:
+				$AnimatedSprite2D.play("Links")
 	else:
 		if direction.y > 0:
-			$AnimatedSprite2D.play("Unten")
+			if is_eaten:
+				$AnimatedSprite2D.play("Augen_Unten")
+			else:
+				$AnimatedSprite2D.play("Unten")
 		else:
-			$AnimatedSprite2D.play("Oben")
+			if is_eaten:
+				$AnimatedSprite2D.play("Augen_Oben")
+			else:
+				$AnimatedSprite2D.play("Oben")
 			
 			
 func reset_ghost():
