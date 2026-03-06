@@ -65,7 +65,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			Global.isIntermissionMode = true
 			get_tree().call_group("Ghost", "set", "is_eaten", false)
 			
-			# HIER WAR DER FEHLER: Startwert muss 200 sein!
 			Global.eatGhostScore = 200 
 			
 			Global.speedGhost = Global.speedGhost / 2
@@ -83,15 +82,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if Global.isIntermissionMode == true:
 		if body.is_in_group("Ghost"):
 			if body.is_eaten == false:
-				# NEU: Print-Befehl für deine Konsole!
 				print("Geist gegessen! Aktueller Score-Wert: ", Global.eatGhostScore)
 				
 				body.get_eaten()
 				body.is_eaten = true
 				Global.score += Global.eatGhostScore
 				Global.eatGhostScore *= 2
-				
-			# HIER HABE ICH DAS "elif body.is_eaten == true: killPacman()" GELÖSCHT!
 				
 				
 func killPacman():
