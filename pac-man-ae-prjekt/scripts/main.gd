@@ -136,12 +136,10 @@ func restrict_grid_for_ghosts():
 		astar_grid.set_point_solid(cell, true)
 
 func checkAllPointsEaten():
-	var remaining_points = 0
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
-			remaining_points += 1
-			
-	if remaining_points == 1:
+			Global.remainingPoints += 1
+	if Global.remainingPoints == 1:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
 		
@@ -154,6 +152,7 @@ func checkAllPointsEaten():
 		
 func setDifficulty():
 	print("LEVEL: ", Global.level)
+	print(Global.speedPlayer)
 	if Global.level == 1:
 		Global.speedPlayer = 1
 		Global.speedGhost = 0.6

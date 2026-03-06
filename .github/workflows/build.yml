@@ -21,13 +21,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup-Templates
+      - name: Setup Export Templates
         run: |
-          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
-          wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
-          unzip Godot_v4.3-stable_export_templates.tpz
-          mv templates/* ~/.local/share/godot/export_templates/4.3.stable/
-          rm Godot_v4.3-stable_export_templates.tpz
+          # Verschiebt die im Container vorinstallierten Templates in den Ordner des GitHub-Runners
+          mkdir -p ~/.local/share/godot/export_templates
+          mv /root/.local/share/godot/export_templates/4.3.stable ~/.local/share/godot/export_templates/4.3.stable
 
       - name: Build-Folders
         run: mkdir -p build/${{ matrix.platform }}
@@ -36,21 +34,23 @@ jobs:
         run: |
           cd pac-man-ae-prjekt
           
-          # RADIKALER FIX: Lösche den .godot Ordner in der Cloud, falls er mitgepusht wurde
+          # 1. Radikale Säuberung: Löscht alle Cache-Leichen
           rm -rf .godot
+          rm -f project.godot.rf
           
-          # Erstelle die Import-Daten absolut sauber neu
+          # 2. Headless Import
           godot --headless --editor --quit || true
-          
+          godot --headless --editor --quit || true
+
+          # 3. Export
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
-          
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
-          else
+          elif [ "${{ matrix.platform }}" = "Linux" ]; then
             godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
           fi
-
+          
       - name: Upload
         uses: actions/upload-artifact@v4
         with:

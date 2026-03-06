@@ -56,12 +56,10 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("BigPoint"):
 		print("Big point eaten!")
 		
-		# Hol dir die Zeiten für das aktuelle Level
 		var times = get_intermission_times(Global.level)
 		intermission_time_left = times["total"]
 		intermission_blink_time = times["blink"]
 		
-		# Nur wenn die Zeit größer als 0 ist, schalten wir den Modus ein 
 		if intermission_time_left > 0:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
@@ -97,30 +95,22 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 				
 				
 func killPacman():
-	if isDying:
-		return
-		
+	if isDying: return
+	$AudioDeath.play()
 	isDying = true
 	Global.isGameStopped = true 
 	Global.health -= 1
-	get_tree().call_group("ui", "update_healthbar", Global.health)
-	
-	# Todes-Größe (falls du das aus der letzten Nachricht nutzt)
-	$AnimatedSprite2D.scale = Vector2(2.5, 2.5) 
-	
-	$AnimatedSprite2D.play("Death")
-	await $AnimatedSprite2D.animation_finished 
-	
-	# Wieder normale Größe
-	$AnimatedSprite2D.scale = Vector2(1.25, 1.25) 
-	
-	global_position = spawn_position
-	
-	# NEU: Sag ihm, dass er wieder seine normale Animation abspielen soll!
-	$AnimatedSprite2D.play("PacMan_Kauen") 
-	
-	Global.isGameStopped = false 
-	isDying = false
+  get_tree().call_group("ui", "update_healthbar")
+  if Global.health > 0:
+		Global.isGameStopped = true
+		isDying = true
+		$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
+		$AnimatedSprite2D.play("Death")
+		await $AnimatedSprite2D.animation_finished
+		await get_tree().create_timer(1.0).timeout 
+		get_tree().reload_current_scene()
+	else:
+		pass
 	
 	
 func get_intermission_times(level: int) -> Dictionary:
@@ -136,13 +126,10 @@ func get_intermission_times(level: int) -> Dictionary:
 	elif level == 4:
 		total_time = 5.0; blink_time = 2.5
 	elif level >= 5 and level <= 8:
-		# Extrem kurz, fast sofortiges Blinken
-		total_time = 4.0; blink_time = 2.0
+		total_time = 2.0; blink_time = 2.0
 	elif level >= 9 and level <= 16:
-		# Ultra kurz
-		total_time = 3.0; blink_time = 1.5
+		total_time = 1.0; blink_time = 1.0
 	else:
-		# Level 17+: Geister werden GAR NICHT mehr blau!
 		total_time = 0.0; blink_time = 0.0
 		
 	return {"total": total_time, "blink": blink_time}
