@@ -120,17 +120,23 @@ visible = false
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_ft6cd")]
 position = Vector2(479, 88)
 dots_to_leave = 0
+dots_to_leave_after_death = 7
+time_to_leave = 0.0
 spawnpoint = NodePath("../SpawnpointPink")
 
 [node name="RedGhost" parent="Ghosts" unique_id=1182016807 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("16_ft6cd")]
 position = Vector2(480, 148)
 spawnpoint = NodePath("../SpawnpointRed")
 dots_to_leave = 0
+dots_to_leave_after_death = 0
+time_to_leave = 0.0
 chase_distance = 650.0
 
 [node name="OrangeGhost" parent="Ghosts" unique_id=384626397 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_nfivy")]
 position = Vector2(521, 88)
 dots_to_leave = 60
+dots_to_leave_after_death = 32
+time_to_leave = 8.0
 spawnpoint = NodePath("../SpawnpointOrange")
 
 [node name="CyanGhost" parent="Ghosts" unique_id=67143669 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("18_bb450")]
