@@ -21,13 +21,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup-Templates
-        run: |
-          mkdir -p ~/.local/share/godot/export_templates/4.3.stable
-          wget https://github.com/godotengine/godot/releases/download/4.3-stable/Godot_v4.3-stable_export_templates.tpz
-          unzip Godot_v4.3-stable_export_templates.tpz
-          mv templates/* ~/.local/share/godot/export_templates/4.3.stable/
-          rm Godot_v4.3-stable_export_templates.tpz
 
       - name: Build-Folders
         run: mkdir -p build/${{ matrix.platform }}
@@ -38,18 +31,19 @@ jobs:
           
           # 1. Radikale Säuberung: Löscht alle Cache-Leichen
           rm -rf .godot
-          rm -f project.godot.rf  # Falls vorhanden
+          rm -f project.godot.rf
           
-          # 2. Headless Import: Das simuliert das "Öffnen des Editors"
-          # Wir lassen es zweimal laufen, um sicherzugehen, dass alle UIDs generiert sind
+          # 2. Headless Import
           godot --headless --editor --quit || true
           godot --headless --editor --quit || true
 
-          # 3. Export mit explizitem Pfad-Check
+          # 3. Export mit explizitem Pfad-Check FÜR ALLE 3 PLATTFORMEN
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
+          elif [ "${{ matrix.platform }}" = "Linux" ]; then
+            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
           fi
           
       - name: Upload
