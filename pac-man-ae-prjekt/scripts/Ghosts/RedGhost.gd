@@ -8,6 +8,8 @@ enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
 
+var is_immune = false 
+var was_intermission = false
 var is_eaten = false;
 
 var isReady = false
@@ -119,6 +121,11 @@ func set_next_target():
 	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
+	if Global.isIntermissionMode != was_intermission:
+		was_intermission = Global.isIntermissionMode
+		if Global.isIntermissionMode == true:
+			is_immune = false
+			
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
@@ -135,6 +142,7 @@ func _process(delta):
 		else:
 			if	is_eaten and global_position.distance_to(spawnpoint.global_position) < 16.0:
 				is_eaten = false
+				is_immune = true
 				print("Blinky: Wiederbelebt!")
 				update_path()
 
@@ -144,14 +152,12 @@ func get_eaten():
 	update_path()
 
 func get_direction():
-	if Global.isIntermissionMode and not is_eaten:
-		
+	if Global.isIntermissionMode and not is_eaten and not is_immune:
 		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
 			$AnimatedSprite2D.play("ScaredBlink")
 		else:
 			$AnimatedSprite2D.play("Scared")
-			
-		return 
+		return
 			
 	var direction = target_position - global_position
 	
