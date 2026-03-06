@@ -11,7 +11,7 @@ const PELLET_X := 300.0
 # All ghosts now use 16×16 pixel art body with color modulate
 const GH_SCALE := Vector2(2.2, 2.2)   # Ghost size
 const SCARED_SCALE := Vector2(2.2, 2.2)
-const PAC_SCALE := Vector2(1.3, 1.3)  # Pac-Man slightly bigger than ghosts
+const PAC_SCALE := Vector2(1.2, 1.2)  # Pac-Man slightly bigger than ghosts
 const PELLET_SCALE := Vector2(0.02, 0.02)
 const GH_COLORS := [
 	Color(1, 0, 0),        # Red
