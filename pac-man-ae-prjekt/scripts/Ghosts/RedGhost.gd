@@ -83,15 +83,18 @@ func update_path():
 	
 	var current_target = Vector2.ZERO
 	
-	var distance_to_pacman = global_position.distance_to(pacman.global_position)
-	var is_pacman_near = distance_to_pacman <= chase_distance
-	
-	if current_mode == Mode.CHASE and is_pacman_near:
-		current_target = pacman.global_position
+	if is_eaten:
+		current_target = spawnpoint.global_position
 	else:
-		if global_position.distance_to(current_scatter_target) < 32.0:
-			pick_new_scatter_target()
-		current_target = current_scatter_target
+		var distance_to_pacman = global_position.distance_to(pacman.global_position)
+		var is_pacman_near = distance_to_pacman <= chase_distance
+	
+		if current_mode == Mode.CHASE and is_pacman_near:
+			current_target = pacman.global_position
+		else:
+			if global_position.distance_to(current_scatter_target) < 32.0:
+				pick_new_scatter_target()
+			current_target = current_scatter_target
 		
 	var new_path = main_node.get_path_to_pacman(global_position, current_target)
 	
@@ -119,7 +122,9 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		var speed = 100 * Global.speedGhostCyan * Global.speedGhost * delta
+		if is_eaten: speed = speed * 5
+		global_position = global_position.move_toward(target_position, speed)
 		
 		get_direction()
 	
@@ -127,10 +132,16 @@ func _process(delta):
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
+		else:
+			if	is_eaten and global_position.distance_to(spawnpoint.global_position) < 16.0:
+				is_eaten = false
+				print("Blinky: Wiederbelebt!")
+				update_path()
 
 func get_eaten():
-	global_position = spawnpoint.global_position
+	is_eaten = true;
 	current_path.clear()
+	update_path()
 
 func get_direction():
 	if Global.isIntermissionMode and not is_eaten:
