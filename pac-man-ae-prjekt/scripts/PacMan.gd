@@ -96,12 +96,14 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 				
 func killPacman():
 	if isDying: return
+	
 	$AudioDeath.play()
 	isDying = true
 	Global.isGameStopped = true 
 	Global.health -= 1
-  get_tree().call_group("ui", "update_healthbar")
-  if Global.health > 0:
+	get_tree().call_group("ui", "update_healthbar")
+  	
+	if Global.health > 0:
 		Global.isGameStopped = true
 		isDying = true
 		$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
