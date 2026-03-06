@@ -9,9 +9,10 @@ const GHOST_GAP := 48.0
 const PELLET_X := 300.0
 
 # All ghosts now use 16×16 pixel art body with color modulate
-const GH_SCALE := Vector2(2.2, 2.2)  # Uniform scale for 16×16 → ~35px
+const GH_SCALE := Vector2(2.2, 2.2)   # Ghost size
 const SCARED_SCALE := Vector2(2.2, 2.2)
-const PELLET_SCALE := Vector2(0.03, 0.03)
+const PAC_SCALE := Vector2(1.3, 1.3)  # Pac-Man slightly bigger than ghosts
+const PELLET_SCALE := Vector2(0.02, 0.02)
 const GH_COLORS := [
 	Color(1, 0, 0),        # Red
 	Color(0, 1, 1),        # Cyan
@@ -156,7 +157,6 @@ func _build_ui():
 func _build_anim_sprites():
 	# Pac-Man (3 frames: wide open, closed, half open)
 	var pac_atlas = load("res://assets/animation/Arcade - Pac-Man.png")
-	# 3 frames at 32px wide each (matching PacMan.tscn regions)
 	for i in 3:
 		var at = AtlasTexture.new()
 		at.atlas = pac_atlas
@@ -166,10 +166,11 @@ func _build_anim_sprites():
 	pac = Sprite2D.new()
 	pac.texture = pac_frames[0]
 	pac.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	pac.scale = PAC_SCALE  # ← Pac-Man size applied here
 	pac.z_index = 5
 	add_child(pac)
 
-	# 4 Ghosts (pixel art body with color modulate + eyes)
+	# 4 Ghosts
 	for i in 4:
 		var g = Sprite2D.new()
 		g.texture = ghost_tex[i]
@@ -188,7 +189,7 @@ func _build_anim_sprites():
 		add_child(e)
 		ghost_eyes.append(e)
 
-	# Power Pellet (big ball)
+	# Power Pellet
 	pellet_sprite = Sprite2D.new()
 	pellet_sprite.texture = load("res://assets/Point.png")
 	pellet_sprite.scale = PELLET_SCALE
@@ -205,7 +206,6 @@ func _reset():
 	ghosts_eaten = [false, false, false, false]
 	eaten_count = 0
 
-	# Start off-screen right; ghosts follow Pac-Man
 	pac_x = 1000.0
 	for i in 4:
 		gx[i] = pac_x + GHOST_GAP * (i + 1)
@@ -216,21 +216,18 @@ func _reset():
 		ghost_eyes[i].visible = true
 		ghost_eyes[i].texture = load("res://assets/ghost/Ghost_Eyes_Left.png")
 
-	pac.scale.x = -1.0  # Face left
+	pac.scale = Vector2(-PAC_SCALE.x, PAC_SCALE.y)  # Face left, keep size
 	pellet_sprite.visible = true
 	var pellet_x = randf_range(100.0, 700.0)
 	pellet_sprite.position = Vector2(pellet_x, ANIM_Y)
 
-	# Restore dots
 	for dot in small_dots:
 		dot.visible = true
 
 func _process(delta: float):
-	# Blinking "PLAY GAME"
 	blink_timer += delta
 	play_label.visible = fmod(blink_timer, 1.2) < 0.9
 
-	# Pac-Man mouth animation
 	pac_frame_timer += delta
 	if pac_frame_timer >= PAC_FRAME_SPEED:
 		pac_frame_timer = 0.0
@@ -251,12 +248,10 @@ func _do_chase(delta: float):
 	for i in 4:
 		gx[i] += move_dir * spd
 
-	# Pac-Man eats dots he passes
 	for dot in small_dots:
 		if dot.visible and abs(pac_x - dot.position.x) < 12:
 			dot.visible = false
 
-	# Pac-Man reaches the power pellet
 	if pac_x <= pellet_sprite.position.x + 15:
 		_begin_hunt()
 
@@ -265,7 +260,7 @@ func _begin_hunt():
 	ghosts_scared = true
 	pellet_sprite.visible = false
 	move_dir = 1.0
-	pac.scale.x = 1.0  # Face right
+	pac.scale = Vector2(PAC_SCALE.x, PAC_SCALE.y)  # Face right, keep size
 
 	for i in 4:
 		ghosts[i].texture = scared_tex
@@ -279,12 +274,10 @@ func _do_hunt(delta: float):
 		if not ghosts_eaten[i]:
 			gx[i] += move_dir * HUNT_GHOST_SPEED * delta
 
-	# Check if Pac-Man caught a ghost
 	for i in 4:
 		if not ghosts_eaten[i] and pac_x >= gx[i] - 12:
 			_eat_ghost(i)
 
-	# Off-screen → loop
 	if pac_x > 1000:
 		_reset()
 
@@ -331,4 +324,3 @@ func _load_scores():
 		var e = Global.leaderboard[i]
 		text += str(i + 1) + ". " + e["name"] + ": " + str(e["score"]) + "\n"
 	hs_label.text = text
-	

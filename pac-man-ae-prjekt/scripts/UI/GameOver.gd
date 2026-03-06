@@ -174,4 +174,3 @@ func _submit_name(player_name: String):
 		pname = "Unknown"
 	Global.update_leaderboard(pname)
 	get_tree().change_scene_to_file("res://scenes/UI/StartMenu.tscn")
-	
