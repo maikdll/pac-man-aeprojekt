@@ -5,6 +5,7 @@ var next_direction = Vector2.RIGHT
 var is_invincible = false
 var isDying = false
 var intermission_time_left = 0.0
+var intermission_blink_time = 0.0
 
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
@@ -29,7 +30,7 @@ func _physics_process(_delta: float) -> void:
 			next_direction = Vector2.DOWN
 		elif Input.is_action_pressed("ui_up"):
 			next_direction = Vector2.UP
-		var can_turn = not test_move(transform, next_direction * 30)
+		var can_turn = not test_move(transform, next_direction * 25)
 		if next_direction != current_direction and can_turn:
 			velocity = (current_direction * 0.5 + next_direction).normalized() * Global.speedPlayer * 100
 			current_direction = next_direction
@@ -54,13 +55,20 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		$AudioEatingFruit.play()
 	if area.is_in_group("BigPoint"):
 		print("Big point eaten!")
-		$AudioIntermission.play()
-		Global.isIntermissionMode = true
-		Global.speedGhost = Global.speedGhost / 2
-		intermission_time_left = 7.0
-		get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
 		
+		var times = get_intermission_times(Global.level)
+		intermission_time_left = times["total"]
+		intermission_blink_time = times["blink"]
 		
+		if intermission_time_left > 0:
+			$AudioIntermission.play()
+			Global.isIntermissionMode = true
+			get_tree().call_group("Ghost", "set", "is_eaten", false)
+			
+			Global.eatGhostScore = 200 
+			
+			Global.speedGhost = Global.speedGhost / 2
+			get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if isDying:
@@ -69,18 +77,62 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 	
 	if Global.isIntermissionMode == false:
-		isDying = true
-		Global.health -= 1
-		get_tree().call_group("ui", "update_healthbar", Global.health)
-		global_position = spawn_position
-		await get_tree().create_timer(1.0).timeout
-		isDying = false
+		killPacman()
+		
+	if Global.isIntermissionMode == true:
+		if body.is_in_group("Ghost"):
+			if body.is_eaten == false:
+				print("Geist gegessen! Aktueller Score-Wert: ", Global.eatGhostScore)
+				
+				body.get_eaten()
+				body.is_eaten = true
+				Global.score += Global.eatGhostScore
+				Global.eatGhostScore *= 2
+				
+				
+func killPacman():
+	if isDying: return
 	
-	elif body.is_in_group("RedGhost"):
-		get_tree().call_group("RedGhost", "get_eaten")
-	elif body.is_in_group("PinkGhost"):
-		get_tree().call_group("PinkGhost", "get_eaten")
-	elif body.is_in_group("CyanGhost"):
-		get_tree().call_group("CyanGhost", "get_eaten")
-	elif body.is_in_group("OrangeGhost"):
-		get_tree().call_group("OrangeGhost", "get_eaten")
+	print("Gegessene Punkte vor dem Reload: ", Global.eaten_points_positions.size())
+	$AudioDeath.play()
+	isDying = true
+	Global.isGameStopped = true 
+	Global.health -= 1
+	get_tree().call_group("ui", "update_healthbar")
+  	
+	if Global.health > 0:
+		Global.isGameStopped = true
+		isDying = true
+		$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
+		$AnimatedSprite2D.play("Death")
+		await $AnimatedSprite2D.animation_finished
+		await get_tree().create_timer(1.0).timeout 
+		get_tree().reload_current_scene()
+	else:
+		pass
+	
+	
+func get_intermission_times(level: int) -> Dictionary:
+	var total_time = 0.0
+	var blink_time = 0.0
+	
+	if level == 1:
+		total_time = 8.0; blink_time = 4.0
+	elif level == 2:
+		total_time = 7.0; blink_time = 3.5
+	elif level == 3:
+		total_time = 6.0; blink_time = 3.0
+	elif level == 4:
+		total_time = 5.0; blink_time = 2.5
+	elif level >= 5 and level <= 8:
+		total_time = 2.0; blink_time = 2.0
+	elif level >= 9 and level <= 16:
+		total_time = 1.0; blink_time = 1.0
+	else:
+		total_time = 0.0; blink_time = 0.0
+		
+	return {"total": total_time, "blink": blink_time}
+	
+	
+func stop_for_level_end():
+	$AnimatedSprite2D.play("Closed")

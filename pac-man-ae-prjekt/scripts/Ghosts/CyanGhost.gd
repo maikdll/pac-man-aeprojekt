@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var scatter_anchor: Vector2 = Vector2(800, 800) 
 @export var wander_radius: float = 200.0 
+@export var dots_to_leave: int = 30
 
 @export var spawnpoint: Marker2D;
 
@@ -9,7 +10,9 @@ enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
 
+var is_eaten = false;
 var isReady = false
+var is_in_house = true
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -18,19 +21,20 @@ var current_scatter_target: Vector2 = Vector2.ZERO
 @onready var main_node = get_tree().root.get_node("Main")
 @onready var pacman = get_tree().get_first_node_in_group("PacMan")
 @onready var blinky = get_tree().get_first_node_in_group("RedGhost")
-@onready var eyes: Sprite2D = $Eyes
-
-var eye_textures := {
-	"right": preload("res://assets/ghost/Ghost_Eyes_Right.png"),
-	"left": preload("res://assets/ghost/Ghost_Eyes_Left.png"),
-	"up": preload("res://assets/ghost/Ghost_Eyes_Up.png"),
-	"down": preload("res://assets/ghost/Ghost_Eyes_Down.png"),
-}
 
 func _ready():
+	$AnimatedSprite2D.play("Unten")
 	global_position = spawnpoint.global_position
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
+	
+	# Wenn er 0 Punkte braucht, darf er sofort raus!
+	if dots_to_leave <= 0:
+		leave_house()
+		
+		
+func leave_house():
+	is_in_house = false
 	
 	var timer = Timer.new()
 	timer.wait_time = 0.5
@@ -136,38 +140,82 @@ func set_next_target():
 	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
+	# NEU: Das Geisterhaus-Schloss
+	if is_in_house:
+		if Global.dots_eaten >= dots_to_leave:
+			leave_house() # Tür auf!
+		return # Bricht hier ab, damit der Geist sich nicht bewegt
+		
+	# --- Dein normaler Code ab hier ---
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
+		# 1. Der Geist bewegt sich
 		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		
+		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
+		get_direction()
 	
+	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
 
-	_update_eyes()
-
-func _update_eyes():
-	var dir = (target_position - global_position).normalized()
-	if abs(dir.x) >= abs(dir.y):
-		eyes.texture = eye_textures["right"] if dir.x > 0 else eye_textures["left"]
-	else:
-		eyes.texture = eye_textures["down"] if dir.y > 0 else eye_textures["up"]
-
 func get_eaten():
+	is_eaten = true
+	# Das ganze Spiel friert für den "Hit" ein!
+	Global.isGameStopped = true 
+	
+	# Prüfe, wie viele Punkte es gerade gibt, und zeige die richtige Animation
+	if Global.eatGhostScore == 200:
+		$AnimatedSprite2D.play("Score200")
+	elif Global.eatGhostScore == 400:
+		$AnimatedSprite2D.play("Score400")
+	elif Global.eatGhostScore == 800:
+		$AnimatedSprite2D.play("Score800")
+	elif Global.eatGhostScore == 1600:
+		$AnimatedSprite2D.play("Score1600")
+		
+	# Zeige die Zahl für eine halbe Sekunde an (Arcade-Freeze!)
+	await get_tree().create_timer(0.5).timeout
+	
+	# Das Spiel läuft weiter
+	Global.isGameStopped = false
+	
+	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
 	global_position = spawnpoint.global_position
 	current_path.clear()
 
 func get_direction():
+	# --- NEU: ANGST-MODUS (Intermission) ---
+	# Wenn Intermission aktiv ist UND der Geist noch nicht gegessen wurde:
+	if Global.isIntermissionMode and not is_eaten:
+		
+		# Der Geist schaut bei Pac-Man auf den dynamischen Blink-Timer!
+		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
+			$AnimatedSprite2D.play("ScaredBlink")
+		else:
+			# Ansonsten normales, blaues Angst-Gesicht
+			$AnimatedSprite2D.play("Scared")
+			
+		return # WICHTIG: Wir brechen die Funktion hier mit 'return' ab! 
+			   # Dadurch werden die Richtungen (Unten/Oben) komplett ignoriert.
+	# ---------------------------------------
+
+	# --- ALTE LOGIK: Normale Bewegung ---
 	var direction = target_position - global_position
+	
+	if direction.length() < 0.5:
+		return
+		
 	if abs(direction.x) > abs(direction.y):
 		if direction.x > 0:
-			print("Rechts")
+			$AnimatedSprite2D.play("Rechts")
 		else:
-			print("Links")
+			$AnimatedSprite2D.play("Links")
 	else:
 		if direction.y > 0:
-			print("Unten")
+			$AnimatedSprite2D.play("Unten")
 		else:
-			print("Oben")
+			$AnimatedSprite2D.play("Oben")

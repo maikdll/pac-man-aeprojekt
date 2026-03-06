@@ -1,0 +1,58 @@
+name: Build-Godot-Stable
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  export:
+    name: Export-${{ matrix.platform }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        platform: [Windows, Linux, macOS]
+
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Export Templates
+        run: |
+          # Verschiebt die im Container vorinstallierten Templates in den Ordner des GitHub-Runners
+          mkdir -p ~/.local/share/godot/export_templates
+          mv /root/.local/share/godot/export_templates/4.3.stable ~/.local/share/godot/export_templates/4.3.stable
+
+      - name: Build-Folders
+        run: mkdir -p build/${{ matrix.platform }}
+
+      - name: Run-Export
+        run: |
+          cd pac-man-ae-prjekt
+          
+          # 1. Radikale Säuberung: Löscht alle Cache-Leichen
+          rm -rf .godot
+          rm -f project.godot.rf
+          
+          # 2. Headless Import
+          godot --headless --editor --quit || true
+          godot --headless --editor --quit || true
+
+          # 3. Export
+          if [ "${{ matrix.platform }}" = "Windows" ]; then
+            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+          elif [ "${{ matrix.platform }}" = "macOS" ]; then
+            godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
+          elif [ "${{ matrix.platform }}" = "Linux" ]; then
+            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
+          fi
+          
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: GodotGame-${{ matrix.platform }}
+          path: build/${{ matrix.platform }}/

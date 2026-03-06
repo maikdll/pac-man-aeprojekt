@@ -11,12 +11,14 @@ config_version=5
 [application]
 
 config/name="PacManAePrjekt"
-run/main_scene="uid://bllj3qhce545k"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+run/main_scene="res://scenes/UI/StartMenu.tscn"
+config/features=PackedStringArray("4.3", "GL Compatibility")
+boot_splash/show_image=false
+boot_splash/bg_color=Color(0, 0, 0, 1)
 
 [autoload]
 
-Global="*uid://708xk1jl38ed"
+Global="*res://scripts/Global.gd"
 
 [display]
 
@@ -25,6 +27,8 @@ window/size/viewport_height=540
 window/size/window_width_override=1920
 window/size/window_height_override=1080
 window/stretch/mode="viewport"
+window/size/mode=4
+window/size/initial_position_type=4
 
 [input]
 
@@ -42,6 +46,13 @@ down={
 "deadzone": 0.2,
 "events": []
 }
+
+[layer_names]
+
+2d_physics/layer_1="Waende"
+2d_physics/layer_2="PacMan"
+2d_physics/layer_3="Ghosts"
+2d_physics/layer_4="Punkte"
 
 [physics]
 

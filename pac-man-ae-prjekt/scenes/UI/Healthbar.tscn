@@ -49,3 +49,5 @@ stretch_mode = 5
 
 [node name="AudioDeath" type="AudioStreamPlayer" parent="." unique_id=1670390634]
 stream = ExtResource("3_0tsam")
+
+[connection signal="ready" from="." to="." method="_on_ready"]
