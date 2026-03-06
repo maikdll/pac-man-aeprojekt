@@ -64,7 +64,10 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
 			get_tree().call_group("Ghost", "set", "is_eaten", false)
-			Global.eatGhostScore = 400
+			
+			# HIER WAR DER FEHLER: Startwert muss 200 sein!
+			Global.eatGhostScore = 200 
+			
 			Global.speedGhost = Global.speedGhost / 2
 			get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
 		
@@ -80,22 +83,30 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if Global.isIntermissionMode == true:
 		if body.is_in_group("Ghost"):
 			if body.is_eaten == false:
+				# NEU: Print-Befehl für deine Konsole!
+				print("Geist gegessen! Aktueller Score-Wert: ", Global.eatGhostScore)
+				
 				body.get_eaten()
 				body.is_eaten = true
 				Global.score += Global.eatGhostScore
 				Global.eatGhostScore *= 2
-			elif body.is_eaten == true:
-				killPacman()
+				
+			# HIER HABE ICH DAS "elif body.is_eaten == true: killPacman()" GELÖSCHT!
 				
 				
 func killPacman():
 	if isDying: return
 	$AudioDeath.play()
 	isDying = true
+	Global.isGameStopped = true 
 	Global.health -= 1
-	get_tree().call_group("ui", "update_healthbar")
-	if Global.health > 0:
-		Global.isGameStopped = true;
+  get_tree().call_group("ui", "update_healthbar")
+  if Global.health > 0:
+		Global.isGameStopped = true
+		isDying = true
+		$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
+		$AnimatedSprite2D.play("Death")
+		await $AnimatedSprite2D.animation_finished
 		await get_tree().create_timer(1.0).timeout 
 		get_tree().reload_current_scene()
 	else:
@@ -124,4 +135,5 @@ func get_intermission_times(level: int) -> Dictionary:
 	return {"total": total_time, "blink": blink_time}
 	
 	
-	
+func stop_for_level_end():
+	$AnimatedSprite2D.play("Closed")
