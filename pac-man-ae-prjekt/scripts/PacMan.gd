@@ -93,6 +93,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 func killPacman():
 	if isDying: return
 	
+	print("Gegessene Punkte vor dem Reload: ", Global.eaten_points_positions.size())
 	$AudioDeath.play()
 	isDying = true
 	Global.isGameStopped = true 

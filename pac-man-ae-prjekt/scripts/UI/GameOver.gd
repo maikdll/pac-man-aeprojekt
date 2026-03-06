@@ -5,6 +5,7 @@ func _on_ready() -> void:
 
 func setGameOver() -> void:
 	print("setGameOver()")
+	Global.eaten_points_positions.clear()
 	Global.isGameStopped = true
 	print("isGameStopped: ", Global.isGameStopped)
 	show()

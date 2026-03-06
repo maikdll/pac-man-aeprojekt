@@ -34,7 +34,6 @@ func setup_grid():
 
 	_add_walls_from_layer(tile_map1)
 	_add_walls_from_layer(tile_map2)
-	#_add_walls_from_layer(tile_map3) 
 
 func _add_walls_from_layer(layer: TileMapLayer):
 	var cells = layer.get_used_cells()
@@ -68,39 +67,42 @@ func spawn_points():
 			if astar_grid.is_point_solid(cell):
 				continue
 				
-			if tile_map3.get_cell_source_id(cell) != -1:  # Invisible Wand shouldn't be with points
+			if tile_map3.get_cell_source_id(cell) != -1:
 				continue
 				
 			var touches_wall = false
-			
 			for dx in [-1, 0, 1]:
 				for dy in [-1, 0, 1]:
 					if dx == 0 and dy == 0:
 						continue
-						
 					var neighbor_cell = cell + Vector2i(dx, dy)
 					if astar_grid.is_in_boundsv(neighbor_cell):
-						
 						if astar_grid.is_point_solid(neighbor_cell):
 							touches_wall = true
 							break
 				if touches_wall:
 					break
-					
 			if touches_wall:
 				continue
 				
 			points_placed += 1
-			var point
+		
+			if cell in Global.eaten_points_positions:
+				continue
 			
+			var local_center = tile_map1.map_to_local(cell)
+			var current_point_pos = tile_map1.to_global(local_center)
+			
+			var point
 			if points_placed % 60 == 0:
 				point = big_point_scene.instantiate()
 			else:
 				point = point_scene.instantiate()
 				
 			points_container.add_child(point)
-			var local_center = tile_map1.map_to_local(cell)
-			point.global_position = tile_map1.to_global(local_center)
+			point.global_position = current_point_pos
+			
+			point.grid_pos = cell
 
 func restrict_grid_for_ghosts():
 	var edge_cells_to_block = []
@@ -148,6 +150,7 @@ func checkAllPointsEaten():
 		get_tree().call_group("PacMan", "stop_for_level_end")
 		
 		Global.level += 1
+		Global.eaten_points_positions.clear()
 		await get_tree().create_timer(2.0).timeout
 		get_tree().reload_current_scene()
 		
