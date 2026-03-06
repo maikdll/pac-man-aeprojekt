@@ -136,14 +136,15 @@ func restrict_grid_for_ghosts():
 		astar_grid.set_point_solid(cell, true)
 
 func checkAllPointsEaten():
+	Global.remainingPoints = 0;
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			Global.remainingPoints += 1
+	print("vorhandene Punkte: ", Global.remainingPoints)
 	if Global.remainingPoints == 1:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
 		
-		# NEU: Wir rufen Pac-Mans neue Funktion auf!
 		get_tree().call_group("PacMan", "stop_for_level_end")
 		
 		Global.level += 1
