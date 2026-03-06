@@ -15,6 +15,11 @@ extends Node2D
 
 var astar_grid = AStarGrid2D.new()
 
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_Q:
+			get_tree().quit()
+
 func _ready():
 	Global.isGameStopped = false
 	Global.isIntermissionMode = false
