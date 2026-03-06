@@ -151,7 +151,6 @@ func _process(delta):
 			leave_house() # Tür auf!
 		return # Bricht hier ab, damit der Geist sich nicht bewegt
 		
-	# --- Dein normaler Code ab hier ---
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
@@ -190,11 +189,8 @@ func get_eaten():
 	# Zeige die Zahl für eine halbe Sekunde an (Arcade-Freeze!)
 	await get_tree().create_timer(0.5).timeout
 	
-	# Das Spiel läuft weiter
 	Global.isGameStopped = false
 	
-	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
-	global_position = spawnpoint.global_position
 	current_path.clear()
 	update_path()
 

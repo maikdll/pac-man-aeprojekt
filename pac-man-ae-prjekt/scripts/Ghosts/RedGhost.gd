@@ -147,7 +147,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		var speed = 100 * Global.speedGhostCyan * Global.speedGhost * delta
+		var speed = 100 * Global.speedGhostRed * Global.speedGhost * delta
 		if is_eaten: speed = speed * 5
 		global_position = global_position.move_toward(target_position, speed)
 		
@@ -166,10 +166,8 @@ func _process(delta):
 
 func get_eaten():
 	is_eaten = true
-	# Das ganze Spiel friert für den "Hit" ein!
 	Global.isGameStopped = true 
 	
-	# Prüfe, wie viele Punkte es gerade gibt, und zeige die richtige Animation
 	if Global.eatGhostScore == 200:
 		$AnimatedSprite2D.play("Score200")
 	elif Global.eatGhostScore == 400:
@@ -179,14 +177,10 @@ func get_eaten():
 	elif Global.eatGhostScore == 1600:
 		$AnimatedSprite2D.play("Score1600")
 		
-	# Zeige die Zahl für eine halbe Sekunde an (Arcade-Freeze!)
 	await get_tree().create_timer(0.5).timeout
-	
-	# Das Spiel läuft weiter
+
 	Global.isGameStopped = false
 	
-	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
-	global_position = spawnpoint.global_position
 	current_path.clear()
 	update_path()
 

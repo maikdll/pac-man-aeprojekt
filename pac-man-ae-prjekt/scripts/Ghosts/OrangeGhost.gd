@@ -193,14 +193,10 @@ func get_eaten():
 	elif Global.eatGhostScore == 1600:
 		$AnimatedSprite2D.play("Score1600")
 		
-	# Zeige die Zahl für eine halbe Sekunde an (Arcade-Freeze!)
 	await get_tree().create_timer(0.5).timeout
 	
-	# Das Spiel läuft weiter
 	Global.isGameStopped = false
 	
-	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
-	global_position = spawnpoint.global_position
 	current_path.clear()
 	update_path()
 
