@@ -4,6 +4,10 @@ extends Node2D
 @export var tile_map2: TileMapLayer 
 @export var tile_map3: TileMapLayer 
 
+@onready var healthbar = $Healthbar
+@onready var fruitbar = $Fruitbar
+@onready var score_ui = $Score
+
 @export var big_point_scene: PackedScene
 @export var point_scene: PackedScene
 @onready var points_container = $Points
@@ -11,10 +15,14 @@ extends Node2D
 
 var astar_grid = AStarGrid2D.new()
 
+func _input(event):
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_Q:
+			get_tree().quit()
+
 func _ready():
 	Global.isGameStopped = false
 	Global.isIntermissionMode = false
-	Global.dots_eaten = 0
 	
 	setDifficulty()
 	
@@ -138,11 +146,13 @@ func restrict_grid_for_ghosts():
 		astar_grid.set_point_solid(cell, true)
 
 func checkAllPointsEaten():
-	Global.remainingPoints = 0;
+	Global.remainingPoints = 0
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			Global.remainingPoints += 1
+			
 	print("vorhandene Punkte: ", Global.remainingPoints)
+	
 	if Global.remainingPoints == 1:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
@@ -151,7 +161,33 @@ func checkAllPointsEaten():
 		
 		Global.level += 1
 		Global.eaten_points_positions.clear()
-		await get_tree().create_timer(2.0).timeout
+		Global.dots_eaten = 0
+		Global.died_in_level = false
+		
+		await get_tree().create_timer(1.0).timeout
+		
+		get_tree().call_group("PacMan", "set", "visible", false)
+		get_tree().call_group("Ghost", "set", "visible", false)
+		
+		for i in range(4):
+			tile_map1.visible = false
+			tile_map2.visible = false
+			
+			if healthbar: healthbar.visible = false
+			if fruitbar: fruitbar.visible = false
+			if score_ui: score_ui.visible = false
+			
+			await get_tree().create_timer(0.2).timeout
+			
+			tile_map1.visible = true
+			tile_map2.visible = true
+			
+			if healthbar: healthbar.visible = true
+			if fruitbar: fruitbar.visible = true
+			if score_ui: score_ui.visible = true
+			
+			await get_tree().create_timer(0.2).timeout
+			
 		get_tree().reload_current_scene()
 		
 func setDifficulty():
