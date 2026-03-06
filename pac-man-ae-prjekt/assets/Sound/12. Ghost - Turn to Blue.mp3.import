@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://h5n67daqxel2"
+path="res://.godot/imported/12. Ghost - Turn to Blue.mp3-4a7fad06db2c8da4094d2430a946fa70.mp3str"
+
+[deps]
+
+source_file="res://assets/Sound/12. Ghost - Turn to Blue.mp3"
+dest_files=["res://.godot/imported/12. Ghost - Turn to Blue.mp3-4a7fad06db2c8da4094d2430a946fa70.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=38.52
+beat_count=5
+bar_beats=8

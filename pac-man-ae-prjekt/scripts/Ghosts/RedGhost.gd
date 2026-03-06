@@ -86,7 +86,7 @@ func start_wave(mode: Mode, duration: float):
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
 		print("Blinky: Dauerangriff")
-		if(Global.remainingPoints < 100):
+		if(Global.remainingPoints < 455):
 			start_wave(Mode.CHASE, 200.0) 
 			if not $AudioStreamPlayer2D.playing:
 				$AudioStreamPlayer2D.play()

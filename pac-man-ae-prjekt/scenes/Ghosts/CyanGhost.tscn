@@ -196,5 +196,5 @@ animation = &"Score1600"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
 position = Vector2(0, 2)
-scale = Vector2(6.46, 6.46)
+scale = Vector2(4.55, 4.55)
 shape = SubResource("CircleShape2D_a73n8")
