@@ -9,6 +9,8 @@ enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
 var wave_timer: Timer
 
+var is_immune = false 
+var was_intermission = false
 var is_eaten = false;
 
 var isReady = false
@@ -94,15 +96,18 @@ func update_path():
 	
 	var current_target = Vector2.ZERO
 	
-	var distance_to_pacman = global_position.distance_to(pacman.global_position)
-	var is_pacman_near = distance_to_pacman <= chase_distance
-	
-	if current_mode == Mode.CHASE and is_pacman_near:
-		current_target = pacman.global_position
+	if is_eaten:
+		current_target = spawnpoint.global_position
 	else:
-		if global_position.distance_to(current_scatter_target) < 32.0:
-			pick_new_scatter_target()
-		current_target = current_scatter_target
+		var distance_to_pacman = global_position.distance_to(pacman.global_position)
+		var is_pacman_near = distance_to_pacman <= chase_distance
+	
+		if current_mode == Mode.CHASE and is_pacman_near:
+			current_target = pacman.global_position
+		else:
+			if global_position.distance_to(current_scatter_target) < 32.0:
+				pick_new_scatter_target()
+			current_target = current_scatter_target
 		
 	var new_path = main_node.get_path_to_pacman(global_position, current_target)
 	
@@ -127,6 +132,11 @@ func set_next_target():
 	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
+	if Global.isIntermissionMode != was_intermission:
+		was_intermission = Global.isIntermissionMode
+		if Global.isIntermissionMode == true:
+			is_immune = false
+			
 	# NEU: Das Geisterhaus-Schloss
 	if is_in_house:
 		if Global.dots_eaten >= dots_to_leave:
@@ -137,7 +147,9 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
+		var speed = 100 * Global.speedGhostRed * Global.speedGhost * delta
+		if is_eaten: speed = speed * 5
+		global_position = global_position.move_toward(target_position, speed)
 		
 		get_direction()
 	
@@ -145,13 +157,17 @@ func _process(delta):
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
+		else:
+			if	is_eaten and global_position.distance_to(spawnpoint.global_position) < 16.0:
+				is_eaten = false
+				is_immune = true
+				print("Blinky: Wiederbelebt!")
+				update_path()
 
 func get_eaten():
 	is_eaten = true
-	# Das ganze Spiel friert für den "Hit" ein!
 	Global.isGameStopped = true 
 	
-	# Prüfe, wie viele Punkte es gerade gibt, und zeige die richtige Animation
 	if Global.eatGhostScore == 200:
 		$AnimatedSprite2D.play("Score200")
 	elif Global.eatGhostScore == 400:
@@ -161,25 +177,20 @@ func get_eaten():
 	elif Global.eatGhostScore == 1600:
 		$AnimatedSprite2D.play("Score1600")
 		
-	# Zeige die Zahl für eine halbe Sekunde an (Arcade-Freeze!)
 	await get_tree().create_timer(0.5).timeout
-	
-	# Das Spiel läuft weiter
+
 	Global.isGameStopped = false
 	
-	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
-	global_position = spawnpoint.global_position
 	current_path.clear()
+	update_path()
 
 func get_direction():
-	if Global.isIntermissionMode and not is_eaten:
-		
+	if Global.isIntermissionMode and not is_eaten and not is_immune:
 		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
 			$AnimatedSprite2D.play("ScaredBlink")
 		else:
 			$AnimatedSprite2D.play("Scared")
-			
-		return 
+		return
 			
 	var direction = target_position - global_position
 	

@@ -76,18 +76,16 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("Ghost"):
 		return
 	
-	if Global.isIntermissionMode == false:
-		killPacman()
+	if body.is_eaten:
+		return
 		
-	if Global.isIntermissionMode == true:
-		if body.is_in_group("Ghost"):
-			if body.is_eaten == false:
-				print("Geist gegessen! Aktueller Score-Wert: ", Global.eatGhostScore)
-				
-				body.get_eaten()
-				body.is_eaten = true
-				Global.score += Global.eatGhostScore
-				Global.eatGhostScore *= 2
+	if Global.isIntermissionMode == true and body.is_immune == false:
+		body.get_eaten()
+		Global.score += Global.eatGhostScore
+		Global.eatGhostScore *= 2
+		print("Geist gefressen!")
+	else:
+		killPacman()
 				
 				
 func killPacman():
