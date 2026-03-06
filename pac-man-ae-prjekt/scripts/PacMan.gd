@@ -9,7 +9,7 @@ var intermission_blink_time = 0.0
 
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
-func ready():
+func _ready():
 	get_tree().call_group("Main", "setDifficulty")
 	global_position = spawn_position
 
@@ -68,7 +68,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			Global.eatGhostScore = 200 
 			
 			Global.speedGhost = Global.speedGhost / 2
-			get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
+			get_tree().call_group("Ghost", "start_wave", 1, 10.0) 
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if isDying:
@@ -95,19 +95,20 @@ func killPacman():
 	$AudioDeath.play()
 	isDying = true
 	Global.isGameStopped = true 
+	
+	$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
+	$AnimatedSprite2D.play("Death", 2.5)
+	
+	await $AnimatedSprite2D.animation_finished
+	await get_tree().create_timer(1.0).timeout 
+	
 	Global.health -= 1
 	get_tree().call_group("ui", "update_healthbar")
-  	
+	
 	if Global.health > 0:
-		Global.isGameStopped = true
-		isDying = true
-		$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
-		$AnimatedSprite2D.play("Death")
-		await $AnimatedSprite2D.animation_finished
-		await get_tree().create_timer(1.0).timeout 
 		get_tree().reload_current_scene()
 	else:
-		pass
+		get_tree().call_group("ui", "setGameOver")
 	
 	
 func get_intermission_times(level: int) -> Dictionary:
