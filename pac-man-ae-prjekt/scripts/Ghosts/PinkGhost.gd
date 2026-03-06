@@ -17,6 +17,9 @@ var is_eaten = false;
 var isReady = false;
 var is_in_house = true
 
+var is_immune = false 
+var was_intermission = false
+
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
 
@@ -97,18 +100,20 @@ func update_path():
 	
 	var current_target = Vector2.ZERO
 	
-	if current_mode == Mode.CHASE:
-		var pacman_direction = Vector2.ZERO
-		if "direction" in pacman:
-			pacman_direction = pacman.direction.normalized()
-		elif "velocity" in pacman and pacman.velocity.length() > 0:
-			pacman_direction = pacman.velocity.normalized()
-			
-		current_target = pacman.global_position + (pacman_direction * ambush_distance)
+	if is_eaten:
+		current_target = spawnpoint.global_position
 	else:
-		if global_position.distance_to(current_scatter_target) < 32.0:
-			pick_new_scatter_target()
-		current_target = current_scatter_target
+		if current_mode == Mode.CHASE:
+			var pacman_direction = Vector2.ZERO
+			if "direction" in pacman:
+				pacman_direction = pacman.direction.normalized()
+			elif "velocity" in pacman and pacman.velocity.length() > 0:
+				pacman_direction = pacman.velocity.normalized()
+			current_target = pacman.global_position + (pacman_direction * ambush_distance)
+		else:
+			if global_position.distance_to(current_scatter_target) < 32.0:
+				pick_new_scatter_target()
+			current_target = current_scatter_target
 		
 	var new_path = main_node.get_path_to_pacman(global_position, current_target)
 
@@ -135,6 +140,11 @@ func set_next_target():
 	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
+	if Global.isIntermissionMode != was_intermission:
+		was_intermission = Global.isIntermissionMode
+		if Global.isIntermissionMode == true:
+			is_immune = false
+	
 	# NEU: Das Geisterhaus-Schloss
 	if is_in_house:
 		if Global.dots_eaten >= dots_to_leave:
@@ -145,17 +155,21 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		# 1. Der Geist bewegt sich
-		global_position = global_position.move_toward(target_position, 100 * Global.speedGhostCyan * Global.speedGhost * delta)
-		
-		# 2. WICHTIG: Wir checken die Richtung JEDEN Frame, in dem er sich bewegt!
+		var speed = 100 * Global.speedGhostPink * Global.speedGhost * delta
+		if is_eaten: speed = speed * 5
+		global_position = global_position.move_toward(target_position, speed)
 		get_direction()
 	
-	# 3. Wenn er am Ziel ankommt, holt er sich den nächsten Wegpunkt
 	if global_position.distance_to(target_position) < 1.0:
 		current_path.pop_front()
 		if not current_path.is_empty():
 			set_next_target()
+		else:
+			if	is_eaten and global_position.distance_to(spawnpoint.global_position) < 16.0:
+				is_eaten = false
+				is_immune = true
+				print("Pink: Wiederbelebt!")
+				update_path()
 
 func get_eaten():
 	is_eaten = true
@@ -182,24 +196,16 @@ func get_eaten():
 	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
 	global_position = spawnpoint.global_position
 	current_path.clear()
+	update_path()
 
 func get_direction():
-	# --- NEU: ANGST-MODUS (Intermission) ---
-	# Wenn Intermission aktiv ist UND der Geist noch nicht gegessen wurde:
-	if Global.isIntermissionMode and not is_eaten:
-		
-		# Der Geist schaut bei Pac-Man auf den dynamischen Blink-Timer!
+	if Global.isIntermissionMode and not is_eaten and not is_immune:
 		if pacman != null and pacman.intermission_time_left <= pacman.intermission_blink_time:
 			$AnimatedSprite2D.play("ScaredBlink")
 		else:
-			# Ansonsten normales, blaues Angst-Gesicht
 			$AnimatedSprite2D.play("Scared")
-			
-		return # WICHTIG: Wir brechen die Funktion hier mit 'return' ab! 
-			   # Dadurch werden die Richtungen (Unten/Oben) komplett ignoriert.
-	# ---------------------------------------
+		return
 
-	# --- ALTE LOGIK: Normale Bewegung ---
 	var direction = target_position - global_position
 	
 	if direction.length() < 0.5:
