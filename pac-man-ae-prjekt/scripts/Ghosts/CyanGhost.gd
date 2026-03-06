@@ -3,6 +3,8 @@ extends CharacterBody2D
 @export var scatter_anchor: Vector2 = Vector2(800, 800) 
 @export var wander_radius: float = 200.0 
 @export var dots_to_leave: int = 30
+@export var dots_to_leave_after_death: int = 17
+@export var time_to_leave: float = 4.0
 
 @export var spawnpoint: Marker2D;
 
@@ -15,6 +17,9 @@ var was_intermission = false
 var is_eaten = false;
 var isReady = false
 var is_in_house = true
+var current_time_in_house = 0.0
+var gemerkte_punkte = 0
+var start_dots = 0
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -25,14 +30,16 @@ var current_scatter_target: Vector2 = Vector2.ZERO
 @onready var blinky = get_tree().get_first_node_in_group("RedGhost")
 
 func _ready():
+	if Global.died_in_level == true:
+		dots_to_leave = dots_to_leave_after_death
+		
+	start_dots = Global.dots_eaten 
+	gemerkte_punkte = Global.dots_eaten
+	
 	$AnimatedSprite2D.play("Unten")
 	global_position = spawnpoint.global_position
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
-	
-	# Wenn er 0 Punkte braucht, darf er sofort raus!
-	if dots_to_leave <= 0:
-		leave_house()
 		
 		
 func leave_house():
@@ -149,13 +156,21 @@ func _process(delta):
 		if Global.isIntermissionMode == true:
 			is_immune = false
 			
-	# NEU: Das Geisterhaus-Schloss
 	if is_in_house:
-		if Global.dots_eaten >= dots_to_leave:
-			leave_house() # Tür auf!
-		return # Bricht hier ab, damit der Geist sich nicht bewegt
+		if Global.isGameStopped == false: 
+			
+			if Global.dots_eaten > gemerkte_punkte:
+				current_time_in_house = 0.0
+				gemerkte_punkte = Global.dots_eaten
+				
+			current_time_in_house += delta
+			
+		var dots_eaten_since_spawn = Global.dots_eaten - start_dots
 		
-	# --- Dein normaler Code ab hier ---
+		if dots_eaten_since_spawn >= dots_to_leave or current_time_in_house >= time_to_leave:
+			leave_house() 
+		return
+	
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
@@ -218,3 +233,14 @@ func get_direction():
 			$AnimatedSprite2D.play("Unten")
 		else:
 			$AnimatedSprite2D.play("Oben")
+
+func reset_ghost():
+	global_position = spawnpoint.global_position
+	current_path.clear()
+	
+	is_in_house = true
+	current_time_in_house = 0.0
+	$AnimatedSprite2D.play("Oben")
+	
+	if dots_to_leave <= 0:
+		leave_house()

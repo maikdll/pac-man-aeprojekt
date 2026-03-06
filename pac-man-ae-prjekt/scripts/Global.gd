@@ -15,6 +15,7 @@ var eatGhostScore = 200;
 var dots_eaten = 0 # gefressene Punkte im Level
 var remainingPoints = 500;
 var eaten_points_positions = []
+var died_in_level = false
 
 const SAVE_PATH = "user://leaderboard.save"
 var leaderboard = [

@@ -104,10 +104,11 @@ func killPacman():
 		$AnimatedSprite2D.scale = Vector2(2.5, 2.5)
 		$AnimatedSprite2D.play("Death")
 		await $AnimatedSprite2D.animation_finished
+		
+		Global.died_in_level = true 
+		
 		await get_tree().create_timer(1.0).timeout 
 		get_tree().reload_current_scene()
-	else:
-		pass
 	
 	
 func get_intermission_times(level: int) -> Dictionary:
