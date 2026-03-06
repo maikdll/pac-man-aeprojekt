@@ -14,6 +14,8 @@ var astar_grid = AStarGrid2D.new()
 func _ready():
 	Global.isGameStopped = false
 	Global.isIntermissionMode = false
+	Global.dots_eaten = 0
+	
 	setDifficulty()
 	
 	if tile_map1 and tile_map2 and tile_map3:
@@ -138,9 +140,14 @@ func checkAllPointsEaten():
 	for point in points_container.get_children():
 		if not point.is_queued_for_deletion():
 			remaining_points += 1
+			
 	if remaining_points == 1:
 		print("Alle Punkte gegessen")
 		Global.isGameStopped = true
+		
+		# NEU: Wir rufen Pac-Mans neue Funktion auf!
+		get_tree().call_group("PacMan", "stop_for_level_end")
+		
 		Global.level += 1
 		await get_tree().create_timer(2.0).timeout
 		get_tree().reload_current_scene()

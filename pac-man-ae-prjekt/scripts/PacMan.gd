@@ -62,12 +62,14 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		intermission_blink_time = times["blink"]
 		
 		# Nur wenn die Zeit größer als 0 ist, schalten wir den Modus ein 
-		# (Ab Level 17 passiert nämlich gar nichts mehr!)
 		if intermission_time_left > 0:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
 			get_tree().call_group("Ghost", "set", "is_eaten", false)
-			Global.eatGhostScore = 400
+			
+			# HIER WAR DER FEHLER: Startwert muss 200 sein!
+			Global.eatGhostScore = 200 
+			
 			Global.speedGhost = Global.speedGhost / 2
 			get_tree().call_group("Ghost", "start_wave", 1, 10.0) # 1 = Scatter Mode
 		
@@ -83,21 +85,41 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	if Global.isIntermissionMode == true:
 		if body.is_in_group("Ghost"):
 			if body.is_eaten == false:
+				# NEU: Print-Befehl für deine Konsole!
+				print("Geist gegessen! Aktueller Score-Wert: ", Global.eatGhostScore)
+				
 				body.get_eaten()
 				body.is_eaten = true
 				Global.score += Global.eatGhostScore
 				Global.eatGhostScore *= 2
-			elif body.is_eaten == true:
-				killPacman()
+				
+			# HIER HABE ICH DAS "elif body.is_eaten == true: killPacman()" GELÖSCHT!
 				
 				
 func killPacman():
-	$AudioDeath.play()
+	if isDying:
+		return
+		
 	isDying = true
+	Global.isGameStopped = true 
 	Global.health -= 1
-	get_tree().call_group("ui", "update_healthbar")
+	get_tree().call_group("ui", "update_healthbar", Global.health)
+	
+	# Todes-Größe (falls du das aus der letzten Nachricht nutzt)
+	$AnimatedSprite2D.scale = Vector2(2.5, 2.5) 
+	
+	$AnimatedSprite2D.play("Death")
+	await $AnimatedSprite2D.animation_finished 
+	
+	# Wieder normale Größe
+	$AnimatedSprite2D.scale = Vector2(1.25, 1.25) 
+	
 	global_position = spawn_position
-	await get_tree().create_timer(1.0).timeout
+	
+	# NEU: Sag ihm, dass er wieder seine normale Animation abspielen soll!
+	$AnimatedSprite2D.play("PacMan_Kauen") 
+	
+	Global.isGameStopped = false 
 	isDying = false
 	
 	
@@ -126,3 +148,5 @@ func get_intermission_times(level: int) -> Dictionary:
 	return {"total": total_time, "blink": blink_time}
 	
 	
+func stop_for_level_end():
+	$AnimatedSprite2D.play("Closed")

@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 @export var wander_radius: float = 200.0 
 @export var spawnpoint: Marker2D;
+@export var dots_to_leave: int = 30
 
 enum Mode { CHASE, SCATTER }
 var current_mode = Mode.SCATTER
@@ -10,6 +11,7 @@ var wave_timer: Timer
 var is_eaten = false;
 
 var isReady = false
+var is_in_house = true
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -20,12 +22,21 @@ var current_scatter_target: Vector2 = Vector2.ZERO
 @onready var pacman = get_tree().get_first_node_in_group("PacMan")
 
 func _ready():
+	$AnimatedSprite2D.play("Unten")
 	global_position = spawnpoint.global_position
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
 	
+	# Wenn er 0 Punkte braucht, darf er sofort raus!
+	if dots_to_leave <= 0:
+		leave_house()
+
+# NEU: Diese Funktion weckt den Geist auf!
+func leave_house():
+	is_in_house = false
+	
 	var timer = Timer.new()
-	timer.wait_time = 0.3
+	timer.wait_time = 0.5
 	timer.autostart = true
 	timer.timeout.connect(update_path)
 	add_child(timer)
@@ -35,7 +46,7 @@ func _ready():
 	wave_timer.timeout.connect(_on_wave_timeout)
 	add_child(wave_timer)
 	
-	start_wave(Mode.SCATTER, 7.0)
+	start_wave(Mode.SCATTER, 11.0)
 	update_path()
 	isReady = true
 
@@ -108,6 +119,13 @@ func set_next_target():
 	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
+	# NEU: Das Geisterhaus-Schloss
+	if is_in_house:
+		if Global.dots_eaten >= dots_to_leave:
+			leave_house() # Tür auf!
+		return # Bricht hier ab, damit der Geist sich nicht bewegt
+		
+	# --- Dein normaler Code ab hier ---
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
@@ -124,6 +142,27 @@ func _process(delta):
 			set_next_target()
 
 func get_eaten():
+	is_eaten = true
+	# Das ganze Spiel friert für den "Hit" ein!
+	Global.isGameStopped = true 
+	
+	# Prüfe, wie viele Punkte es gerade gibt, und zeige die richtige Animation
+	if Global.eatGhostScore == 200:
+		$AnimatedSprite2D.play("Score200")
+	elif Global.eatGhostScore == 400:
+		$AnimatedSprite2D.play("Score400")
+	elif Global.eatGhostScore == 800:
+		$AnimatedSprite2D.play("Score800")
+	elif Global.eatGhostScore == 1600:
+		$AnimatedSprite2D.play("Score1600")
+		
+	# Zeige die Zahl für eine halbe Sekunde an (Arcade-Freeze!)
+	await get_tree().create_timer(0.5).timeout
+	
+	# Das Spiel läuft weiter
+	Global.isGameStopped = false
+	
+	# HIER würdest du später das Bild auf "Nur Augen" wechseln!
 	global_position = spawnpoint.global_position
 	current_path.clear()
 
