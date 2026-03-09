@@ -108,6 +108,7 @@ func killPacman():
 	get_tree().call_group("ui", "update_healthbar")
 	
 	if Global.health > 0:
+		Global.died_in_level = true
 		get_tree().reload_current_scene()
 	else:
 		get_tree().call_group("ui", "setGameOver")

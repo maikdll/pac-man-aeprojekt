@@ -4,6 +4,22 @@
 [ext_resource type="Texture2D" uid="uid://bbujjbqpibbga" path="res://assets/Pac-Man - Miscellaneous - General Sprites.png" id="2_iqk8r"]
 [ext_resource type="AudioStream" uid="uid://cnvqltrqpmgqo" path="res://assets/Sound/siren4.wav" id="3_akifw"]
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_smfbu"]
+atlas = ExtResource("2_iqk8r")
+region = Rect2(596, 81, 12, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lq07"]
+atlas = ExtResource("2_iqk8r")
+region = Rect2(613, 80, 12, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_si1ta"]
+atlas = ExtResource("2_iqk8r")
+region = Rect2(582, 81, 12, 9)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_l7un0"]
+atlas = ExtResource("2_iqk8r")
+region = Rect2(629, 81, 12, 9)
+
 [sub_resource type="AtlasTexture" id="AtlasTexture_akifw"]
 atlas = ExtResource("2_iqk8r")
 region = Rect2(484, 64, 14, 14)
@@ -78,6 +94,38 @@ region = Rect2(564, 64, 14, 14)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_o1d2a"]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_smfbu")
+}],
+"loop": true,
+"name": &"Augen_Links",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lq07")
+}],
+"loop": true,
+"name": &"Augen_Oben",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_si1ta")
+}],
+"loop": true,
+"name": &"Augen_Rechts",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_l7un0")
+}],
+"loop": true,
+"name": &"Augen_Unten",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_akifw")
@@ -193,7 +241,7 @@ script = ExtResource("1_njrqx")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1848152875]
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_o1d2a")
-animation = &"Score800"
+animation = &"Augen_Unten"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost", "RedGhost"]]
 position = Vector2(0, 2.9999998)
