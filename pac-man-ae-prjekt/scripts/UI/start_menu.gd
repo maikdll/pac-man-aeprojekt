@@ -72,7 +72,7 @@ func start_game():
 	Global.score = 0
 	Global.health = 3
 	get_tree().call_group("Main", "setDifficulty")
-	get_tree().change_scene_to_file("res://scenes/Main.tscn")
+	SceneTransition.change_scene("res://scenes/Main.tscn")
 
 func _ready():
 	var body_tex = load("res://assets/ghost/Ghost_Body_01.png")
