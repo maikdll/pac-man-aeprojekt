@@ -133,7 +133,7 @@ func spawn_points():
 			var current_point_pos = tile_map1.to_global(local_center)
 			
 			var point
-			if points_placed % 73 == 0:
+			if points_placed % 60 == 0:
 				point = big_point_scene.instantiate()
 			else:
 				point = point_scene.instantiate()
