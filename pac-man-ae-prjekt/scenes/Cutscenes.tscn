@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://cg3eingxajrol"]
+
+[ext_resource type="VideoStream" uid="uid://bmkc35y7d5jiy" path="res://assets/Cutscenes/PacManVideo1.ogv" id="1_qjqx6"]
+[ext_resource type="Script" path="res://scripts/cutscenes.gd" id="1_swj6l"]
+[ext_resource type="VideoStream" uid="uid://bvdcl8k2l2tre" path="res://assets/Cutscenes/Cutscene1.ogv" id="2_swj6l"]
+[ext_resource type="VideoStream" uid="uid://c2asouv78pf5k" path="res://assets/Cutscenes/Cutscene2.ogv" id="3_5s2ef"]
+[ext_resource type="AudioStream" uid="uid://dopso212aqcl7" path="res://assets/Sound/pacman_intermission.wav" id="3_law5l"]
+[ext_resource type="VideoStream" uid="uid://bmyr3l5eywrtx" path="res://assets/Cutscenes/Cutscene3.ogv" id="4_1axuf"]
+[ext_resource type="VideoStream" uid="uid://bpnnjvvvkmdfj" path="res://assets/Cutscenes/Cutscene4.ogv" id="5_007an"]
+[ext_resource type="VideoStream" uid="uid://cswhp7sgc65l4" path="res://assets/Cutscenes/Cutscene5.ogv" id="6_vt6d6"]
+
+[node name="Cutscenes" type="Node2D" unique_id=186809379]
+script = ExtResource("1_swj6l")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="." unique_id=433986577]
+offset_right = 965.0
+offset_bottom = 540.0
+stream = ExtResource("2_swj6l")
+volume_db = -80.0
+expand = true
+
+[node name="VideoStreamPlayer2" type="VideoStreamPlayer" parent="." unique_id=1802207491]
+offset_right = 957.0
+offset_bottom = 537.0
+stream = ExtResource("3_5s2ef")
+volume_db = -80.0
+expand = true
+
+[node name="VideoStreamPlayer3" type="VideoStreamPlayer" parent="." unique_id=569881737]
+offset_right = 956.0
+offset_bottom = 543.0
+stream = ExtResource("4_1axuf")
+volume_db = -80.0
+expand = true
+
+[node name="VideoStreamPlayer4" type="VideoStreamPlayer" parent="." unique_id=655303899]
+offset_right = 960.0
+offset_bottom = 539.0
+stream = ExtResource("5_007an")
+volume_db = -80.0
+expand = true
+
+[node name="VideoStreamPlayer5" type="VideoStreamPlayer" parent="." unique_id=1656970570]
+offset_right = 963.0
+offset_bottom = 543.0
+stream = ExtResource("6_vt6d6")
+volume_db = -80.0
+expand = true
+
+[node name="VideoStreamPlayer6" type="VideoStreamPlayer" parent="." unique_id=611753370]
+offset_left = -147.0
+offset_top = -81.0
+offset_right = 1133.0
+offset_bottom = 639.0
+stream = ExtResource("1_qjqx6")
+volume_db = -80.0
+
+[node name="VideoStreamPlayer7" type="VideoStreamPlayer" parent="." unique_id=271720719]
+offset_left = -147.0
+offset_top = -81.0
+offset_right = 1133.0
+offset_bottom = 639.0
+stream = ExtResource("1_qjqx6")
+expand = true
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1007277319]
+stream = ExtResource("3_law5l")
