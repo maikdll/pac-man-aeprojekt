@@ -19,8 +19,20 @@ func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_Q:
 			get_tree().quit()
-
+	elif event is InputEventJoypadButton and event.pressed:
+		var quit_buttons = [
+			10, 11, 12, 
+			JOY_BUTTON_GUIDE, 
+			JOY_BUTTON_START, 
+			JOY_BUTTON_BACK
+		]
+		if event.button_index in quit_buttons:
+			get_tree().quit()
+			
 func _ready():
+	var joypads = Input.get_connected_joypads()
+	print("Verbundene Controller beim Start: ", joypads)
+	
 	Global.isGameStopped = false
 	Global.isIntermissionMode = false
 	
