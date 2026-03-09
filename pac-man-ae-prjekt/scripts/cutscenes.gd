@@ -3,7 +3,7 @@ extends Node
 func _ready() -> void:
 	await get_tree().create_timer(0.5).timeout
 	$AudioStreamPlayer2D.play()
-	if Global.level == 22: #This means Level 1
+	if Global.level == 2: #This means Level 1
 		$VideoStreamPlayer.play()
 		await $VideoStreamPlayer.finished
 		await get_tree().create_timer(1.5).timeout

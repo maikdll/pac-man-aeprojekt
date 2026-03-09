@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cg3eingxajrol"]
 
 [ext_resource type="VideoStream" uid="uid://bmkc35y7d5jiy" path="res://assets/Cutscenes/PacManVideo1.ogv" id="1_qjqx6"]
-[ext_resource type="Script" path="res://scripts/cutscenes.gd" id="1_swj6l"]
+[ext_resource type="Script" uid="uid://cbt820xohbek" path="res://scripts/cutscenes.gd" id="1_swj6l"]
 [ext_resource type="VideoStream" uid="uid://bvdcl8k2l2tre" path="res://assets/Cutscenes/Cutscene1.ogv" id="2_swj6l"]
 [ext_resource type="VideoStream" uid="uid://c2asouv78pf5k" path="res://assets/Cutscenes/Cutscene2.ogv" id="3_5s2ef"]
 [ext_resource type="AudioStream" uid="uid://dopso212aqcl7" path="res://assets/Sound/pacman_intermission.wav" id="3_law5l"]
