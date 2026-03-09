@@ -165,7 +165,7 @@ func checkAllPointsEaten():
 			
 	print("vorhandene Punkte: ", Global.remainingPoints)
 	
-	if Global.remainingPoints == 1:
+	if Global.remainingPoints == 420:
 		print("Alle Punkte gegessen")
 		await get_tree().create_timer(0.25).timeout
 		Global.isGameStopped = true
@@ -201,7 +201,7 @@ func checkAllPointsEaten():
 			
 			await get_tree().create_timer(0.2).timeout
 			
-		get_tree().reload_current_scene()
+		get_tree().change_scene_to_file("res://scenes/Cutscenes.tscn")
 		
 func setDifficulty():
 	print("LEVEL: ", Global.level)
