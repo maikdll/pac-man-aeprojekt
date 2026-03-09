@@ -146,6 +146,7 @@ func _build_screen():
 	name_input.add_theme_font_override("font", font)
 	name_input.add_theme_font_size_override("font_size", 14)
 	name_input.custom_minimum_size.x = 200
+	name_input.max_length = 15
 	name_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	input_container.add_child(name_input)
 
