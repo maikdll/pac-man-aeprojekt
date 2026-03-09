@@ -184,7 +184,7 @@ func checkAllPointsEaten():
 			
 	print("vorhandene Punkte: ", Global.remainingPoints)
 	
-	if Global.remainingPoints == 420:
+	if Global.remainingPoints == 1:
 		print("Alle Punkte gegessen")
 		await get_tree().create_timer(0.25).timeout
 		Global.isGameStopped = true
