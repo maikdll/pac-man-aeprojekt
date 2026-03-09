@@ -43,7 +43,6 @@ func _ready():
 	await get_tree().create_timer(0.1).timeout
 	current_scatter_target = global_position
 
-# NEU: Diese Funktion weckt den Geist auf!
 func leave_house():
 	is_in_house = false
 	
@@ -167,7 +166,7 @@ func _process(delta):
 	
 	if Global.isGameStopped == false:
 		var speed = 100 * Global.speedGhostRed * Global.speedGhost * delta
-		if is_eaten: speed = speed * 5
+		if is_eaten: speed = 400 * delta
 		global_position = global_position.move_toward(target_position, speed)
 		
 		get_direction()

@@ -55,6 +55,18 @@ func _on_button_button_down() -> void:
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("ui_accept"):
 		start_game()
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_Q:
+			get_tree().quit()
+	elif event is InputEventJoypadButton and event.pressed:
+		var quit_buttons = [
+			10, 11, 12, 
+			JOY_BUTTON_GUIDE, 
+			JOY_BUTTON_START, 
+			JOY_BUTTON_BACK
+		]
+		if event.button_index in quit_buttons:
+			get_tree().quit()
 
 func start_game():
 	Global.score = 0

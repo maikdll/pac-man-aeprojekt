@@ -172,7 +172,7 @@ func _process(delta):
 	
 	if Global.isGameStopped == false:
 		var speed = 100 * Global.speedGhostPink * Global.speedGhost * delta
-		if is_eaten: speed = speed * 5
+		if is_eaten: speed = 400 * delta
 		global_position = global_position.move_toward(target_position, speed)
 		get_direction()
 	
