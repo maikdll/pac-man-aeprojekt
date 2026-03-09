@@ -25,10 +25,6 @@ func _ready() -> void:
 	elif Global.level == 7:
 		$VideoStreamPlayer6.play()
 		await $VideoStreamPlayer6.finished
-	elif Global.level == 8:
-		$VideoStreamPlayer7.play()
-		await $VideoStreamPlayer7.finished
-	
 	
 	await get_tree().create_timer(1).timeout
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")

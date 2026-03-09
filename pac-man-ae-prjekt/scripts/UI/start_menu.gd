@@ -71,6 +71,7 @@ func _input(event: InputEvent) -> void:
 func start_game():
 	Global.score = 0
 	Global.health = 3
+	get_tree().call_group("Main", "setDifficulty")
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _ready():
