@@ -244,5 +244,5 @@ animation = &"Augen_Unten"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
 position = Vector2(0, 3)
-scale = Vector2(4.5, 4.5)
+scale = Vector2(3.04, 3.04)
 shape = SubResource("CircleShape2D_a73n8")
