@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://k7duxcuh3yal"]
+[gd_scene format=3 uid="uid://dmdtjvivw5kh1"]
 
 [ext_resource type="Script" uid="uid://dfkuddsjgdi7q" path="res://scripts/Cherry.gd" id="1_xobih"]
 [ext_resource type="Texture2D" uid="uid://b0f0p8aodfpkp" path="res://assets/PacManAssets-Items.png" id="2_fxyaf"]
