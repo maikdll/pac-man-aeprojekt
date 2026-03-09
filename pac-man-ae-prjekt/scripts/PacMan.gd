@@ -6,12 +6,17 @@ var is_invincible = false
 var isDying = false
 var intermission_time_left = 0.0
 var intermission_blink_time = 0.0
+var is_waiting_for_start = true
 
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
 func _ready():
 	get_tree().call_group("Main", "setDifficulty")
 	global_position = spawn_position
+	velocity = Vector2.ZERO
+	is_waiting_for_start = true
+	
+	$AnimatedSprite2D.play("Closed")
 
 func _process(delta):
 	if intermission_time_left > 0:
@@ -21,6 +26,15 @@ func _process(delta):
 			get_tree().call_group("Main", "setDifficulty")
 
 func _physics_process(_delta: float) -> void:
+	if is_waiting_for_start:
+		if Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("ui_down"):
+			is_waiting_for_start = false
+			get_tree().call_group("Ghost", "start_moving")
+			
+			$AnimatedSprite2D.play("PacMan_Kauen")
+		else:
+			return
+
 	if Global.isGameStopped == false:
 		if Input.is_action_pressed("ui_right"):
 			next_direction = Vector2.RIGHT
@@ -30,6 +44,7 @@ func _physics_process(_delta: float) -> void:
 			next_direction = Vector2.DOWN
 		elif Input.is_action_pressed("ui_up"):
 			next_direction = Vector2.UP
+		
 		var can_turn = not test_move(transform, next_direction * 25)
 		if next_direction != current_direction and can_turn:
 			velocity = (current_direction * 0.5 + next_direction).normalized() * Global.speedPlayer * 100
@@ -37,15 +52,14 @@ func _physics_process(_delta: float) -> void:
 		else:
 			if is_on_wall() and can_turn:
 				current_direction = next_direction
+		
 		velocity = current_direction * Global.speedPlayer * 100
 
-	if Global.isGameStopped == false:
 		if move_and_slide():
 			pass
 	
 	if velocity.length() > 0:
 		rotation = current_direction.angle()
-
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Points"):
@@ -54,8 +68,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
 	if area.is_in_group("BigPoint"):
-		print("Big point eaten!")
-		
 		var times = get_intermission_times(Global.level)
 		intermission_time_left = times["total"]
 		intermission_blink_time = times["blink"]
@@ -64,9 +76,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
 			get_tree().call_group("Ghost", "set", "is_eaten", false)
-			
 			Global.eatGhostScore = 200 
-			
 			Global.speedGhost = Global.speedGhost / 2
 			get_tree().call_group("Ghost", "start_wave", 1, 10.0) 
 		
@@ -75,7 +85,6 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 	if not body.is_in_group("Ghost"):
 		return
-	
 	if body.is_eaten:
 		return
 		
@@ -83,15 +92,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		body.get_eaten()
 		Global.score += Global.eatGhostScore
 		Global.eatGhostScore *= 2
-		print("Geist gefressen!")
 	else:
 		killPacman()
 				
-				
 func killPacman():
 	if isDying: return
-	
-	print("Gegessene Punkte vor dem Reload: ", Global.eaten_points_positions.size())
 	$AudioDeath.play()
 	isDying = true
 	Global.isGameStopped = true 
@@ -111,11 +116,9 @@ func killPacman():
 	else:
 		get_tree().call_group("ui", "setGameOver")
 	
-	
 func get_intermission_times(level: int) -> Dictionary:
 	var total_time = 0.0
 	var blink_time = 0.0
-	
 	if level == 1:
 		total_time = 8.0; blink_time = 4.0
 	elif level == 2:
@@ -130,9 +133,7 @@ func get_intermission_times(level: int) -> Dictionary:
 		total_time = 1.0; blink_time = 1.0
 	else:
 		total_time = 0.0; blink_time = 0.0
-		
 	return {"total": total_time, "blink": blink_time}
-	
 	
 func stop_for_level_end():
 	$AnimatedSprite2D.play("Closed")
