@@ -80,9 +80,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 		
 	if Global.isIntermissionMode == true and body.is_immune == false:
+		$AudioEatingGhost.play()
 		body.get_eaten()
 		Global.score += Global.eatGhostScore
 		Global.eatGhostScore *= 2
+		$AudioReturnToHomeGhost.play()
 		print("Geist gefressen!")
 	else:
 		killPacman()
