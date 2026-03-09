@@ -49,10 +49,10 @@ point_scene = ExtResource("2_rvslj")
 point_spacing = 1
 
 [node name="PacMan" parent="." unique_id=1073800312 instance=ExtResource("1_elqb8")]
-position = Vector2(480, 233.99997)
+position = Vector2(480, 440)
 scale = Vector2(1, 1)
 collision_mask = 3
-spawn_position = Vector2(480, 230)
+spawn_position = Vector2(480, 440)
 
 [node name="Camera_Follow" type="Camera2D" parent="PacMan" unique_id=1885405831]
 visible = false
@@ -85,6 +85,10 @@ material = SubResource("ShaderMaterial_cvmbd")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -12.0
+offset_top = -4.0
+offset_right = 17.0
+offset_bottom = 11.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -111,6 +115,16 @@ offset_left = 680.0
 offset_top = 472.0
 offset_right = 808.0
 offset_bottom = 528.0
+
+[node name="ReadyLabel" type="Label" parent="." unique_id=908905798]
+offset_left = 437.0
+offset_top = 173.0
+offset_right = 514.0
+offset_bottom = 207.0
+theme_override_colors/font_color = Color(1, 1, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "Ready!"
+horizontal_alignment = 1
 
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
 visible = false

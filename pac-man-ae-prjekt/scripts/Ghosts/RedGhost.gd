@@ -70,12 +70,22 @@ func start_wave(mode: Mode, duration: float):
 
 func _on_wave_timeout():
 	if current_mode == Mode.SCATTER:
-		if Global.remainingPoints < 100: start_wave(Mode.CHASE, 200.0) 
-		else: start_wave(Mode.CHASE, 20.0) 
-	else: start_wave(Mode.SCATTER, 10.0)
-	if current_mode == Mode.SCATTER: pick_new_scatter_target()
+		print("Blinky: Dauerangriff")
+		if(Global.remainingPoints < 40):
+			start_wave(Mode.CHASE, 200.0) 
+			if not $AudioStreamPlayer2D.playing:
+				$AudioStreamPlayer2D.play()
+		else:
+			print("Blinky: Angriff")
+			start_wave(Mode.CHASE, 20.0) 
+	else:
+		print("Blinky: Wandern")
+		start_wave(Mode.SCATTER, 10.0)
+		
+	if current_mode == Mode.SCATTER:
+		pick_new_scatter_target()
+		
 	update_path()
-
 func update_path():
 	if pacman == null: return
 	var current_target = Vector2.ZERO
@@ -119,7 +129,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 	if Global.isGameStopped == false:
 		var speed = 100 * Global.speedGhostRed * Global.speedGhost * delta
-		if is_eaten: speed = speed * 5
+		if is_eaten: speed = 400 * delta
 		global_position = global_position.move_toward(target_position, speed)
 		get_direction()
 	if global_position.distance_to(target_position) < 1.0:
