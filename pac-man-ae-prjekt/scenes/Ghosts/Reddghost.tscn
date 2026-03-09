@@ -232,7 +232,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
-radius = 1.5999999
+radius = 2.3999999
 
 [node name="RedGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost", "RedGhost"]]
 collision_layer = 4
@@ -244,7 +244,7 @@ sprite_frames = SubResource("SpriteFrames_o1d2a")
 animation = &"Augen_Unten"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost", "RedGhost"]]
-position = Vector2(0, 3)
+position = Vector2(0, 2.9999998)
 scale = Vector2(10, 10)
 shape = SubResource("CircleShape2D_a73n8")
 
