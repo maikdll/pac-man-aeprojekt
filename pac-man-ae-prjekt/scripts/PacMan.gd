@@ -51,8 +51,21 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("Points"):
 		$AudioEatingPoints.play()
 		get_tree().call_group("Main", "checkAllPointsEaten")
+		
+		
 	if area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
+		
+		area.visible = false
+		area.set_deferred("monitoring", false)
+		area.set_deferred("monitorable", false)
+		
+		if area.has_meta("score_value"):
+			var value = area.get_meta("score_value")
+			Global.score += value
+			print("Frucht gefressen! +", value, " Punkte!")
+			
+			
 	if area.is_in_group("BigPoint"):
 		print("Big point eaten!")
 		
@@ -119,19 +132,19 @@ func get_intermission_times(level: int) -> Dictionary:
 	var blink_time = 0.0
 	
 	if level == 1:
-		total_time = 8.0; blink_time = 4.0
+		total_time = 10.0; blink_time = 5.0
 	elif level == 2:
-		total_time = 7.0; blink_time = 3.5
+		total_time = 9.0; blink_time = 4.5
 	elif level == 3:
-		total_time = 6.0; blink_time = 3.0
+		total_time = 8.0; blink_time = 4.0
 	elif level == 4:
-		total_time = 5.0; blink_time = 2.5
+		total_time = 7.0; blink_time = 3.5
 	elif level >= 5 and level <= 8:
-		total_time = 2.0; blink_time = 2.0
+		total_time = 6.0; blink_time = 3.0
 	elif level >= 9 and level <= 16:
-		total_time = 1.0; blink_time = 1.0
+		total_time = 5.0; blink_time = 2.5
 	else:
-		total_time = 0.0; blink_time = 0.0
+		total_time = 4.0; blink_time = 2.0
 		
 	return {"total": total_time, "blink": blink_time}
 	
