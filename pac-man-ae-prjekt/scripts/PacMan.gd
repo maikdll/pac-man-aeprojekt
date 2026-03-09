@@ -17,6 +17,7 @@ func _process(delta):
 	if intermission_time_left > 0:
 		intermission_time_left -= delta
 		if intermission_time_left <= 0:
+			$AudioIntermission.stop()
 			Global.isIntermissionMode = false
 			get_tree().call_group("Main", "setDifficulty")
 
