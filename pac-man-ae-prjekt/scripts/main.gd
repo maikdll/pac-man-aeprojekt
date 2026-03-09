@@ -2,7 +2,8 @@ extends Node2D
 
 @export var tile_map1: TileMapLayer 
 @export var tile_map2: TileMapLayer 
-@export var tile_map3: TileMapLayer 
+@export var tile_map3: TileMapLayer
+@export var tile_map4: TileMapLayer
 
 @onready var healthbar = $Healthbar
 @onready var fruitbar = $Fruitbar
@@ -13,23 +14,53 @@ extends Node2D
 @onready var points_container = $Points
 @export var point_spacing: int = 2
 
+var fruit_spawned_1 = false
+var fruit_spawned_2 = false
+@onready var level_fruit = $Fruit 
+
 var astar_grid = AStarGrid2D.new()
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_Q:
 			get_tree().quit()
-
+	elif event is InputEventJoypadButton and event.pressed:
+		var quit_buttons = [
+			10, 11, 12, 
+			JOY_BUTTON_GUIDE, 
+			JOY_BUTTON_START, 
+			JOY_BUTTON_BACK
+		]
+		if event.button_index in quit_buttons:
+			get_tree().quit()
+			
 func _ready():
+	var joypads = Input.get_connected_joypads()
+	print("Verbundene Controller beim Start: ", joypads)
+	
 	Global.isGameStopped = false
 	Global.isIntermissionMode = false
 	
 	setDifficulty()
 	
+	if level_fruit:
+		level_fruit.visible = false
+		level_fruit.set_deferred("monitoring", false)
+		level_fruit.set_deferred("monitorable", false)
+	
 	if tile_map1 and tile_map2 and tile_map3:
 		setup_grid()
 		spawn_points()
 		restrict_grid_for_ghosts()
+
+func _process(delta):
+	if Global.dots_eaten == 138 and not fruit_spawned_1:
+		fruit_spawned_1 = true
+		spawn_fruit()
+		
+	if Global.dots_eaten == 335 and not fruit_spawned_2:
+		fruit_spawned_2 = true
+		spawn_fruit()
 		
 func setup_grid():
 	var full_rect = tile_map1.get_used_rect().merge(tile_map2.get_used_rect().merge(tile_map3.get_used_rect()))
@@ -165,6 +196,9 @@ func checkAllPointsEaten():
 		Global.dots_eaten = 0
 		Global.died_in_level = false
 		
+		fruit_spawned_1 = false
+		fruit_spawned_2 = false
+		
 		await get_tree().create_timer(1.0).timeout
 		
 		get_tree().call_group("PacMan", "set", "visible", false)
@@ -173,6 +207,7 @@ func checkAllPointsEaten():
 		for i in range(4):
 			tile_map1.visible = false
 			tile_map2.visible = false
+			tile_map4.visible = false
 			
 			if healthbar: healthbar.visible = false
 			if fruitbar: fruitbar.visible = false
@@ -182,6 +217,7 @@ func checkAllPointsEaten():
 			
 			tile_map1.visible = true
 			tile_map2.visible = true
+			tile_map4.visible = true
 			
 			if healthbar: healthbar.visible = true
 			if fruitbar: fruitbar.visible = true
@@ -189,7 +225,7 @@ func checkAllPointsEaten():
 			
 			await get_tree().create_timer(0.2).timeout
 			
-		get_tree().reload_current_scene()
+		get_tree().change_scene_to_file("res://scenes/Cutscenes.tscn")
 		
 func setDifficulty():
 	print("LEVEL: ", Global.level)
@@ -227,3 +263,39 @@ func setDifficulty():
 	else:
 		Global.speedPlayer = 1.8
 		Global.speedGhost = 2 + (Global.level -10) / 10.0
+
+func spawn_fruit():
+	if not level_fruit: return
+	
+	#Textur aus Fruitbar-Skript
+	if fruitbar and fruitbar.has_method("get_texture_for_level"):
+		level_fruit.get_node("Sprite2D").texture = fruitbar.get_texture_for_level(Global.level)
+	
+	var current_score = get_fruit_score(Global.level)
+	level_fruit.set_meta("score_value", current_score)
+	
+	#Position
+	level_fruit.global_position = Vector2(480, 152) 
+	
+	#Frucht aktivieren
+	level_fruit.visible = true
+	level_fruit.set_deferred("monitoring", true)
+	level_fruit.set_deferred("monitorable", true)
+	
+	#Timer
+	await get_tree().create_timer(13.5).timeout
+	
+	if is_instance_valid(level_fruit) and level_fruit.visible:
+		level_fruit.visible = false
+		level_fruit.set_deferred("monitoring", false)
+		level_fruit.set_deferred("monitorable", false)
+
+func get_fruit_score(lvl: int) -> int:
+	if lvl == 1: return 200
+	elif lvl == 2: return 600
+	elif lvl == 3 or lvl == 4: return 1000
+	elif lvl == 5 or lvl == 6: return 1400
+	elif lvl == 7 or lvl == 8: return 2000
+	elif lvl == 9 or lvl == 10: return 4000
+	elif lvl == 11 or lvl == 12: return 6000
+	else: return 10000

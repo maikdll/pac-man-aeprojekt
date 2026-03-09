@@ -94,7 +94,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	
 	if area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
-	
+
 	if area.is_in_group("BigPoint"):
 		var times = get_intermission_times(Global.level)
 		intermission_time_left = times["total"]
@@ -104,14 +104,11 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
 			
-			# Сбрасываем статус съеденности у всех призраков
 			get_tree().call_group("Ghost", "set", "is_eaten", false)
 			
 			Global.eatGhostScore = 200 
-			Global.speedGhost = 0.5 # Замедляем призраков через глобальную переменную
+			Global.speedGhost = 0.5 
 			
-			# Вместо вызова start_wave, просто обновляем их путь, 
-			# они сами увидят Global.isIntermissionMode в своем get_direction()
 			get_tree().call_group("Ghost", "update_path")
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
@@ -147,13 +144,22 @@ func killPacman():
 func get_intermission_times(level: int) -> Dictionary:
 	var total_time = 0.0
 	var blink_time = 0.0
-	if level == 1: total_time = 8.0; blink_time = 4.0
-	elif level == 2: total_time = 7.0; blink_time = 3.5
-	elif level == 3: total_time = 6.0; blink_time = 3.0
-	elif level == 4: total_time = 5.0; blink_time = 2.5
-	elif level >= 5 and level <= 8: total_time = 2.0; blink_time = 2.0
-	elif level >= 9 and level <= 16: total_time = 1.0; blink_time = 1.0
-	else: total_time = 0.0; blink_time = 0.0
+	
+	if level == 1:
+		total_time = 10.0; blink_time = 5.0
+	elif level == 2:
+		total_time = 9.0; blink_time = 4.5
+	elif level == 3:
+		total_time = 8.0; blink_time = 4.0
+	elif level == 4:
+		total_time = 7.0; blink_time = 3.5
+	elif level >= 5 and level <= 8:
+		total_time = 6.0; blink_time = 3.0
+	elif level >= 9 and level <= 16:
+		total_time = 5.0; blink_time = 2.5
+	else:
+		total_time = 4.0; blink_time = 2.0
+
 	return {"total": total_time, "blink": blink_time}
 
 func stop_for_level_end():
