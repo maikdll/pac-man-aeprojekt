@@ -111,6 +111,19 @@ offset_bottom = 528.0
 [node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
 visible = false
 
+[node name="Fruit" type="Area2D" parent="." unique_id=775994317 groups=["Fruit"]]
+collision_layer = 8
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Fruit" unique_id=2103027696 groups=["Fruit"]]
+scale = Vector2(2.5, 2.5)
+region_enabled = true
+region_rect = Rect2(0, 0, 16, 16)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fruit" unique_id=995346362 groups=["Fruit"]]
+position = Vector2(2, -1)
+shape = SubResource("CircleShape2D_bb450")
+
 [node name="Ghosts" type="Node2D" parent="." unique_id=1655358273]
 
 [node name="PinkGhost" parent="Ghosts" unique_id=1817535284 node_paths=PackedStringArray("spawnpoint") instance=ExtResource("17_ft6cd")]
@@ -191,18 +204,5 @@ position = Vector2(976, 40)
 
 [node name="LeftSpawnPoint" type="Marker2D" parent="Portal2" unique_id=1684579772]
 position = Vector2(-16, 40)
-
-[node name="Fruit" type="Area2D" parent="." unique_id=775994317 groups=["Fruit"]]
-collision_layer = 8
-collision_mask = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="Fruit" unique_id=2103027696 groups=["Fruit"]]
-scale = Vector2(2.5, 2.5)
-region_enabled = true
-region_rect = Rect2(0, 0, 16, 16)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Fruit" unique_id=995346362 groups=["Fruit"]]
-position = Vector2(2, -1)
-shape = SubResource("CircleShape2D_bb450")
 
 [editable path="Level_1"]
