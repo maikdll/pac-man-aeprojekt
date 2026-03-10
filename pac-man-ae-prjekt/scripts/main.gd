@@ -195,16 +195,13 @@ func restrict_grid_for_ghosts():
 		astar_grid.set_point_solid(cell, true)
 
 func checkAllPointsEaten():
-	# Einfach eins abziehen, statt alle Kinder neu zu zählen!
-	Global.remainingPoints -= 1 
-	print("vorhandene Punkte: ", Global.remainingPoints)
+	Global.remainingPoints -= 1
 	
-	if Global.remainingPoints <= 0: # Zur Sicherheit <= 0
-		print("Alle Punkte gegessen")
-		await get_tree().create_timer(0.25).timeout
+	if Global.remainingPoints <= 0:
 		Global.isGameStopped = true
-		
 		get_tree().call_group("PacMan", "stop_for_level_end")
+		
+		await get_tree().create_timer(0.25).timeout
 		
 		Global.level += 1
 		Global.eaten_points_positions.clear()
