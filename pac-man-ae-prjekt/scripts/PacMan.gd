@@ -84,7 +84,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			
 			Global.eatGhostScore = 200 
 			
-			Global.speedGhost = Global.speedGhost / 2
 			get_tree().call_group("Ghost", "start_wave", 1, 10.0) 
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
