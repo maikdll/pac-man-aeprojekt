@@ -141,10 +141,11 @@ func spawn_points():
 			if touches_wall:
 				continue
 				
-			points_placed += 1
 		
 			if Global.eaten_points_positions.has(cell):
 				continue
+				
+			points_placed += 1
 			
 			var local_center = tile_map1.map_to_local(cell)
 			var current_point_pos = tile_map1.to_global(local_center)

@@ -38,17 +38,35 @@ jobs:
         run: |
           cd pac-man-ae-prjekt
           
+          # Cache säubern
           rm -rf .godot
           rm -f project.godot.rf
           
+          # Headless Import
           godot --headless --editor --quit || true
           godot --headless --editor --quit || true
 
           if [ "${{ matrix.platform }}" = "Windows" ]; then
+            # Exportiert als game.exe
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
+            # 1. Normaler Export als ZIP
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
+            
+            # 2. ZIP entpacken, um den Ordnernamen zu korrigieren
+            cd ../build/macOS/
+            unzip game.zip
+            rm game.zip
+            
+            # 3. Den .app Ordner zu game.app umbenennen
+            mv *.app game.app 2>/dev/null || true
+            
+            # 4. Neu packen als game.zip
+            zip -r game.zip game.app
+            rm -rf game.app
+            cd ../../pac-man-ae-prjekt
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
+            # Exportiert als game.x86_64
             godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
           fi
 
@@ -63,6 +81,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           files: |
-            build/${{ matrix.platform }}/*
+            build/Windows/game.exe
+            build/macOS/game.zip
+            build/Linux/game.x86_64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

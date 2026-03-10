@@ -1,7 +1,5 @@
 extends BaseGhost
 
-@export var chase_distance: float = 250.0
-
 func get_speed_multiplier() -> float:
 	return Global.speedGhostRed
 
@@ -29,10 +27,8 @@ func _on_wave_timeout():
 	update_path()
 
 func get_custom_target() -> Vector2:
-	var distance_to_pacman = global_position.distance_to(pacman.global_position)
-	var is_pacman_near = distance_to_pacman <= chase_distance
-
-	if current_mode == Mode.CHASE and is_pacman_near:
+	# BLINKY IST UNERBITTLICH! Keine Entfernungsprüfung mehr.
+	if current_mode == Mode.CHASE:
 		return pacman.global_position
 	else:
 		if global_position.distance_to(current_scatter_target) < 32.0:

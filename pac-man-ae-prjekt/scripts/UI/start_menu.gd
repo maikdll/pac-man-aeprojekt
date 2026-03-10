@@ -48,10 +48,15 @@ func _input(event: InputEvent) -> void:
 			get_tree().quit()
 
 func start_game():
-	Global.resetLedGameplay()
+	# --- ALLES AUF ANFANG SETZEN ---
+	Global.level = 1
 	Global.score = 0
 	Global.health = 3
-	get_tree().call_group("Main", "setDifficulty")
+	Global.dots_eaten = 0
+	Global.eaten_points_positions.clear()
+	Global.died_in_level = false
+	Global.isIntermissionMode = false
+	
 	SceneTransition.change_scene("res://scenes/Main.tscn")
 
 func _ready():
