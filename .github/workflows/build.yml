@@ -45,10 +45,13 @@ jobs:
           godot --headless --editor --quit || true
 
           if [ "${{ matrix.platform }}" = "Windows" ]; then
+            # Benennt die Datei zu game.exe
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
+            # Benennt die App im ZIP zu game.zip (enthält game.app)
             godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
+            # Benennt die Datei zu game.x86_64
             godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
           fi
 
@@ -62,7 +65,10 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
+          # Ändert den Namen der hochgeladenen Release-Datei zu "game-Plattform.zip/exe"
           files: |
-            build/${{ matrix.platform }}/*
+            build/Windows/game.exe
+            build/macOS/game.zip
+            build/Linux/game.x86_64
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
