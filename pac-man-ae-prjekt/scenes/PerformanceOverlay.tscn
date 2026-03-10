@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://gifwmm8xv4ut"]
+
+[ext_resource type="Script" uid="uid://bp7pn2l1qppf4" path="res://scenes/performance_overlay.gd" id="1_6xnen"]
+
+[node name="PerformanceOverlay" type="CanvasLayer" unique_id=519956698]
+script = ExtResource("1_6xnen")
+
+[node name="Label" type="Label" parent="." unique_id=2021821024]
+offset_right = 40.0
+offset_bottom = 23.0

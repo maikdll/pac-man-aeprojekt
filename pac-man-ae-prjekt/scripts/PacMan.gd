@@ -12,6 +12,8 @@ var intermission_blink_time = 0.0
 func _ready():
 	get_tree().call_group("Main", "setDifficulty")
 	global_position = spawn_position
+	
+	$AnimatedSprite2D.play("Closed")
 
 func _process(delta):
 	if intermission_time_left > 0:
@@ -155,3 +157,7 @@ func get_intermission_times(level: int) -> Dictionary:
 	
 func stop_for_level_end():
 	$AnimatedSprite2D.play("Closed")
+	
+	
+func start_moving_animation():
+	$AnimatedSprite2D.play("PacMan_Kauen")

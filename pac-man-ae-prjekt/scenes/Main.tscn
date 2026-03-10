@@ -14,6 +14,7 @@
 [ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
 [ext_resource type="PackedScene" uid="uid://cb63edwxi4rqq" path="res://scenes/Ghosts/PinkGhost.tscn" id="17_ft6cd"]
 [ext_resource type="PackedScene" uid="uid://c3p72sik77tvb" path="res://scenes/Ghosts/OrangeGhost.tscn" id="17_nfivy"]
+[ext_resource type="FontFile" uid="uid://6jsu5gmnojyu" path="res://assets/fonts/PressStart2P-Regular.ttf" id="18_1nqs0"]
 [ext_resource type="PackedScene" uid="uid://dehad3273gagl" path="res://scenes/Ghosts/CyanGhost.tscn" id="18_bb450"]
 [ext_resource type="Shader" uid="uid://tgbkn4sdjxn1" path="res://scenes/Filter_2.gdshader" id="18_nfivy"]
 [ext_resource type="PackedScene" uid="uid://dn55oxhhcrvao" path="res://scenes/UI/Fruitbar.tscn" id="19_fruit"]
@@ -204,5 +205,27 @@ position = Vector2(976, 40)
 
 [node name="LeftSpawnPoint" type="Marker2D" parent="Portal2" unique_id=1684579772]
 position = Vector2(-16, 40)
+
+[node name="ReadyScreen" type="CanvasLayer" parent="." unique_id=1048017714]
+
+[node name="ReadyLabel" type="Label" parent="ReadyScreen" unique_id=460078109]
+modulate = Color(1, 1, 0, 1)
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.356
+anchor_right = 0.5
+anchor_bottom = 0.356
+offset_left = -48.0
+offset_top = -8.2400055
+offset_right = 48.0
+offset_bottom = 7.7599945
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("18_1nqs0")
+theme_override_font_sizes/font_size = 20
+text = "READY!"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [editable path="Level_1"]

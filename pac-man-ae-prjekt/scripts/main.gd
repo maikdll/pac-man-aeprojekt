@@ -17,6 +17,7 @@ extends Node2D
 var fruit_spawned_1 = false
 var fruit_spawned_2 = false
 @onready var level_fruit = $Fruit 
+@onready var ready_label = $ReadyScreen/ReadyLabel
 
 var astar_grid = AStarGrid2D.new()
 
@@ -39,7 +40,7 @@ func _ready():
 	var joypads = Input.get_connected_joypads()
 	print("Verbundene Controller beim Start: ", joypads)
 	
-	Global.isGameStopped = false
+	Global.isGameStopped = true 
 	Global.isIntermissionMode = false
 	
 	setDifficulty()
@@ -53,6 +54,21 @@ func _ready():
 		setup_grid()
 		spawn_points()
 		restrict_grid_for_ghosts()
+		
+	start_ready_sequence()
+	
+func start_ready_sequence():
+	for i in range(6):
+		if ready_label:
+			ready_label.visible = not ready_label.visible
+		await get_tree().create_timer(0.5).timeout
+		
+	if ready_label:
+		ready_label.visible = false
+		
+	Global.isGameStopped = false
+	
+	get_tree().call_group("PacMan", "start_moving_animation")
 
 func _process(delta):
 	if Global.dots_eaten == 138 and not fruit_spawned_1:

@@ -150,6 +150,12 @@ func set_next_target():
 	target_position = main_node.tile_map1.to_global(local_pos)
 
 func _process(delta):
+	if Global.isGameStopped:
+		if not $AnimatedSprite2D.animation.begins_with("Score"):
+			$AnimatedSprite2D.pause()
+	else:
+		if not $AnimatedSprite2D.is_playing():
+			$AnimatedSprite2D.play()
 	if Global.isIntermissionMode != was_intermission:
 		was_intermission = Global.isIntermissionMode
 		if Global.isIntermissionMode == true:
