@@ -52,9 +52,13 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
+	# Schalter: Wurde dieser Punkt schon gezählt?
+	var point_already_counted = false
+	
 	if area.is_in_group("Points"):
 		$AudioEatingPoints.play()
 		get_tree().call_group("Main", "checkAllPointsEaten")
+		point_already_counted = true # <--- Wir merken uns: Zähler ging schon runter!
 		
 		
 	if area.is_in_group("Fruit"):
@@ -73,6 +77,11 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("BigPoint"):
 		print("Big point eaten!")
 		
+		# ─── HIER IST DER SCHUTZ VOR DOPPELZÄHLUNGEN ───
+		if not point_already_counted:
+			get_tree().call_group("Main", "checkAllPointsEaten")
+		# ────────────────────────────────────────────────
+		
 		var times = get_intermission_times(Global.level)
 		intermission_time_left = times["total"]
 		intermission_blink_time = times["blink"]
@@ -84,7 +93,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			
 			Global.eatGhostScore = 200 
 			
-			get_tree().call_group("Ghost", "start_wave", 1, 10.0) 
+			get_tree().call_group("Ghost", "start_wave", 1, 10.0)
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if isDying:
