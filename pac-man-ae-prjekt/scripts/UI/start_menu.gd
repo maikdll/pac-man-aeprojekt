@@ -48,12 +48,16 @@ func _input(event: InputEvent) -> void:
 			get_tree().quit()
 
 func start_game():
+	Global.resetLedGameplay()
 	Global.score = 0
 	Global.health = 3
 	get_tree().call_group("Main", "setDifficulty")
 	SceneTransition.change_scene("res://scenes/Main.tscn")
 
 func _ready():
+	Global.send_effect(Global.CHAIN_A, "fill", Color.YELLOW, Global.SEG_A_MARQUEE)
+	Global.send_effect(Global.CHAIN_B, "rainbow", Color.BLACK, Global.SEG_ALL, 80)
+	Global.send_effect(Global.CHAIN_A, "blink", Color.GREEN, Global.SEG_A_CONTROL_PANEL, 20)
 	_build_ui()
 	_build_anim_sprites()
 	_reset()

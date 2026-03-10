@@ -16,6 +16,7 @@ func _on_blink_timer_timeout():
 
 func _on_body_entered(body: Node2D) -> void:
 	if body.name == "PacMan":
+		Global.send_effect(Global.CHAIN_A, "pulse", Color.BLUE, Global.SEG_ALL, 300, -1)
 		Global.eaten_points_positions.append(grid_pos)
 		Global.score += 50
 		queue_free()

@@ -36,6 +36,7 @@ func _input(event):
 			get_tree().quit()
 			
 func _ready():
+	Global.resetLedGameplay()
 	var joypads = Input.get_connected_joypads()
 	print("Verbundene Controller beim Start: ", joypads)
 	
@@ -201,7 +202,11 @@ func checkAllPointsEaten():
 	print("vorhandene Punkte: ", Global.remainingPoints)
 	
 	if Global.remainingPoints == 1:
+		Global.send_effect(Global.CHAIN_A, "fill", Color.BLACK, Global.SEG_ALL, 1, 1)
+		await get_tree().create_timer(0.2).timeout
 		print("Alle Punkte gegessen")
+		Global.send_effect(Global.CHAIN_B, "wipe", Color.CYAN, 0, 30, 3)
+		Global.send_effect(Global.CHAIN_B, "wipe", Color.CYAN, 2, 30, 3)
 		await get_tree().create_timer(0.25).timeout
 		Global.isGameStopped = true
 		

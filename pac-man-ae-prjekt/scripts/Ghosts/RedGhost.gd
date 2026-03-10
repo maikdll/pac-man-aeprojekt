@@ -89,6 +89,7 @@ func _on_wave_timeout():
 			start_wave(Mode.CHASE, 200.0) 
 			if not $AudioStreamPlayer2D.playing:
 				$AudioStreamPlayer2D.play()
+				
 		else:
 			print("Blinky: Angriff")
 			start_wave(Mode.CHASE, 20.0) 
