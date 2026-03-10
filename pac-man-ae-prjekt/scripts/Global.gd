@@ -14,7 +14,7 @@ var isIntermissionMode = false;
 var eatGhostScore = 200;
 var dots_eaten = 0
 var remainingPoints = 500;
-var eaten_points_positions = []
+var eaten_points_positions = {}
 var died_in_level = false
 
 var socket = WebSocketPeer.new()

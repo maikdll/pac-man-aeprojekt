@@ -143,7 +143,7 @@ func spawn_points():
 				
 			points_placed += 1
 		
-			if cell in Global.eaten_points_positions:
+			if Global.eaten_points_positions.has(cell):
 				continue
 			
 			var local_center = tile_map1.map_to_local(cell)
@@ -159,6 +159,7 @@ func spawn_points():
 			point.global_position = current_point_pos
 			
 			point.grid_pos = cell
+			Global.remainingPoints = points_placed
 
 func restrict_grid_for_ghosts():
 	var edge_cells_to_block = []
@@ -194,19 +195,12 @@ func restrict_grid_for_ghosts():
 		astar_grid.set_point_solid(cell, true)
 
 func checkAllPointsEaten():
-	Global.remainingPoints = 0
-	for point in points_container.get_children():
-		if not point.is_queued_for_deletion():
-			Global.remainingPoints += 1
-			
+	# Einfach eins abziehen, statt alle Kinder neu zu zählen!
+	Global.remainingPoints -= 1 
 	print("vorhandene Punkte: ", Global.remainingPoints)
 	
-	if Global.remainingPoints == 1:
-		Global.send_effect(Global.CHAIN_A, "fill", Color.BLACK, Global.SEG_ALL, 1, 1)
-		await get_tree().create_timer(0.2).timeout
+	if Global.remainingPoints <= 0: # Zur Sicherheit <= 0
 		print("Alle Punkte gegessen")
-		Global.send_effect(Global.CHAIN_B, "wipe", Color.CYAN, 0, 30, 3)
-		Global.send_effect(Global.CHAIN_B, "wipe", Color.CYAN, 2, 30, 3)
 		await get_tree().create_timer(0.25).timeout
 		Global.isGameStopped = true
 		
