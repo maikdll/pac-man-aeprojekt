@@ -183,7 +183,8 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		var speed = 100 * Global.speedGhostOrange * Global.speedGhost * delta
+		var current_speed_mult = 0.5 if (Global.isIntermissionMode and not is_eaten) else 1.0
+		var speed = 100 * Global.speedGhostPink * Global.speedGhost * current_speed_mult * delta
 		if is_eaten: speed = 400 * delta
 		global_position = global_position.move_toward(target_position, speed)
 		
