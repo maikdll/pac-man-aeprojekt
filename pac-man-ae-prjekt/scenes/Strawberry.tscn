@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://cys7lmvey6kut"]
+
+[ext_resource type="Script" uid="uid://lafc1t71f0gr" path="res://scripts/Strawberry.gd" id="1_0edw8"]
+[ext_resource type="Texture2D" uid="uid://b0f0p8aodfpkp" path="res://assets/PacManAssets-Items.png" id="2_0edw8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nedoi"]
+radius = 0.84999996
+
+[node name="Strawberry" type="Area2D" unique_id=723307072 groups=["Fruit"]]
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("1_0edw8")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=636033379 groups=["Fruit"]]
+scale = Vector2(20, 20)
+shape = SubResource("CircleShape2D_nedoi")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1969056402 groups=["Fruit"]]
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_0edw8")
+region_enabled = true
+region_rect = Rect2(16, 0, 16, 16)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
