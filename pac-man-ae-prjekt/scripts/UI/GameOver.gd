@@ -1,37 +1,23 @@
 extends CanvasLayer
 
-# ─── Layout Constants ───
 const VIEWPORT_W := 960.0
-const ROW_Y := 200.0
-const GHOST_GAP := 60.0
+const ROW_Y := 190.0 
+const GHOST_ROW_GAP := 70.0
 const GH_SCALE := Vector2(2.8, 2.8)
-const PAC_SCALE := Vector2(2.8, 2.8)
-
-const GH_COLORS := [
-	Color(1, 0.65, 0),       # Orange
-	Color(0, 1, 1),          # Cyan
-	Color(1, 0.72, 0.84),    # Pink
-	Color(1, 0, 0),          # Red
-]
 
 var name_input: LineEdit
 
-func _on_ready() -> void:
+func _ready() -> void:
+	self.layer = 100 
 	hide()
 
 func setGameOver() -> void:
-	print("setGameOver()")
 	Global.eaten_points_positions.clear()
 	Global.isGameStopped = true
-	print("isGameStopped: ", Global.isGameStopped)
 	show()
 	_build_screen()
 
-# ═══════════════════════════════════════
-#  BUILD SCREEN
-# ═══════════════════════════════════════
 func _build_screen():
-	# Remove old scene-tree children (Label, NameInput, etc.)
 	for child in get_children():
 		child.queue_free()
 
@@ -41,7 +27,6 @@ func _build_screen():
 	root.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(root)
 
-	# ── Black background ──
 	var bg = ColorRect.new()
 	bg.color = Color.BLACK
 	bg.anchor_right = 1.0
@@ -50,74 +35,45 @@ func _build_screen():
 
 	var font = load("res://assets/fonts/PressStart2P-Regular.ttf")
 
-	# ── Pac-Man (open mouth) ──
-	var pac_atlas = load("res://assets/animation/Arcade - Pac-Man.png")
-	var pac_tex = AtlasTexture.new()
-	pac_tex.atlas = pac_atlas
-	pac_tex.region = Rect2(0, 0, 32, 34)
+	var ghost_scenes = [
+		preload("res://scenes/Ghosts/CyanGhost.tscn"),
+		preload("res://scenes/Ghosts/Reddghost.tscn"),
+		preload("res://scenes/Ghosts/PinkGhost.tscn"),
+		preload("res://scenes/Ghosts/OrangeGhost.tscn")
+	]
+	
+	var total_ghosts = ghost_scenes.size()
+	var total_spans_width = (total_ghosts - 1) * GHOST_ROW_GAP
+	var start_x = (VIEWPORT_W / 2.0) - (total_spans_width / 2.0)
 
-	var pac = Sprite2D.new()
-	pac.texture = pac_tex
-	pac.scale = PAC_SCALE
-	pac.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	pac.z_index = 5
-	root.add_child(pac)
+	for i in range(total_ghosts):
+		var gx = start_x + (i * GHOST_ROW_GAP)
+		_spawn_ghost(ghost_scenes[i], Vector2(gx, ROW_Y), "Unten", root)
 
-	# ── 4 Ghosts + Eyes ──
-	var body_tex = load("res://assets/ghost/Ghost_Body_01.png")
-	var eyes_tex = load("res://assets/ghost/Ghost_Eyes_Right.png")
-
-	var total_width = 4 * GHOST_GAP
-	var start_x = (VIEWPORT_W - total_width) / 2.0 - GHOST_GAP * 0.5
-	pac.position = Vector2(start_x, ROW_Y)
-
-	for i in 4:
-		var gx = start_x + GHOST_GAP * (i + 1)
-
-		var g = Sprite2D.new()
-		g.texture = body_tex
-		g.scale = GH_SCALE
-		g.modulate = GH_COLORS[i]
-		g.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		g.position = Vector2(gx, ROW_Y)
-		g.z_index = 4
-		root.add_child(g)
-
-		var e = Sprite2D.new()
-		e.texture = eyes_tex
-		e.scale = GH_SCALE
-		e.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-		e.position = Vector2(gx, ROW_Y - 2)
-		e.z_index = 5
-		root.add_child(e)
-
-	# ── "GAME OVER" ──
 	var title = Label.new()
 	title.text = "GAME OVER"
 	title.add_theme_font_override("font", font)
-	title.add_theme_font_size_override("font_size", 32)
-	title.add_theme_color_override("font_color", Color.WHITE)
+	title.add_theme_font_size_override("font_size", 40)
+	title.add_theme_color_override("font_color", Color.RED)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	title.anchor_left = 0.0
 	title.anchor_right = 1.0
-	title.offset_top = ROW_Y + 55
-	title.offset_bottom = ROW_Y + 100
+	title.offset_top = ROW_Y + 60 
+	title.offset_bottom = ROW_Y + 110
 	root.add_child(title)
 
-	# ── Score ──
 	var score_lbl = Label.new()
-	score_lbl.text = "SCORE  " + str(Global.score)
+	score_lbl.text = "SCORE:  " + str(Global.score)
 	score_lbl.add_theme_font_override("font", font)
-	score_lbl.add_theme_font_size_override("font_size", 16)
+	score_lbl.add_theme_font_size_override("font_size", 18)
 	score_lbl.add_theme_color_override("font_color", Color.YELLOW)
 	score_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	score_lbl.anchor_left = 0.0
 	score_lbl.anchor_right = 1.0
-	score_lbl.offset_top = ROW_Y + 110
-	score_lbl.offset_bottom = ROW_Y + 135
+	score_lbl.offset_top = ROW_Y + 120
+	score_lbl.offset_bottom = ROW_Y + 150
 	root.add_child(score_lbl)
 
-	# ── "ENTER YOUR NAME" ──
 	var name_label = Label.new()
 	name_label.text = "ENTER YOUR NAME"
 	name_label.add_theme_font_override("font", font)
@@ -126,18 +82,17 @@ func _build_screen():
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	name_label.anchor_left = 0.0
 	name_label.anchor_right = 1.0
-	name_label.offset_top = 390
-	name_label.offset_bottom = 410
+	name_label.offset_top = ROW_Y + 190
+	name_label.offset_bottom = ROW_Y + 210
 	root.add_child(name_label)
 
-	# ── Input + Button row ──
 	var input_container = HBoxContainer.new()
 	input_container.anchor_left = 0.5
 	input_container.anchor_right = 0.5
 	input_container.offset_left = -170
 	input_container.offset_right = 170
-	input_container.offset_top = 420
-	input_container.offset_bottom = 465
+	input_container.offset_top = ROW_Y + 220
+	input_container.offset_bottom = ROW_Y + 265
 	input_container.add_theme_constant_override("separation", 12)
 	root.add_child(input_container)
 
@@ -160,9 +115,16 @@ func _build_screen():
 	name_input.text_submitted.connect(_on_name_submitted)
 	name_input.call_deferred("grab_focus")
 
-# ═══════════════════════════════════════
-#  INPUT HANDLING
-# ═══════════════════════════════════════
+func _spawn_ghost(scene: PackedScene, pos: Vector2, anim: String, parent: Control):
+	var g_inst = scene.instantiate()
+	var g_anim = g_inst.get_node("AnimatedSprite2D").duplicate()
+	g_anim.scale = GH_SCALE
+	g_anim.z_index = 4
+	g_anim.position = pos
+	parent.add_child(g_anim)
+	g_anim.play(anim)
+	g_inst.queue_free()
+
 func _on_confirm():
 	_submit_name(name_input.text)
 
