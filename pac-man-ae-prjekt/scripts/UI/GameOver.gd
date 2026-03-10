@@ -24,6 +24,8 @@ func setGameOver() -> void:
 	Global.eaten_points_positions.clear()
 	Global.isGameStopped = true
 	print("isGameStopped: ", Global.isGameStopped)
+	Global.send_effect(Global.CHAIN_A, "fill", Color.RED, Global.SEG_ALL, 50, -1)
+	Global.send_effect(Global.CHAIN_B, "fill", Color.RED, Global.SEG_ALL, 50, -1)
 	show()
 	_build_screen()
 

@@ -69,12 +69,16 @@ func _input(event: InputEvent) -> void:
 			get_tree().quit()
 
 func start_game():
+	Global.resetLedGameplay()
 	Global.score = 0
 	Global.health = 3
 	get_tree().call_group("Main", "setDifficulty")
 	SceneTransition.change_scene("res://scenes/Main.tscn")
 
 func _ready():
+	Global.send_effect(Global.CHAIN_A, "fill", Color.YELLOW, Global.SEG_A_MARQUEE)
+	Global.send_effect(Global.CHAIN_B, "rainbow", Color.BLACK, Global.SEG_ALL, 80)
+	Global.send_effect(Global.CHAIN_A, "blink", Color.GREEN, Global.SEG_A_CONTROL_PANEL, 20)
 	var body_tex = load("res://assets/ghost/Ghost_Body_01.png")
 	for i in 4:
 		ghost_tex.append(body_tex)

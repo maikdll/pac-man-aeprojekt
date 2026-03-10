@@ -17,6 +17,7 @@ func _process(delta):
 	if intermission_time_left > 0:
 		intermission_time_left -= delta
 		if intermission_time_left <= 0:
+			Global.resetLedGameplay()
 			$AudioIntermission.stop()
 			Global.isIntermissionMode = false
 			get_tree().call_group("Main", "setDifficulty")
@@ -56,7 +57,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		
 	if area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
-		
+		Global.send_effect(Global.CHAIN_A, "sparkle", Color.MAGENTA, Global.SEG_ALL, 40, 2)
 		area.visible = false
 		area.set_deferred("monitoring", false)
 		area.set_deferred("monitorable", false)
@@ -94,6 +95,7 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 		
 	if Global.isIntermissionMode == true and body.is_immune == false:
+		Global.send_effect(Global.CHAIN_A, "sparkle", Color.WHITE, Global.SEG_ALL, 40, 5)
 		$AudioEatingGhost.play()
 		body.get_eaten()
 		Global.score += Global.eatGhostScore
@@ -105,6 +107,8 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 				
 				
 func killPacman():
+	Global.send_effect(Global.CHAIN_A, "chase", Color.RED, Global.SEG_ALL, 5, 2)
+	Global.send_effect(Global.CHAIN_B, "blink", Color.RED, Global.SEG_ALL, 10, 2)
 	if isDying: return
 	
 	print("Gegessene Punkte vor dem Reload: ", Global.eaten_points_positions.size())
@@ -126,7 +130,6 @@ func killPacman():
 		get_tree().reload_current_scene()
 	else:
 		get_tree().call_group("ui", "setGameOver")
-	
 	
 func get_intermission_times(level: int) -> Dictionary:
 	var total_time = 0.0
