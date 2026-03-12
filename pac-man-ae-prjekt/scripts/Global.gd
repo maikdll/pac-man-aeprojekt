@@ -17,6 +17,8 @@ var remainingPoints = 500;
 var eaten_points_positions = {}
 var died_in_level = false
 
+var inactivity_timer: Timer
+
 var socket = WebSocketPeer.new()
 var ws_url = "ws://localhost:8765"
 
@@ -68,6 +70,13 @@ func _ready():
 	if err != OK:
 		print("Global: Fehler beim Verbindungsaufbau zur LED Bridge")
 
+	inactivity_timer = Timer.new()
+	inactivity_timer.wait_time = 60.0
+	inactivity_timer.one_shot = true
+	inactivity_timer.autostart = true
+	inactivity_timer.timeout.connect(_on_inactivity_timeout)
+	add_child(inactivity_timer)
+
 func save_leaderboard():
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_var(leaderboard)
@@ -80,6 +89,13 @@ func load_leaderboard():
 func _input(event):
 	if event is InputEventKey and event.pressed and event.keycode == KEY_Q:
 		get_tree().quit()
+		
+	if event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion:
+		inactivity_timer.start()
+		
+func _on_inactivity_timeout():
+	print("60 Sekunden Inaktivität! Spiel wird beendet.")
+	get_tree().quit()
 
 func update_leaderboard(new_name: String):
 	leaderboard.append({"name": new_name, "score": Global.score})
