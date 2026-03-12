@@ -41,8 +41,9 @@ func _on_button_button_down() -> void:
 	start_game()
 
 func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_accept"):
+	if event.is_action_pressed("start_game"):
 		start_game()
+		
 	if event is InputEventKey and event.pressed:
 		if event.keycode == KEY_Q:
 			get_tree().quit()
