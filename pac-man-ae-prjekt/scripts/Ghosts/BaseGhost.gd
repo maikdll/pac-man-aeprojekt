@@ -59,31 +59,34 @@ func leave_house():
 	wave_timer.timeout.connect(_on_wave_timeout)
 	add_child(wave_timer)
 	
+	isReady = true
 	start_wave(Mode.SCATTER, 11.0)
 	update_path()
-	isReady = true
 
 func pick_new_scatter_target():
+	var local_pos = main_node.tile_map1.to_local(global_position)
+	var current_cell = main_node.tile_map1.local_to_map(local_pos)
+	
 	var current_dir = Vector2.ZERO
 	if target_position != Vector2.ZERO and global_position.distance_to(target_position) > 0.1:
 		current_dir = (target_position - global_position).normalized()
 		
-	var search_center = global_position + (current_dir * (wander_radius * 0.5))
-
-	for i in range(30):
-		var random_offset = Vector2(
-			randf_range(-wander_radius, wander_radius),
-			randf_range(-wander_radius, wander_radius)
+	var search_center_cell = current_cell + Vector2i(round(current_dir.x * 4), round(current_dir.y * 4))
+	var search_radius_cells = 8
+	
+	for i in range(10):
+		var random_offset = Vector2i(
+			randi_range(-search_radius_cells, search_radius_cells),
+			randi_range(-search_radius_cells, search_radius_cells)
 		)
-		var test_target = search_center + random_offset
-		var local_pos = main_node.tile_map1.to_local(test_target)
-		var map_pos = main_node.tile_map1.local_to_map(local_pos)
+		var test_cell = search_center_cell + random_offset
 		
-		if main_node.astar_grid.region.has_point(map_pos) and not main_node.astar_grid.is_point_solid(map_pos):
-			current_scatter_target = test_target
+		if main_node.astar_grid.region.has_point(test_cell) and not main_node.astar_grid.is_point_solid(test_cell):
+			var local_center = main_node.tile_map1.map_to_local(test_cell)
+			current_scatter_target = main_node.tile_map1.to_global(local_center)
 			return
 			
-	current_scatter_target = global_position + (current_dir * 48.0)
+	current_scatter_target = spawnpoint.global_position
 
 func start_wave(mode: Mode, duration: float):
 	current_mode = mode
@@ -107,7 +110,8 @@ func update_path():
 
 	if new_path.is_empty() and current_mode == Mode.SCATTER:
 		pick_new_scatter_target()
-		return 
+		new_path = main_node.get_path_to_pacman(global_position, current_scatter_target)
+		if new_path.is_empty(): return 
 	
 	if new_path.is_empty() and current_mode == Mode.CHASE:
 		new_path = main_node.get_path_to_pacman(global_position, pacman.global_position)

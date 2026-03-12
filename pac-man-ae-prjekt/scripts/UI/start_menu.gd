@@ -50,7 +50,7 @@ func _input(event: InputEvent) -> void:
 
 func start_game():
 	# --- ALLES AUF ANFANG SETZEN ---
-	Global.level = 1
+	Global.level = 15
 	Global.score = 0
 	Global.health = 3
 	Global.dots_eaten = 0
