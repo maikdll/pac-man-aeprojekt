@@ -22,7 +22,7 @@ func _setup_ui():
 	add_child(label)
 
 func _input(event):
-	if event is InputEventKey and event.pressed and event.keycode == KEY_P:
+	if event.is_action_pressed("toggle_performance"):
 		overlay_active = !overlay_active
 		visible = overlay_active
 
