@@ -115,6 +115,7 @@ func spawn_points():
 
 	var region = astar_grid.region
 	var points_placed = 0
+	var valid_cells_evaluated = 0
 
 	for x in range(region.position.x, region.end.x):
 		for y in range(region.position.y, region.end.y):
@@ -141,6 +142,7 @@ func spawn_points():
 			if touches_wall:
 				continue
 				
+			valid_cells_evaluated += 1
 		
 			if Global.eaten_points_positions.has(cell):
 				continue
@@ -151,7 +153,7 @@ func spawn_points():
 			var current_point_pos = tile_map1.to_global(local_center)
 			
 			var point
-			if points_placed % 60 == 0:
+			if valid_cells_evaluated % 60 == 0:
 				point = big_point_scene.instantiate()
 			else:
 				point = point_scene.instantiate()
@@ -241,8 +243,6 @@ func checkAllPointsEaten():
 		get_tree().change_scene_to_file("res://scenes/Cutscenes.tscn")
 		
 func setDifficulty():
-	print("LEVEL: ", Global.level)
-	print(Global.speedPlayer)
 	if Global.level == 1:
 		Global.speedPlayer = 1.0
 		Global.speedGhost = 0.6
@@ -280,22 +280,18 @@ func setDifficulty():
 func spawn_fruit():
 	if not level_fruit: return
 	
-	#Textur aus Fruitbar-Skript
 	if fruitbar and fruitbar.has_method("get_texture_for_level"):
 		level_fruit.get_node("Sprite2D").texture = fruitbar.get_texture_for_level(Global.level)
 	
 	var current_score = get_fruit_score(Global.level)
 	level_fruit.set_meta("score_value", current_score)
 	
-	#Position
 	level_fruit.global_position = Vector2(480, 152) 
 	
-	#Frucht aktivieren
 	level_fruit.visible = true
 	level_fruit.set_deferred("monitoring", true)
 	level_fruit.set_deferred("monitorable", true)
 	
-	#Timer
 	await get_tree().create_timer(13.5).timeout
 	
 	if is_instance_valid(level_fruit) and level_fruit.visible:
