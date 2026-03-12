@@ -70,12 +70,12 @@ func start_ready_sequence():
 	
 	get_tree().call_group("PacMan", "start_moving_animation")
 
-func _process(delta):
-	if Global.dots_eaten == 138 and not fruit_spawned_1:
+func _process(_delta):
+	if Global.dots_eaten >= 138 and not fruit_spawned_1:
 		fruit_spawned_1 = true
 		spawn_fruit()
 		
-	if Global.dots_eaten == 335 and not fruit_spawned_2:
+	if Global.dots_eaten >= 335 and not fruit_spawned_2:
 		fruit_spawned_2 = true
 		spawn_fruit()
 		
