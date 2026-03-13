@@ -17,6 +17,9 @@ var remainingPoints = 500;
 var eaten_points_positions = {}
 var died_in_level = false
 
+var fruit_spawned_1 = false
+var fruit_spawned_2 = false
+
 var inactivity_timer: Timer
 
 var socket = WebSocketPeer.new()
