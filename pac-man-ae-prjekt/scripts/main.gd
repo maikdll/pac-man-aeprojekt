@@ -240,7 +240,7 @@ func checkAllPointsEaten():
 			
 			await get_tree().create_timer(0.2).timeout
 			
-		get_tree().change_scene_to_file("res://scenes/Cutscenes.tscn")
+		SceneTransition.change_scene("res://scenes/Cutscenes.tscn")
 		
 func setDifficulty():
 	if Global.level == 1:

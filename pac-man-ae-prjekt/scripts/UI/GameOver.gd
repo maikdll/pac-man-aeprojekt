@@ -8,19 +8,16 @@ const GH_SCALE := Vector2(2.8, 2.8)
 var name_input: LineEdit
 
 func _ready() -> void:
-	self.layer = 100 
-	hide()
-
-func setGameOver() -> void:
+	# Baut den Screen sofort auf, wenn die Szene geladen wird
 	Global.eaten_points_positions.clear()
 	Global.isGameStopped = true
-	print("isGameStopped: ", Global.isGameStopped)
+	
 	Global.send_effect(Global.CHAIN_A, "fill", Color.RED, Global.SEG_ALL, 50, -1)
 	Global.send_effect(Global.CHAIN_B, "fill", Color.RED, Global.SEG_ALL, 50, -1)
-	show()
+	
 	_build_screen()
 
-func _build_screen():
+func _build_screen() -> Control:
 	for child in get_children():
 		child.queue_free()
 
@@ -117,6 +114,7 @@ func _build_screen():
 
 	name_input.text_submitted.connect(_on_name_submitted)
 	name_input.call_deferred("grab_focus")
+	return root
 
 func _spawn_ghost(scene: PackedScene, pos: Vector2, anim: String, parent: Control):
 	var g_inst = scene.instantiate()

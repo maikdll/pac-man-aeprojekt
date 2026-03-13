@@ -8,7 +8,6 @@
 [ext_resource type="AudioStream" uid="uid://b6bhda7uhl7lb" path="res://assets/Sound/pacman_beginning.wav" id="4_rarhs"]
 [ext_resource type="PackedScene" uid="uid://sduja8lgq3ml" path="res://scenes/level_1.tscn" id="5_vcsgt"]
 [ext_resource type="PackedScene" uid="uid://c1512qgi04htt" path="res://scenes/UI/Healthbar.tscn" id="7_nxtc6"]
-[ext_resource type="PackedScene" uid="uid://bqui4c4id4l6k" path="res://scenes/UI/GameOver.tscn" id="14_mwfav"]
 [ext_resource type="Shader" uid="uid://c76rm8w46lmr3" path="res://scenes/Main.gdshader" id="16_cvmbd"]
 [ext_resource type="PackedScene" uid="uid://15m8lpws0bgc" path="res://scenes/Ghosts/Reddghost.tscn" id="16_ft6cd"]
 [ext_resource type="Shader" uid="uid://bdrw4xwjrrrih" path="res://scenes/Filter_1.gdshader" id="17_bb450"]
@@ -108,9 +107,6 @@ offset_left = 680.0
 offset_top = 472.0
 offset_right = 808.0
 offset_bottom = 528.0
-
-[node name="GameOver" parent="." unique_id=1008604839 instance=ExtResource("14_mwfav")]
-visible = false
 
 [node name="Fruit" type="Area2D" parent="." unique_id=775994317 groups=["Fruit"]]
 collision_layer = 8

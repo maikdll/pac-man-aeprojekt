@@ -139,9 +139,11 @@ func killPacman():
 	
 	if Global.health > 0:
 		Global.died_in_level = true
-		get_tree().reload_current_scene()
+		# Normaler Tod
+		SceneTransition.change_scene(get_tree().current_scene.scene_file_path)
 	else:
-		get_tree().call_group("ui", "setGameOver")
+		# Game Over
+		SceneTransition.change_scene("res://scenes/UI/GameOver.tscn")
 	
 func get_intermission_times(level: int) -> Dictionary:
 	var total_time = 0.0
