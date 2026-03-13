@@ -162,7 +162,7 @@ func _process(delta):
 	if current_path.is_empty(): return
 	
 	if Global.isGameStopped == false:
-		var current_speed_mult = 0.5 if (Global.isIntermissionMode and not is_eaten) else 1.0
+		var current_speed_mult = 0.5 if (Global.isIntermissionMode and not is_eaten and not is_immune) else 1.0
 		var speed = 100 * get_speed_multiplier() * Global.speedGhost * current_speed_mult * delta
 		if is_eaten: speed = 400 * delta
 		global_position = global_position.move_toward(target_position, speed)
@@ -228,3 +228,8 @@ func reset_ghost():
 	$AnimatedSprite2D.play("Oben")
 	if dots_to_leave <= 0:
 		leave_house()
+		
+		
+func on_power_pellet_eaten():
+	if not is_eaten:
+		is_immune = false
