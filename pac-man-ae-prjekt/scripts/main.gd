@@ -21,7 +21,7 @@ var astar_grid = AStarGrid2D.new()
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_Q:
+		if event.is_action_pressed("quit_game"):
 			get_tree().quit()
 	elif event is InputEventJoypadButton and event.pressed:
 		var quit_buttons = [

@@ -44,9 +44,8 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("start_game"):
 		start_game()
 		
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_Q:
-			get_tree().quit()
+	elif event.is_action_pressed("quit_game"):
+		get_tree().quit()
 
 func start_game():
 	# --- ALLES AUF ANFANG SETZEN ---
