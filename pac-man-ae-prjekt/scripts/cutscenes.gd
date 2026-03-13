@@ -34,7 +34,14 @@ func _ready() -> void:
 		$VideoStreamPlayer8.play()
 		await $VideoStreamPlayer8.finished
 		await get_tree().create_timer(1).timeout
-	
+	elif Global.level == 10:
+		$VideoStreamPlayer9.play()
+		await $VideoStreamPlayer9.finished
+		await get_tree().create_timer(1).timeout
+	else:
+		$VideoStreamPlayer11.play()
+		await $VideoStreamPlayer11.finished
+		await get_tree().create_timer(1).timeout
 	
 	await get_tree().create_timer(1).timeout
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
