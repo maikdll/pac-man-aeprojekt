@@ -79,10 +79,8 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	if area.is_in_group("BigPoint"):
 		print("Big point eaten!")
 		
-		# ─── HIER IST DER SCHUTZ VOR DOPPELZÄHLUNGEN ───
 		if not point_already_counted:
 			get_tree().call_group("Main", "checkAllPointsEaten")
-		# ────────────────────────────────────────────────
 		
 		var times = get_intermission_times(Global.level)
 		intermission_time_left = times["total"]
@@ -91,7 +89,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		if intermission_time_left > 0:
 			$AudioIntermission.play()
 			Global.isIntermissionMode = true
-			get_tree().call_group("Ghost", "set", "is_eaten", false)
+			get_tree().call_group("Ghost", "on_power_pellet_eaten")
 			
 			Global.eatGhostScore = 200 
 			
