@@ -14,8 +14,6 @@ extends Node2D
 @onready var points_container = $Points
 @export var point_spacing: int = 2
 
-var fruit_spawned_1 = false
-var fruit_spawned_2 = false
 @onready var level_fruit = $Fruit 
 @onready var ready_label = $ReadyScreen/ReadyLabel
 
@@ -71,12 +69,12 @@ func start_ready_sequence():
 	get_tree().call_group("PacMan", "start_moving_animation")
 
 func _process(_delta):
-	if Global.dots_eaten >= 138 and not fruit_spawned_1:
-		fruit_spawned_1 = true
+	if Global.dots_eaten >= 138 and not Global.fruit_spawned_1:
+		Global.fruit_spawned_1 = true
 		spawn_fruit()
 		
-	if Global.dots_eaten >= 335 and not fruit_spawned_2:
-		fruit_spawned_2 = true
+	if Global.dots_eaten >= 335 and not Global.fruit_spawned_2:
+		Global.fruit_spawned_2 = true
 		spawn_fruit()
 		
 func setup_grid():
@@ -162,7 +160,7 @@ func spawn_points():
 			point.global_position = current_point_pos
 			
 			point.grid_pos = cell
-			Global.remainingPoints = points_placed
+	Global.remainingPoints = points_placed
 
 func restrict_grid_for_ghosts():
 	var edge_cells_to_block = []
@@ -211,8 +209,8 @@ func checkAllPointsEaten():
 		Global.dots_eaten = 0
 		Global.died_in_level = false
 		
-		fruit_spawned_1 = false
-		fruit_spawned_2 = false
+		Global.fruit_spawned_1 = false
+		Global.fruit_spawned_2 = false
 		
 		await get_tree().create_timer(1.0).timeout
 		

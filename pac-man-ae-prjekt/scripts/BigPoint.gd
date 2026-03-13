@@ -13,13 +13,3 @@ func _ready():
 func _on_blink_timer_timeout():
 	if sprite != null:
 		sprite.visible = not sprite.visible
-
-func _on_body_entered(body: Node2D) -> void:
-	if body.name == "PacMan":
-		Global.send_effect(Global.CHAIN_A, "pulse", Color.BLUE, Global.SEG_ALL, 300, -1)
-		
-		Global.eaten_points_positions[grid_pos] = true 
-		
-		Global.score += 50
-		Global.dots_eaten += 1
-		queue_free()
