@@ -16,6 +16,8 @@ func _ready():
 	$AnimatedSprite2D.play("Closed")
 
 func _process(delta):
+	if Global.isGameStopped:
+		return
 	if intermission_time_left > 0:
 		intermission_time_left -= delta
 		if intermission_time_left <= 0:

@@ -87,10 +87,10 @@ func load_leaderboard():
 		leaderboard = file.get_var()
 
 func _input(event):
-	if event is InputEventKey and event.pressed and event.keycode == KEY_Q:
-		get_tree().quit()
+	if event is InputEventKey or event is InputEventJoypadButton:
+		inactivity_timer.start()
 		
-	if event is InputEventKey or event is InputEventJoypadButton or event is InputEventJoypadMotion:
+	if event is InputEventJoypadMotion and abs(event.axis_value) > 0.2:
 		inactivity_timer.start()
 		
 func _on_inactivity_timeout():
