@@ -58,6 +58,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 	var point_already_counted = false
 	
 	if area.is_in_group("Points"):
+		area.visible = false
 		$AudioEatingPoints.play()
 		get_tree().call_group("Main", "checkAllPointsEaten")
 		point_already_counted = true # <--- Wir merken uns: Zähler ging schon runter!
@@ -77,6 +78,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			
 			
 	if area.is_in_group("BigPoint"):
+		area.visible = false
 		print("Big point eaten!")
 		
 		if not point_already_counted:

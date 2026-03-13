@@ -224,6 +224,10 @@ func checkAllPointsEaten():
 			tile_map2.visible = false
 			tile_map4.visible = false
 			
+			points_container.visible = false
+			if is_instance_valid(level_fruit): 
+				level_fruit.visible = false
+			
 			if healthbar: healthbar.visible = false
 			if fruitbar: fruitbar.visible = false
 			if score_ui: score_ui.visible = false
@@ -233,6 +237,10 @@ func checkAllPointsEaten():
 			tile_map1.visible = true
 			tile_map2.visible = true
 			tile_map4.visible = true
+			
+			points_container.visible = true
+			if is_instance_valid(level_fruit): 
+				level_fruit.visible = true
 			
 			if healthbar: healthbar.visible = true
 			if fruitbar: fruitbar.visible = true
