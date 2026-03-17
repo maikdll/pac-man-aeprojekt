@@ -23,8 +23,8 @@ boot_splash/show_image=false
 [autoload]
 
 Global="*uid://708xk1jl38ed"
-SceneTransition="*uid://jkatnhjgx33w"
 DebugOverlay="*uid://gifwmm8xv4ut"
+SceneTransition="*uid://c0vgeukipwv1j"
 
 [display]
 
