@@ -22,9 +22,9 @@ boot_splash/show_image=false
 
 [autoload]
 
-Global="*res://pfad/zu/deinem/global.gd"
-DebugOverlay="*res://pfad/zu/deinem/debug_overlay.tscn"
-SceneTransition="*res://pfad/zu/deinem/scene_transition.tscn"
+Global="*uid://708xk1jl38ed"
+DebugOverlay="*uid://gifwmm8xv4ut"
+SceneTransition="*uid://c0vgeukipwv1j"
 
 [display]
 
