@@ -39,11 +39,11 @@ jobs:
           mkdir -p build/${{ matrix.platform }}
           cd pac-man-ae-prjekt
           
-          # Godot Cache leeren und Assets importieren
-          rm -rf .godot
-          rm -f project.godot.rf
-          godot --headless --editor --quit || true
-          godot --headless --editor --quit || true
+          # --- GODOT 4 IMPORT FIX ---
+          # Wir löschen den Cache NICHT mehr hart, sondern zwingen Godot, 
+          # die UIDs und Assets sauber zu importieren!
+          godot --headless --build-solutions --quit || true
+          godot --headless --import || true
 
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
