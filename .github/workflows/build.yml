@@ -39,12 +39,13 @@ jobs:
           mkdir -p build/${{ matrix.platform }}
           cd pac-man-ae-prjekt
           
-          # --- GODOT CACHE BYPASS ---
-          # Wir nutzen jetzt exakt den mitgepushten .godot Cache vom lokalen Rechner.
+          # --- DER LEBENSRETTENDE IMPORT-SCHRITT ---
+          # Wir zwingen Linux, sein eigenes Inhaltsverzeichnis (UIDs) aufzubauen!
+          echo "Baue sauberen Linux-Godot-Cache auf..."
+          godot --headless --editor --quit || true
           
           if [ "${{ matrix.platform }}" = "Windows" ]; then
-            # Windows braucht zwingend die .exe Endung
-            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+            godot --headless --path . --export-release "Windows" ../build/Windows/game
             cd ../build/Windows
             zip -r PacMan-Windows.zip .
             
@@ -53,9 +54,9 @@ jobs:
             cd ../build/macOS
             unzip game_mac.zip
             rm game_mac.zip
-            # macOS Apps sind Ordner, wir benennen den Ordner um und zippen ihn
-            mv *.app game.app 2>/dev/null || true
-            zip -r PacMan-macOS.zip game.app
+            mv *.app game 2>/dev/null || true
+            zip -r PacMan-macOS.zip game
+            rm -rf game
             
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
             godot --headless --path . --export-release "Linux" ../build/Linux/game
