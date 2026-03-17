@@ -39,16 +39,13 @@ jobs:
           mkdir -p build/${{ matrix.platform }}
           cd pac-man-ae-prjekt
           
-          # --- GODOT 4 IMPORT FIX ---
-          # Wir löschen den Cache NICHT mehr hart, sondern zwingen Godot, 
-          # die UIDs und Assets sauber zu importieren!
-          godot --headless --build-solutions --quit || true
-          godot --headless --import || true
-
+          # --- GODOT CACHE BYPASS ---
+          # Wir nutzen jetzt exakt den mitgepushten .godot Cache vom lokalen Rechner.
+          # KEIN vorheriges Ausführen oder Importieren auf dem Server!
+          
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
             cd ../build/Windows
-            # Zipt die .exe UND die .pck zusammen in eine Datei!
             zip -r PacMan-Windows.zip .
             
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
@@ -64,7 +61,6 @@ jobs:
             godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
             chmod +x ../build/Linux/game.x86_64
             cd ../build/Linux
-            # Zipt die Datei und bewahrt die Ausführungsrechte (+x) auf
             zip -r PacMan-Linux.zip .
           fi
 
