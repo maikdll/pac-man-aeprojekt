@@ -2,80 +2,81 @@ extends GutTest
 
 # =============================================================================
 # test_main.gd
-# =============================================================================
-# WHAT we test:
-#   ✅ get_fruit_score(level) — a perfect pure function.
-#      Takes a level, returns the score for the fruit. No nodes, no 
-#      side effects. The best example for a unit test in this project.
-#
-# WHAT we DO NOT test and why:
-#   ❌ setDifficulty()       — changes Global.speed*, requires isolation between tests
-#   ❌ spawn_points()        — requires TileMap + AStarGrid2D
-#   ❌ checkAllPointsEaten() — uses await + call_group + change_scene
-#   ❌ spawn_fruit()         — uses await + $Fruit node
-#
-# HOW IT WORKS:
-#   We create main via autofree() without add_child — _ready() is not called.
-#   This means @onready variables = null. But get_fruit_score() doesn't use them.
+# Tests pure logic and state-modifying functions of the Main scene.
+# Node dependencies (TileMap, AStar) are intentionally excluded.
 # =============================================================================
 
 var _MainScript = load("res://scripts/main.gd")
 var main_node
 
+# Backup variables for Global state isolation
+var _orig_level: int
+var _orig_speed_p: float
+var _orig_speed_g: float
 
 func before_each() -> void:
-	# Create an instance without adding it to the scene tree.
-	# _ready() will not be called → @onready vars = null → we don't care,
-	# because get_fruit_score() is a pure function (if/elif chain).
+	# Arrange: Create script instance without adding to tree (avoids @onready crashes)
 	main_node = autofree(_MainScript.new())
+	
+	# Arrange: Backup Global state
+	_orig_level = Global.level
+	_orig_speed_p = float(Global.speedPlayer)
+	_orig_speed_g = float(Global.speedGhost)
 
+func after_each() -> void:
+	# Clean up: Restore Global state
+	Global.level = _orig_level
+	Global.speedPlayer = _orig_speed_p
+	Global.speedGhost = _orig_speed_g
 
-# ─────────────────────────────────────────────────────────────────────────────
-# get_fruit_score(level) — fruit score for each level
-# ─────────────────────────────────────────────────────────────────────────────
+# ---------------------------------------------------------
+# TEST 1: Fruit Scores mapped by Level (Data-Driven)
+# ---------------------------------------------------------
+func test_get_fruit_score_logic() -> void:
+	# Arrange: Dictionary mapping [Level -> Expected Score]
+	var test_cases = {
+		1: 200,   2: 600,   3: 1000,  4: 1000,
+		5: 1400,  6: 1400,  7: 2000,  8: 2000,
+		9: 4000,  10: 4000, 11: 6000, 12: 6000,
+		13: 10000, 99: 10000 # Maxes out at 10000
+	}
+	
+	var previous_score = 0
+	
+	# Act & Assert
+	for lvl in test_cases.keys():
+		var expected = test_cases[lvl]
+		var result = main_node.get_fruit_score(lvl)
+		
+		# Rule 1: Exact score match
+		assert_eq(result, expected, "Level %d fruit should give %d points" % [lvl, expected])
+		
+		# Rule 2: Score should never decrease as level goes up
+		assert_gte(result, previous_score, "Score at level %d should not be lower than previous" % lvl)
+		previous_score = result
 
-func test_fruit_score_level_1_is_cherry() -> void:
-	# Level 1 — cherry, 200 points
-	assert_eq(main_node.get_fruit_score(1), 200)
-
-func test_fruit_score_level_2_is_strawberry() -> void:
-	# Level 2 — strawberry, 600 points
-	assert_eq(main_node.get_fruit_score(2), 600)
-
-func test_fruit_score_level_3_and_4_are_orange() -> void:
-	# Levels 3-4 — orange, 1000 points
-	assert_eq(main_node.get_fruit_score(3), 1000)
-	assert_eq(main_node.get_fruit_score(4), 1000)
-
-func test_fruit_score_level_5_and_6_are_apple() -> void:
-	# Levels 5-6 — apple, 1400 points
-	assert_eq(main_node.get_fruit_score(5), 1400)
-	assert_eq(main_node.get_fruit_score(6), 1400)
-
-func test_fruit_score_level_7_and_8_are_melon() -> void:
-	# Levels 7-8 — melon, 2000 points
-	assert_eq(main_node.get_fruit_score(7), 2000)
-	assert_eq(main_node.get_fruit_score(8), 2000)
-
-func test_fruit_score_level_9_and_10() -> void:
-	# Levels 9-10 — 4000 points
-	assert_eq(main_node.get_fruit_score(9), 4000)
-	assert_eq(main_node.get_fruit_score(10), 4000)
-
-func test_fruit_score_level_11_and_12() -> void:
-	# Levels 11-12 — 6000 points
-	assert_eq(main_node.get_fruit_score(11), 6000)
-	assert_eq(main_node.get_fruit_score(12), 6000)
-
-func test_fruit_score_high_levels_max_out() -> void:
-	# Level 13 and above — 10000 points (max, does not increase)
-	assert_eq(main_node.get_fruit_score(13), 10000)
-	assert_eq(main_node.get_fruit_score(99), 10000)
-
-func test_fruit_score_increases_with_level() -> void:
-	# The score should increase with the level (or remain the same, but not decrease)
-	var prev: int = main_node.get_fruit_score(1)
-	for lvl in [2, 3, 5, 7, 9, 11, 13]:
-		var curr: int = main_node.get_fruit_score(lvl)
-		assert_gte(curr, prev, "Level %d score should be >= level before" % lvl)
-		prev = curr
+# ---------------------------------------------------------
+# TEST 2: Difficulty Scaling (Data-Driven)
+# ---------------------------------------------------------
+func test_set_difficulty_scaling() -> void:
+	# Arrange: Define expected speeds for specific levels
+	# Dictionary format: Level -> {"p": PlayerSpeed, "g": GhostSpeed}
+	var test_cases = {
+		1: {"p": 1.0, "g": 0.6},
+		3: {"p": 1.4, "g": 0.8},
+		8: {"p": 2.0, "g": 1.6},
+		10: {"p": 2.0, "g": 2.0},
+		15: {"p": 1.8, "g": 2.5} # Formula: 2 + (15 - 10) / 10.0 = 2.5
+	}
+	
+	# Act & Assert
+	for lvl in test_cases.keys():
+		Global.level = lvl
+		main_node.setDifficulty() # Modifies Global state
+		
+		var expected_p = test_cases[lvl]["p"]
+		var expected_g = test_cases[lvl]["g"]
+		
+		# FIX: Use float() to avoid INT vs FLOAT comparison warnings
+		assert_eq(float(Global.speedPlayer), float(expected_p), "Player speed at level %d is incorrect" % lvl)
+		assert_eq(float(Global.speedGhost), float(expected_g), "Ghost speed at level %d is incorrect" % lvl)

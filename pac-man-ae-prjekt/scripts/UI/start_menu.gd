@@ -40,13 +40,12 @@ const GHOST_SCENES = [
 func _on_button_button_down() -> void:
 	start_game()
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("start_game"):
 		start_game()
 		
-	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_Q:
-			get_tree().quit()
+	elif event.is_action_pressed("quit_game"):
+		get_tree().quit()
 
 func start_game():
 	# --- ALLES AUF ANFANG SETZEN ---
@@ -255,6 +254,7 @@ func _build_ui():
 	btn.position = Vector2(310, 335)
 	btn.size = Vector2(340, 50)
 	btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+	btn.focus_mode = Control.FOCUS_NONE
 	btn.pressed.connect(_on_play)
 	add_child(btn)
 

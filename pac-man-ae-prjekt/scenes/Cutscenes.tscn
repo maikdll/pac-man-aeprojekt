@@ -9,7 +9,9 @@
 [ext_resource type="VideoStream" uid="uid://bpnnjvvvkmdfj" path="res://assets/Cutscenes/Cutscene4.ogv" id="5_007an"]
 [ext_resource type="VideoStream" uid="uid://cswhp7sgc65l4" path="res://assets/Cutscenes/Cutscene5.ogv" id="6_vt6d6"]
 [ext_resource type="VideoStream" uid="uid://0xebu61fljyc" path="res://assets/Cutscenes/PacManVideo2.ogv" id="8_1t60c"]
-[ext_resource type="VideoStream" uid="uid://dkm3l5x1h6ej7" path="res://assets/Cutscenes/PacManVideo3.ogv" id="9_tsdey"]
+[ext_resource type="VideoStream" uid="uid://d0yyqyfbyvqw5" path="res://assets/Cutscenes/PacManVideo3.ogv" id="9_tsdey"]
+[ext_resource type="VideoStream" uid="uid://db8acbpn3pp2j" path="res://assets/Cutscenes/PacManVideo4.ogv" id="10_koksd"]
+[ext_resource type="VideoStream" uid="uid://dkm3l5x1h6ej7" path="res://assets/Cutscenes/PacManVideo6.ogv" id="11_vftnj"]
 
 [node name="Cutscenes" type="Node2D" unique_id=186809379]
 script = ExtResource("1_swj6l")
@@ -71,6 +73,30 @@ offset_top = -81.0
 offset_right = 1133.0
 offset_bottom = 639.0
 stream = ExtResource("9_tsdey")
+expand = true
+
+[node name="VideoStreamPlayer9" type="VideoStreamPlayer" parent="." unique_id=1513874798]
+offset_left = -147.0
+offset_top = -81.0
+offset_right = 1133.0
+offset_bottom = 639.0
+stream = ExtResource("10_koksd")
+expand = true
+
+[node name="VideoStreamPlayer10" type="VideoStreamPlayer" parent="." unique_id=1944440054]
+offset_left = -147.0
+offset_top = -81.0
+offset_right = 1133.0
+offset_bottom = 639.0
+stream = ExtResource("11_vftnj")
+expand = true
+
+[node name="VideoStreamPlayer11" type="VideoStreamPlayer" parent="." unique_id=1577260962]
+offset_left = -147.0
+offset_top = -81.0
+offset_right = 1133.0
+offset_bottom = 639.0
+stream = ExtResource("11_vftnj")
 expand = true
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1007277319]

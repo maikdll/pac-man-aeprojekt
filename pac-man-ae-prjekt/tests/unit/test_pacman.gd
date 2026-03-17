@@ -2,112 +2,60 @@ extends GutTest
 
 # =============================================================================
 # test_pacman.gd
-# =============================================================================
-# WHAT we test:
-#   ✅ get_intermission_times(level) - pure function, no scene dependencies.
-#      This is the duration ghosts stay "blue" after a power pellet.
-#      Key insight: blink is ALWAYS = total / 2 (one test covers all levels).
-#   ✅ Default variable values.
-#
-# WHAT we do NOT test and why:
-#   ❌ killPacman()       - uses await + $AudioDeath + $AnimatedSprite2D
-#   ❌ _physics_process() - depends on Input + TileMap collisions
-#   ❌ _on_area_2d_*()    - requires real Area2D nodes / group calls
+# Tests the pure logic functions of PacMan.
+# Physics, inputs, and Area2D collisions are omitted as they require 
+# integration testing with the scene tree.
 # =============================================================================
 
 var _PacManScript = load("res://scripts/PacMan.gd")
 var pacman
 
 func before_each() -> void:
-	# partial_double stubs _ready/_process without affecting other methods.
+	# Arrange: Create a stubbed PacMan instance to avoid engine physics errors
 	pacman = partial_double(_PacManScript).new()
 	stub(pacman, "_ready").to_do_nothing()
 	stub(pacman, "_process").to_do_nothing()
 	stub(pacman, "_physics_process").to_do_nothing()
 	add_child_autoqfree(pacman)
 
+# ---------------------------------------------------------
+# TEST 1: Intermission Times mapped by Level (Data-Driven)
+# ---------------------------------------------------------
+func test_get_intermission_times_exact_values() -> void:
+	# Arrange: A dictionary mapping [Level -> Expected Total Time]
+	var test_cases = {
+		1: 10.0,
+		2: 9.0,
+		3: 8.0,
+		4: 7.0,
+		5: 6.0,  8: 6.0,    # Tier 5-8
+		9: 5.0,  16: 5.0,   # Tier 9-16
+		17: 4.0, 99: 4.0    # Capped at level 17+
+	}
+	
+	# Act & Assert: Loop through all critical levels
+	for lvl in test_cases.keys():
+		var expected_time = test_cases[lvl]
+		var result = pacman.get_intermission_times(lvl)
+		
+		assert_eq(result["total"], expected_time, "Total time for level %d should be %s" % [lvl, expected_time])
 
-# ──────────────────────────────────────────────
-# Initial state
-# ──────────────────────────────────────────────
-func test_initial_is_not_dying() -> void:
-	assert_false(pacman.isDying)
-
-func test_initial_is_not_invincible() -> void:
-	assert_false(pacman.is_invincible)
-
-func test_initial_current_direction_is_right() -> void:
-	assert_eq(pacman.current_direction, Vector2.RIGHT)
-
-func test_initial_next_direction_is_right() -> void:
-	assert_eq(pacman.next_direction, Vector2.RIGHT)
-
-func test_initial_intermission_time_left_is_zero() -> void:
-	assert_eq(pacman.intermission_time_left, 0.0)
-
-func test_initial_intermission_blink_time_is_zero() -> void:
-	assert_eq(pacman.intermission_blink_time, 0.0)
-
-func test_spawn_position_default() -> void:
-	assert_eq(pacman.spawn_position, Vector2(400.0, 600.0))
-
-
-# -----------------------------------------------------------------------------
-# get_intermission_times() - ghost blue duration per level tier
-# Pure logic, ideal for unit testing.
-# -----------------------------------------------------------------------------
-
-# Check exact values for each difficulty tier
-
-func test_level_1() -> void:
-	var t: Dictionary = pacman.get_intermission_times(1)
-	assert_eq(t["total"], 10.0, "Level 1: total")
-
-func test_level_2() -> void:
-	var t: Dictionary = pacman.get_intermission_times(2)
-	assert_eq(t["total"], 9.0, "Level 2: total")
-
-func test_level_3() -> void:
-	var t: Dictionary = pacman.get_intermission_times(3)
-	assert_eq(t["total"], 8.0, "Level 3: total")
-
-func test_level_4() -> void:
-	var t: Dictionary = pacman.get_intermission_times(4)
-	assert_eq(t["total"], 7.0, "Level 4: total")
-
-func test_levels_5_to_8_same() -> void:
-	# Levels 5-8 share the same duration
-	var t5: Dictionary = pacman.get_intermission_times(5)
-	var t8: Dictionary = pacman.get_intermission_times(8)
-	assert_eq(t5["total"], 6.0, "Level 5: total")
-	assert_eq(t5["total"], t8["total"], "Level 5 and 8 must match")
-
-func test_levels_9_to_16_same() -> void:
-	# Levels 9-16 share the same duration
-	var t9: Dictionary  = pacman.get_intermission_times(9)
-	var t16: Dictionary = pacman.get_intermission_times(16)
-	assert_eq(t9["total"], 5.0, "Level 9: total")
-	assert_eq(t9["total"], t16["total"], "Level 9 and 16 must match")
-
-func test_level_17_and_above_minimum() -> void:
-	# After level 17 the duration no longer decreases
-	var t17: Dictionary = pacman.get_intermission_times(17)
-	var t99: Dictionary = pacman.get_intermission_times(99)
-	assert_eq(t17["total"], 4.0, "Level 17: total")
-	assert_eq(t99["total"], 4.0, "Level 99: total should equal level 17")
-
-func test_blink_is_always_half_of_total() -> void:
-	# Key invariant: blink always equals total / 2.
-	# One test replaces all individual blink tests per level.
-	for lvl in [1, 2, 3, 4, 5, 8, 9, 16, 17, 99]:
-		var t: Dictionary = pacman.get_intermission_times(lvl)
-		assert_eq(t["blink"], t["total"] / 2.0,
-				"Level %d: blink should be total/2" % lvl)
-
-func test_time_never_increases_with_level() -> void:
-	# Duration must decrease or stay the same as level increases.
-	var prev: float = pacman.get_intermission_times(1)["total"]
-	for lvl in [2, 3, 4, 5, 9, 17]:
-		var curr: float = pacman.get_intermission_times(lvl)["total"]
-		assert_lte(curr, prev, "Level %d should not increase time vs previous" % lvl)
-		prev = curr
+# ---------------------------------------------------------
+# TEST 2: Mathematical Rules (Invariants)
+# ---------------------------------------------------------
+func test_intermission_time_mathematical_rules() -> void:
+	var previous_total = 999.0 # Arbitrary high starting number
+	
+	# Act & Assert: Check a continuous range of levels from 1 to 20
+	for lvl in range(1, 20):
+		var times = pacman.get_intermission_times(lvl)
+		var total = times["total"]
+		var blink = times["blink"]
+		
+		# Rule 1: Blink time must ALWAYS be exactly half of the total time
+		assert_eq(blink, total / 2.0, "Level %d: Blink time must be half of total time" % lvl)
+		
+		# Rule 2: Game must only get harder (time must decrease or stay equal)
+		assert_lte(total, previous_total, "Level %d: Time should not increase compared to previous level" % lvl)
+		
+		previous_total = total

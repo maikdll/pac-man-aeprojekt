@@ -16,6 +16,8 @@ func _ready():
 	$AnimatedSprite2D.play("Closed")
 
 func _process(delta):
+	if Global.isGameStopped:
+		return
 	if intermission_time_left > 0:
 		intermission_time_left -= delta
 		if intermission_time_left <= 0:
@@ -52,16 +54,55 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	# Schalter: Wurde dieser Punkt schon gezählt?
-	var point_already_counted = false
-	
-	if area.is_in_group("Points"):
+	# Schutz: Wenn Spiel pausiert oder tot, nichts essen!
+	if isDying or Global.isGameStopped:
+		return
+
+	# Normale Punkte
+	if area.is_in_group("Points") and not area.is_in_group("BigPoint"):
+		area.set_deferred("monitoring", false)
+		area.set_deferred("monitorable", false)
+		area.visible = false
 		$AudioEatingPoints.play()
+		
+		if "grid_pos" in area:
+			Global.eaten_points_positions[area.grid_pos] = true
+			
+		Global.dots_eaten += 1
+		Global.score += 10
 		get_tree().call_group("Main", "checkAllPointsEaten")
-		point_already_counted = true # <--- Wir merken uns: Zähler ging schon runter!
+		area.queue_free() # Punkt sauber aus der Welt entfernen
+
+	# Große Punkte (Power Pellets)
+	elif area.is_in_group("BigPoint"):
+		area.set_deferred("monitoring", false)
+		area.set_deferred("monitorable", false)
+		area.visible = false
+		print("Big point eaten!")
 		
+		if "grid_pos" in area:
+			Global.eaten_points_positions[area.grid_pos] = true
+			
+		Global.dots_eaten += 1
+		Global.score += 50
+		get_tree().call_group("Main", "checkAllPointsEaten")
 		
-	if area.is_in_group("Fruit"):
+		var times = get_intermission_times(Global.level)
+		intermission_time_left = times["total"]
+		intermission_blink_time = times["blink"]
+		
+		if intermission_time_left > 0:
+			$AudioIntermission.play()
+			Global.isIntermissionMode = true
+			get_tree().call_group("Ghost", "on_power_pellet_eaten")
+			
+			Global.eatGhostScore = 200 
+			get_tree().call_group("Ghost", "start_wave", 1, 10.0)
+			
+		area.queue_free() # Punkt sauber aus der Welt entfernen
+
+	# Früchte
+	elif area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
 		Global.send_effect(Global.CHAIN_A, "sparkle", Color.MAGENTA, Global.SEG_ALL, 40, 2)
 		area.visible = false
@@ -72,28 +113,6 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			var value = area.get_meta("score_value")
 			Global.score += value
 			print("Frucht gefressen! +", value, " Punkte!")
-			
-			
-	if area.is_in_group("BigPoint"):
-		print("Big point eaten!")
-		
-		# ─── HIER IST DER SCHUTZ VOR DOPPELZÄHLUNGEN ───
-		if not point_already_counted:
-			get_tree().call_group("Main", "checkAllPointsEaten")
-		# ────────────────────────────────────────────────
-		
-		var times = get_intermission_times(Global.level)
-		intermission_time_left = times["total"]
-		intermission_blink_time = times["blink"]
-		
-		if intermission_time_left > 0:
-			$AudioIntermission.play()
-			Global.isIntermissionMode = true
-			get_tree().call_group("Ghost", "set", "is_eaten", false)
-			
-			Global.eatGhostScore = 200 
-			
-			get_tree().call_group("Ghost", "start_wave", 1, 10.0)
 		
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if isDying:
@@ -117,9 +136,9 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 				
 				
 func killPacman():
+	if isDying: return
 	Global.send_effect(Global.CHAIN_A, "chase", Color.RED, Global.SEG_ALL, 5, 2)
 	Global.send_effect(Global.CHAIN_B, "blink", Color.RED, Global.SEG_ALL, 10, 2)
-	if isDying: return
 	
 	print("Gegessene Punkte vor dem Reload: ", Global.eaten_points_positions.size())
 	$AudioDeath.play()
@@ -137,9 +156,11 @@ func killPacman():
 	
 	if Global.health > 0:
 		Global.died_in_level = true
-		get_tree().reload_current_scene()
+		# Normaler Tod
+		SceneTransition.change_scene(get_tree().current_scene.scene_file_path)
 	else:
-		get_tree().call_group("ui", "setGameOver")
+		# Game Over
+		SceneTransition.change_scene("res://scenes/UI/GameOver.tscn")
 	
 func get_intermission_times(level: int) -> Dictionary:
 	var total_time = 0.0

@@ -14,8 +14,6 @@ extends Node2D
 @onready var points_container = $Points
 @export var point_spacing: int = 2
 
-var fruit_spawned_1 = false
-var fruit_spawned_2 = false
 @onready var level_fruit = $Fruit 
 @onready var ready_label = $ReadyScreen/ReadyLabel
 
@@ -23,7 +21,7 @@ var astar_grid = AStarGrid2D.new()
 
 func _input(event):
 	if event is InputEventKey and event.pressed:
-		if event.keycode == KEY_Q:
+		if event.is_action_pressed("quit_game"):
 			get_tree().quit()
 	elif event is InputEventJoypadButton and event.pressed:
 		var quit_buttons = [
@@ -70,13 +68,13 @@ func start_ready_sequence():
 	
 	get_tree().call_group("PacMan", "start_moving_animation")
 
-func _process(delta):
-	if Global.dots_eaten == 138 and not fruit_spawned_1:
-		fruit_spawned_1 = true
+func _process(_delta):
+	if Global.dots_eaten >= 138 and not Global.fruit_spawned_1:
+		Global.fruit_spawned_1 = true
 		spawn_fruit()
 		
-	if Global.dots_eaten == 335 and not fruit_spawned_2:
-		fruit_spawned_2 = true
+	if Global.dots_eaten >= 335 and not Global.fruit_spawned_2:
+		Global.fruit_spawned_2 = true
 		spawn_fruit()
 		
 func setup_grid():
@@ -115,6 +113,7 @@ func spawn_points():
 
 	var region = astar_grid.region
 	var points_placed = 0
+	var valid_cells_evaluated = 0
 
 	for x in range(region.position.x, region.end.x):
 		for y in range(region.position.y, region.end.y):
@@ -141,6 +140,7 @@ func spawn_points():
 			if touches_wall:
 				continue
 				
+			valid_cells_evaluated += 1
 		
 			if Global.eaten_points_positions.has(cell):
 				continue
@@ -151,7 +151,7 @@ func spawn_points():
 			var current_point_pos = tile_map1.to_global(local_center)
 			
 			var point
-			if points_placed % 60 == 0:
+			if valid_cells_evaluated % 60 == 0:
 				point = big_point_scene.instantiate()
 			else:
 				point = point_scene.instantiate()
@@ -160,7 +160,7 @@ func spawn_points():
 			point.global_position = current_point_pos
 			
 			point.grid_pos = cell
-			Global.remainingPoints = points_placed
+	Global.remainingPoints = points_placed
 
 func restrict_grid_for_ghosts():
 	var edge_cells_to_block = []
@@ -209,8 +209,8 @@ func checkAllPointsEaten():
 		Global.dots_eaten = 0
 		Global.died_in_level = false
 		
-		fruit_spawned_1 = false
-		fruit_spawned_2 = false
+		Global.fruit_spawned_1 = false
+		Global.fruit_spawned_2 = false
 		
 		await get_tree().create_timer(1.0).timeout
 		
@@ -222,6 +222,10 @@ func checkAllPointsEaten():
 			tile_map2.visible = false
 			tile_map4.visible = false
 			
+			points_container.visible = false
+			if is_instance_valid(level_fruit): 
+				level_fruit.visible = false
+			
 			if healthbar: healthbar.visible = false
 			if fruitbar: fruitbar.visible = false
 			if score_ui: score_ui.visible = false
@@ -232,17 +236,19 @@ func checkAllPointsEaten():
 			tile_map2.visible = true
 			tile_map4.visible = true
 			
+			points_container.visible = true
+			if is_instance_valid(level_fruit): 
+				level_fruit.visible = true
+			
 			if healthbar: healthbar.visible = true
 			if fruitbar: fruitbar.visible = true
 			if score_ui: score_ui.visible = true
 			
 			await get_tree().create_timer(0.2).timeout
 			
-		get_tree().change_scene_to_file("res://scenes/Cutscenes.tscn")
+		SceneTransition.change_scene("res://scenes/Cutscenes.tscn")
 		
 func setDifficulty():
-	print("LEVEL: ", Global.level)
-	print(Global.speedPlayer)
 	if Global.level == 1:
 		Global.speedPlayer = 1.0
 		Global.speedGhost = 0.6
@@ -280,22 +286,18 @@ func setDifficulty():
 func spawn_fruit():
 	if not level_fruit: return
 	
-	#Textur aus Fruitbar-Skript
 	if fruitbar and fruitbar.has_method("get_texture_for_level"):
 		level_fruit.get_node("Sprite2D").texture = fruitbar.get_texture_for_level(Global.level)
 	
 	var current_score = get_fruit_score(Global.level)
 	level_fruit.set_meta("score_value", current_score)
 	
-	#Position
 	level_fruit.global_position = Vector2(480, 152) 
 	
-	#Frucht aktivieren
 	level_fruit.visible = true
 	level_fruit.set_deferred("monitoring", true)
 	level_fruit.set_deferred("monitorable", true)
 	
-	#Timer
 	await get_tree().create_timer(13.5).timeout
 	
 	if is_instance_valid(level_fruit) and level_fruit.visible:
