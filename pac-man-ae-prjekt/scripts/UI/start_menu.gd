@@ -57,7 +57,7 @@ func start_game():
 	Global.died_in_level = false
 	Global.isIntermissionMode = false
 	
-	SceneTransition.change_scene("res://scenes/Main.tscn")
+	get_tree().change_scene_to_file("res://scenes/Main.tscn")
 
 func _ready():
 	Global.send_effect(Global.CHAIN_A, "fill", Color.YELLOW, Global.SEG_A_MARQUEE)
