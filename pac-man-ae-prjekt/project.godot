@@ -22,8 +22,8 @@ boot_splash/show_image=false
 
 [autoload]
 
-Global="*res://scripts/Global.gd"
-SceneTransition="*uid://c0vgeukipwv1j"
+Global="*uid://708xk1jl38ed"
+SceneTransition="*uid://jkatnhjgx33w"
 DebugOverlay="*uid://gifwmm8xv4ut"
 
 [display]
