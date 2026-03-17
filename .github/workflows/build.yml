@@ -39,8 +39,7 @@ jobs:
           mkdir -p build/${{ matrix.platform }}
           cd pac-man-ae-prjekt
           
-          # --- DER LEBENSRETTENDE IMPORT-SCHRITT ---
-          # Wir zwingen Linux, sein eigenes Inhaltsverzeichnis (UIDs) aufzubauen!
+          # Godot kurz aufwärmen lassen für den sauberen Cache
           echo "Baue sauberen Linux-Godot-Cache auf..."
           godot --headless --editor --quit || true
           
@@ -50,13 +49,9 @@ jobs:
             zip -r PacMan-Windows.zip .
             
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
-            godot --headless --path . --export-release "macOS" ../build/macOS/game_mac.zip
-            cd ../build/macOS
-            unzip game_mac.zip
-            rm game_mac.zip
-            mv *.app game 2>/dev/null || true
-            zip -r PacMan-macOS.zip game
-            rm -rf game
+            # Godot erstellt automatisch eine perfekte .zip Datei für macOS.
+            # Wir benennen diese einfach nur um, anstatt sie zu entpacken!
+            godot --headless --path . --export-release "macOS" ../build/macOS/PacMan-macOS.zip
             
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
             godot --headless --path . --export-release "Linux" ../build/Linux/game
