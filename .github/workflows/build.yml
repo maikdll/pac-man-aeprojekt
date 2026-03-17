@@ -44,7 +44,7 @@ jobs:
           # KEIN vorheriges Ausführen oder Importieren auf dem Server!
           
           if [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+            godot --headless --path . --export-release "Windows" ../build/Windows/game
             cd ../build/Windows
             zip -r PacMan-Windows.zip .
             
@@ -53,13 +53,13 @@ jobs:
             cd ../build/macOS
             unzip game_mac.zip
             rm game_mac.zip
-            mv *.app game.app 2>/dev/null || true
-            zip -r PacMan-macOS.zip game.app
-            rm -rf game.app
+            mv *.app game 2>/dev/null || true
+            zip -r PacMan-macOS.zip game
+            rm -rf game
             
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
-            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
-            chmod +x ../build/Linux/game.x86_64
+            godot --headless --path . --export-release "Linux" ../build/Linux/game
+            chmod +x ../build/Linux/game
             cd ../build/Linux
             zip -r PacMan-Linux.zip .
           fi
