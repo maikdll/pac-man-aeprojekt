@@ -41,10 +41,10 @@ jobs:
           
           # --- GODOT CACHE BYPASS ---
           # Wir nutzen jetzt exakt den mitgepushten .godot Cache vom lokalen Rechner.
-          # KEIN vorheriges Ausführen oder Importieren auf dem Server!
           
           if [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --path . --export-release "Windows" ../build/Windows/game
+            # Windows braucht zwingend die .exe Endung
+            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
             cd ../build/Windows
             zip -r PacMan-Windows.zip .
             
@@ -53,9 +53,9 @@ jobs:
             cd ../build/macOS
             unzip game_mac.zip
             rm game_mac.zip
-            mv *.app game 2>/dev/null || true
-            zip -r PacMan-macOS.zip game
-            rm -rf game
+            # macOS Apps sind Ordner, wir benennen den Ordner um und zippen ihn
+            mv *.app game.app 2>/dev/null || true
+            zip -r PacMan-macOS.zip game.app
             
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
             godot --headless --path . --export-release "Linux" ../build/Linux/game
