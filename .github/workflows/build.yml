@@ -26,52 +26,63 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Zip installieren (Sicherheitsmaßnahme)
+        run: apt-get update && apt-get install -y zip
+
       - name: Setup Export Templates
         run: |
           mkdir -p ~/.local/share/godot/export_templates
           mv /root/.local/share/godot/export_templates/4.3.stable ~/.local/share/godot/export_templates/4.3.stable
 
-      - name: Build-Folders
-        run: mkdir -p build/${{ matrix.platform }}
-
-      - name: Run-Export
+      - name: Run-Export & Zip
         run: |
+          mkdir -p build/${{ matrix.platform }}
           cd pac-man-ae-prjekt
-          rm -rf .godot
-          rm -f project.godot.rf
+          
+          # Godot kurz aufwärmen lassen für den sauberen Cache
+          echo "Baue sauberen Linux-Godot-Cache auf..."
           godot --headless --editor --quit || true
-          godot --headless --editor --quit || true
-
+          
           if [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
+            godot --headless --path . --export-release "Windows" ../build/Windows/game
+            cd ../build/Windows
+            zip -r PacMan-Windows.zip .
+            
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
-            godot --headless --path . --export-release "macOS" ../build/macOS/game.zip
-            cd ../build/macOS/
-            unzip game.zip
-            rm game.zip
-            mv *.app game.app 2>/dev/null || true
-            zip -r game.zip game.app
-            rm -rf game.app
-            cd ../../pac-man-ae-prjekt
+            # Godot erstellt automatisch eine perfekte .zip Datei für macOS.
+            # Wir benennen diese einfach nur um, anstatt sie zu entpacken!
+            godot --headless --path . --export-release "macOS" ../build/macOS/PacMan-macOS.zip
+            
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
-            godot --headless --path . --export-release "Linux" ../build/Linux/game.x86_64
-            # WICHTIG: Ausführrechte im Build setzen
-            chmod +x ../build/Linux/game.x86_64
+            godot --headless --path . --export-release "Linux" ../build/Linux/game
+            chmod +x ../build/Linux/game
+            cd ../build/Linux
+            zip -r PacMan-Linux.zip .
           fi
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: GodotGame-${{ matrix.platform }}
-          path: build/${{ matrix.platform }}/
+          name: PacMan-${{ matrix.platform }}
+          path: build/${{ matrix.platform }}/PacMan-${{ matrix.platform }}.zip
+          retention-days: 7
 
-      - name: Create Release
-        if: startsWith(github.ref, 'refs/tags/')
+  release:
+    name: GitHub Release erstellen
+    runs-on: ubuntu-latest
+    needs: export
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - name: Alle Artifacts herunterladen
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Release erstellen und Assets hochladen
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            build/Windows/game.exe
-            build/macOS/game.zip
-            build/Linux/game.x86_64
+          files: artifacts/**/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

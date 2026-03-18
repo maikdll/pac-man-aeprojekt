@@ -16,15 +16,15 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="PacManAePrjekt"
 run/main_scene="res://scenes/UI/StartMenu.tscn"
-config/features=PackedStringArray("4.6", "GL Compatibility")
+config/features=PackedStringArray("4.3", "GL Compatibility")
 boot_splash/bg_color=Color(0, 0, 0, 1)
 boot_splash/show_image=false
 
 [autoload]
 
-Global="*uid://708xk1jl38ed"
-DebugOverlay="*uid://gifwmm8xv4ut"
-SceneTransition="*uid://c0vgeukipwv1j"
+Global="*res://scripts/Global.gd"
+DebugOverlay="*res://scenes/PerformanceOverlay.tscn"
+SceneTransition="*res://scenes/SceneTransition.tscn"
 
 [display]
 
