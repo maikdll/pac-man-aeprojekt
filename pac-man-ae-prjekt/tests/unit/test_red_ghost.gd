@@ -1,107 +1,90 @@
 extends GutTest
 
 # =============================================================================
-# test_red_ghost.gd
-# =============================================================================
-# WHAT we test:
-#   ✅ get_speed_multiplier() - returns Global.speedGhostRed.
-#      Each ghost subclass has its own speed variable in Global.
-#      This verifies Red uses the correct one.
-#   ✅ _on_wave_timeout() - mode switching logic (SCATTER <-> CHASE).
-#      Key rule: if remainingPoints < 50, Blinky switches to permanent CHASE.
-#      We stub pick_new_scatter_target() and update_path() since they need main_node.
+# test_red_ghost.gd — Unit tests for RedGhost.gd (Blinky)
 #
-# WHAT we do NOT test and why:
-#   ❌ get_custom_target() in CHASE mode - requires pacman.global_position
-#      and pacman is null when _ready() is stubbed (handled in orange ghost tests)
-#   ❌ Permanent chase audio ($AudioStreamPlayer2D) - needs AudioStreamPlayer node
+# Focused on: get_speed_multiplier() and the conditional logic in _on_wave_timeout()
 # =============================================================================
 
 var _Script = load("res://scripts/Ghosts/RedGhost.gd")
 var ghost
-
+var _orig_remaining: int
 
 func before_each() -> void:
+	# Using partial_double to keep original logic while allowing stubs on specific methods
 	ghost = partial_double(_Script).new()
+	
+	# Stubbing internal engine/base methods to prevent side effects during unit tests
 	stub(ghost, "_ready").to_do_nothing()
 	stub(ghost, "_process").to_do_nothing()
 	stub(ghost, "update_path").to_do_nothing()
 	stub(ghost, "pick_new_scatter_target").to_do_nothing()
+	stub(ghost, "start_wave").to_do_nothing() # We want to check arguments passed here
 
-	# _on_wave_timeout() accesses $AudioStreamPlayer2D when remainingPoints < 50.
-	# We add a real node with the correct name so the path resolves without crashing.
+	# Setup required child node for audio logic in _on_wave_timeout
 	var audio := AudioStreamPlayer2D.new()
 	audio.name = "AudioStreamPlayer2D"
 	ghost.add_child(audio)
 
 	add_child_autoqfree(ghost)
+	ghost.isReady = false
+	
+	# Save Global state to restore after test
+	_orig_remaining = Global.remainingPoints
 
-	ghost.isReady = false  # wave_timer is not initialized, keep it safe
-	ghost.current_mode = ghost.Mode.SCATTER
+func after_each() -> void:
+	Global.remainingPoints = _orig_remaining
 
 
 # -----------------------------------------------------------------------------
-# get_speed_multiplier()
-# Red ghost (Blinky) uses Global.speedGhostRed, not the base 1.0.
+# Speed Logic
 # -----------------------------------------------------------------------------
-
-func test_speed_multiplier_matches_global_red() -> void:
-	Global.speedGhostRed = 1.0
-	assert_eq(ghost.get_speed_multiplier(), 1.0)
-
-func test_speed_multiplier_reflects_global_change() -> void:
-	# If the global speed changes, the multiplier must update immediately.
+func test_speed_multiplier_reflects_global_variable() -> void:
 	Global.speedGhostRed = 1.8
-	assert_eq(ghost.get_speed_multiplier(), 1.8)
-	Global.speedGhostRed = 1.0  # restore
+	assert_eq(ghost.get_speed_multiplier(), 1.8, "Should return current Global speed")
 
 
 # -----------------------------------------------------------------------------
-# _on_wave_timeout() - mode switching
-#
-# Rules:
-#   SCATTER -> CHASE (normal, remainingPoints >= 50): 20 second chase
-#   SCATTER -> CHASE (many eaten, remainingPoints < 50): 200 second permanent chase
-#   CHASE   -> SCATTER (normal, remainingPoints >= 50): 10 second scatter
-#   CHASE   -> CHASE  (many eaten, remainingPoints < 50): stay in chase
+# Wave Logic: Normal Behavior (>= 50 points)
 # -----------------------------------------------------------------------------
-
-func test_scatter_to_chase_when_points_remaining() -> void:
+func test_on_wave_timeout_switches_to_chase_normally() -> void:
 	ghost.current_mode = ghost.Mode.SCATTER
-	Global.remainingPoints = 100  # enough points left
+	Global.remainingPoints = 100
+	
 	ghost._on_wave_timeout()
-	assert_eq(ghost.current_mode, ghost.Mode.CHASE)
+	
+	# Verify it switched to CHASE with standard duration (20.0)
+	assert_called(ghost, "start_wave", [ghost.Mode.CHASE, 20.0])
 
-func test_chase_to_scatter_when_points_remaining() -> void:
+func test_on_wave_timeout_switches_to_scatter_normally() -> void:
 	ghost.current_mode = ghost.Mode.CHASE
 	Global.remainingPoints = 100
+	
 	ghost._on_wave_timeout()
-	assert_eq(ghost.current_mode, ghost.Mode.SCATTER)
+	
+	# Verify it switched to SCATTER with standard duration (10.0)
+	assert_called(ghost, "start_wave", [ghost.Mode.SCATTER, 10.0])
 
-func test_scatter_stays_chase_when_few_points_left() -> void:
-	# When fewer than 50 points remain, Blinky enters permanent chase.
-	ghost.current_mode = ghost.Mode.SCATTER
-	Global.remainingPoints = 30  # < 50
-	ghost._on_wave_timeout()
-	assert_eq(ghost.current_mode, ghost.Mode.CHASE)
 
-func test_chase_stays_chase_when_few_points_left() -> void:
-	# Already chasing + few points = stays in chase (permanent mode).
-	ghost.current_mode = ghost.Mode.CHASE
-	Global.remainingPoints = 10  # < 50
-	ghost._on_wave_timeout()
-	assert_eq(ghost.current_mode, ghost.Mode.CHASE)
-
-func test_boundary_49_points_triggers_permanent_chase() -> void:
-	# Exactly 49 points remaining -> permanent chase threshold
+# -----------------------------------------------------------------------------
+# Wave Logic: "Cruise Elroy" / Permanent Chase (< 50 points)
+# -----------------------------------------------------------------------------
+func test_boundary_49_triggers_permanent_chase() -> void:
+	# Even if currently in CHASE, it should restart with a long duration (200.0)
 	ghost.current_mode = ghost.Mode.CHASE
 	Global.remainingPoints = 49
+	
 	ghost._on_wave_timeout()
-	assert_eq(ghost.current_mode, ghost.Mode.CHASE)
+	
+	# Logic check: < 50 points triggers "Dauerangriff"
+	assert_called(ghost, "start_wave", [ghost.Mode.CHASE, 200.0])
 
-func test_boundary_50_points_allows_scatter() -> void:
-	# Exactly 50 points -> normal scatter allowed
+func test_boundary_50_still_allows_normal_scatter() -> void:
+	# At exactly 50, the ghost should still follow normal patterns
 	ghost.current_mode = ghost.Mode.CHASE
 	Global.remainingPoints = 50
+	
 	ghost._on_wave_timeout()
-	assert_eq(ghost.current_mode, ghost.Mode.SCATTER)
+	
+	# Should NOT trigger 200.0 duration; should go to SCATTER
+	assert_called(ghost, "start_wave", [ghost.Mode.SCATTER, 10.0])

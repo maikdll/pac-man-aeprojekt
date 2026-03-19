@@ -1,66 +1,91 @@
 extends GutTest
 
 # =============================================================================
-# test_global.gd
-# Tests leaderboard logic: insertion, sorting, and trimming to top 5.
-# File I/O (save/load) is intentionally NOT tested here to avoid disk errors.
+# test_global.gd — Unit tests for Global.gd logic
 # =============================================================================
 
-var _original_leaderboard: Array = []
+var _GlobalScript = load("res://scripts/Global.gd") 
+var test_global
 var _original_score: int = 0
 
 func before_each() -> void:
-	# Arrange: Save original state to restore it later
-	_original_leaderboard = Global.leaderboard.duplicate(true)
+	# Create a partial double (mock) of the Global script
+	test_global = partial_double(_GlobalScript).new()
+	
+	# Disable side effects: WebSocket (_ready), file I/O (save_leaderboard)
+	stub(test_global, "_ready").to_do_nothing()
+	stub(test_global, "save_leaderboard").to_do_nothing()
+	
+	add_child_autoqfree(test_global)
+	
+	# Start with a clean slate
+	test_global.leaderboard = []
+	
+	# IMPORTANT: update_leaderboard() reads Global.score (the singleton),
+	# not test_global.score. So we must set the singleton's score.
 	_original_score = Global.score
-
-	# Start with a clean empty leaderboard for each test
-	Global.leaderboard = []
 	Global.score = 0
 
 func after_each() -> void:
-	# Clean up: Restore everything to avoid contaminating other tests
-	Global.leaderboard = _original_leaderboard
+	# Restore the real Global.score so tests don't affect the game
 	Global.score = _original_score
 
 # -----------------------------------------------------------------------------
-# TEST 1: Insertion and Sorting
+# TEST 1: The table cannot contain more than 5 entries
 # -----------------------------------------------------------------------------
-func test_leaderboard_insertion_and_sorting() -> void:
-	# Act: Add three entries in unsorted order
-	Global.score = 100
-	Global.update_leaderboard("Low")
+# Reason: update_leaderboard() must trim the array using .slice(0, 5).
+# If this fails, the leaderboard will grow infinitely and lag the game.
+# -----------------------------------------------------------------------------
+func test_leaderboard_keeps_only_top_5() -> void:
+	var scores = [100, 300, 200, 600, 400, 500]
+	for s in scores:
+		Global.score = s  # update_leaderboard() reads Global.score (singleton)
+		test_global.update_leaderboard("P" + str(s))
 
+	assert_eq(test_global.leaderboard.size(), 5, "The table must contain exactly 5 entries")
+
+
+# -----------------------------------------------------------------------------
+# TEST 2: Results are sorted descending (Best score first)
+# -----------------------------------------------------------------------------
+# Reason: sort_custom must use a["score"] > b["score"].
+# If the logic is flipped (< instead of >), the worst player becomes #1.
+# -----------------------------------------------------------------------------
+func test_leaderboard_sorted_descending() -> void:
+	var scores = [100, 300, 200, 600, 400, 500]
+	for s in scores:
+		Global.score = s
+		test_global.update_leaderboard("P" + str(s))
+
+	assert_eq(test_global.leaderboard[0]["score"], 600, "1st place must be the highest score")
+	assert_eq(test_global.leaderboard[4]["score"], 200, "5th place must be the lowest of the Top 5")
+
+
+# -----------------------------------------------------------------------------
+# TEST 3: The weakest score is dropped
+# -----------------------------------------------------------------------------
+# Reason: When 6 entries are added, the absolute lowest must be removed.
+# This ensures only the elite players stay on the board.
+# -----------------------------------------------------------------------------
+func test_lowest_score_is_dropped() -> void:
+	var scores = [100, 300, 200, 600, 400, 500]
+	for s in scores:
+		Global.score = s
+		test_global.update_leaderboard("P" + str(s))
+
+	# Verify that the minimum score (100) is nowhere in the top 5
+	for entry in test_global.leaderboard:
+		assert_ne(entry["score"], 100, "Score 100 should have been dropped from the Top 5")
+
+
+# -----------------------------------------------------------------------------
+# TEST 4: Player name is saved correctly
+# -----------------------------------------------------------------------------
+# Reason: update_leaderboard() must map the name argument to the dictionary.
+# If lost, the board will show empty strings or "Null" instead of names.
+# -----------------------------------------------------------------------------
+func test_player_name_is_saved() -> void:
 	Global.score = 500
-	Global.update_leaderboard("High")
+	test_global.update_leaderboard("TestPlayer")
 
-	Global.score = 300
-	Global.update_leaderboard("Mid")
-
-	# Assert: Check size and descending order
-	assert_eq(Global.leaderboard.size(), 3, "Should contain exactly 3 entries")
-	assert_eq(Global.leaderboard[0]["name"], "High", "Highest score must be at index 0")
-	assert_eq(Global.leaderboard[0]["score"], 500, "Highest score value must be 500")
-	assert_eq(Global.leaderboard[1]["score"], 300, "Middle score must be at index 1")
-	assert_eq(Global.leaderboard[2]["score"], 100, "Lowest score must be at index 2")
-
-# -----------------------------------------------------------------------------
-# TEST 2: Trimming (Keeping only Top 5)
-# -----------------------------------------------------------------------------
-func test_leaderboard_trims_to_top_5() -> void:
-	# Arrange & Act: Add 6 entries
-	var scores: Array = [100, 200, 300, 400, 500, 600]
-	for i in range(scores.size()):
-		Global.score = scores[i]
-		Global.update_leaderboard("Player_" + str(scores[i]))
-
-	# Assert: Check that leaderboard is capped at 5
-	assert_eq(Global.leaderboard.size(), 5, "Leaderboard must not exceed 5 entries")
-	
-	# Assert: Check top and bottom scores of the remaining 5
-	assert_eq(Global.leaderboard[0]["score"], 600, "1st place should be 600")
-	assert_eq(Global.leaderboard[4]["score"], 200, "5th place should be 200")
-	
-	# Assert: Verify the lowest score (100) was successfully removed
-	for entry in Global.leaderboard:
-		assert_ne(entry["score"], 100, "Score 100 should have been dropped")
+	assert_eq(test_global.leaderboard[0]["name"], "TestPlayer", "The player name must be correctly saved")
