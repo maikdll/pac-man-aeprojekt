@@ -20,6 +20,7 @@ var is_in_house = true
 var current_time_in_house = 0.0
 var gemerkte_punkte = 0
 var start_dots = 0
+var path_timer: Timer
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -47,18 +48,21 @@ func _custom_ready():
 func leave_house():
 	is_in_house = false
 	
-	var timer = Timer.new()
-	timer.wait_time = 0.5
-	timer.autostart = true
-	timer.timeout.connect(update_path)
-	add_child(timer)
-	timer.start(0.5 + randf_range(0.0, 0.2)) 
+	if path_timer == null:
+		path_timer = Timer.new()
+		path_timer.wait_time = 0.5
+		path_timer.autostart = true
+		path_timer.timeout.connect(update_path)
+		add_child(path_timer)
 	
-	wave_timer = Timer.new()
-	wave_timer.one_shot = true
-	wave_timer.timeout.connect(_on_wave_timeout)
-	add_child(wave_timer)
+	path_timer.start(0.5 + randf_range(0.0, 0.2)) 
 	
+	if wave_timer == null:
+		wave_timer = Timer.new()
+		wave_timer.one_shot = true
+		wave_timer.timeout.connect(_on_wave_timeout)
+		add_child(wave_timer)
+		
 	isReady = true
 	start_wave(Mode.SCATTER, 11.0)
 	update_path()
