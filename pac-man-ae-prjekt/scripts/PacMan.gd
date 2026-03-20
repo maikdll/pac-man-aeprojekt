@@ -161,7 +161,7 @@ func killPacman():
 		# Normaler Tod
 		SceneTransition.change_scene(get_tree().current_scene.scene_file_path)
 	else:
-		# Game Over
+		# Game Over!
 		SceneTransition.change_scene("res://scenes/UI/GameOver.tscn")
 	
 func get_intermission_times(level: int) -> Dictionary:
