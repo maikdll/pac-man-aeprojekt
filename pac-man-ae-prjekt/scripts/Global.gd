@@ -40,7 +40,7 @@ var leaderboard = [
 	{"name": "Empty", "score": 0}
 ]
 
-func _process(_delta):
+func _physics_process(_delta):
 	socket.poll()
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		while socket.get_available_packet_count() > 0:

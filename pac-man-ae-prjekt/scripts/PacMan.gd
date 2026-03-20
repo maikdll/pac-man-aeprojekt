@@ -4,8 +4,10 @@ var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false
 var isDying = false
+var is_ready_sequence = true
 var intermission_time_left = 0.0
 var intermission_blink_time = 0.0
+
 
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
@@ -54,8 +56,8 @@ func _physics_process(_delta: float) -> void:
 
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	# Schutz: Wenn Spiel pausiert oder tot, nichts essen!
-	if isDying or Global.isGameStopped:
+	# FIX: Schützt Punkte davor, im Todes-Animations-Screen oder beim "READY"-Startbildschirm gegessen zu werden.
+	if isDying or is_ready_sequence:
 		return
 
 	# Normale Punkte
@@ -71,7 +73,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 		Global.dots_eaten += 1
 		Global.score += 10
 		get_tree().call_group("Main", "checkAllPointsEaten")
-		area.queue_free() # Punkt sauber aus der Welt entfernen
+		area.queue_free() 
 
 	# Große Punkte (Power Pellets)
 	elif area.is_in_group("BigPoint"):
@@ -99,7 +101,7 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			Global.eatGhostScore = 200 
 			get_tree().call_group("Ghost", "start_wave", 1, 10.0)
 			
-		area.queue_free() # Punkt sauber aus der Welt entfernen
+		area.queue_free() 
 
 	# Früchte
 	elif area.is_in_group("Fruit"):
@@ -189,4 +191,5 @@ func stop_for_level_end():
 	
 	
 func start_moving_animation():
+	is_ready_sequence = false
 	$AnimatedSprite2D.play("PacMan_Kauen")

@@ -21,6 +21,7 @@ var current_time_in_house = 0.0
 var gemerkte_punkte = 0
 var start_dots = 0
 var path_timer: Timer
+var is_showing_score = false
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -140,7 +141,7 @@ func set_next_target():
 
 func _process(delta):
 	if Global.isGameStopped:
-		if not $AnimatedSprite2D.animation.begins_with("Score"):
+		if not is_showing_score:
 			$AnimatedSprite2D.pause()
 	else:
 		if not $AnimatedSprite2D.is_playing():
@@ -190,6 +191,7 @@ func get_speed_multiplier() -> float:
 
 func get_eaten():
 	is_eaten = true
+	is_showing_score = true
 	Global.isGameStopped = true 
 	
 	match Global.eatGhostScore:
@@ -200,6 +202,8 @@ func get_eaten():
 		_: $AnimatedSprite2D.play("Score200")
 		
 	await get_tree().create_timer(0.5).timeout
+	
+	is_showing_score = false
 	Global.isGameStopped = false
 	current_path.clear()
 	update_path()
