@@ -178,6 +178,8 @@ func _process(delta):
 				is_immune = true
 				print(name + ": Wiederbelebt!")
 				update_path()
+			elif not is_eaten:
+				update_path()
 
 func get_speed_multiplier() -> float:
 	return 1.0 
