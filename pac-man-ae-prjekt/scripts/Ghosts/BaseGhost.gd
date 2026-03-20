@@ -20,6 +20,8 @@ var is_in_house = true
 var current_time_in_house = 0.0
 var gemerkte_punkte = 0
 var start_dots = 0
+var path_timer: Timer
+var is_showing_score = false
 
 var current_path: Array[Vector2i] = []
 var target_position: Vector2
@@ -47,18 +49,21 @@ func _custom_ready():
 func leave_house():
 	is_in_house = false
 	
-	var timer = Timer.new()
-	timer.wait_time = 0.5
-	timer.autostart = true
-	timer.timeout.connect(update_path)
-	add_child(timer)
-	timer.start(0.5 + randf_range(0.0, 0.2)) 
+	if path_timer == null:
+		path_timer = Timer.new()
+		path_timer.wait_time = 0.5
+		path_timer.autostart = true
+		path_timer.timeout.connect(update_path)
+		add_child(path_timer)
 	
-	wave_timer = Timer.new()
-	wave_timer.one_shot = true
-	wave_timer.timeout.connect(_on_wave_timeout)
-	add_child(wave_timer)
+	path_timer.start(0.5 + randf_range(0.0, 0.2)) 
 	
+	if wave_timer == null:
+		wave_timer = Timer.new()
+		wave_timer.one_shot = true
+		wave_timer.timeout.connect(_on_wave_timeout)
+		add_child(wave_timer)
+		
 	isReady = true
 	start_wave(Mode.SCATTER, 11.0)
 	update_path()
@@ -136,7 +141,7 @@ func set_next_target():
 
 func _process(delta):
 	if Global.isGameStopped:
-		if not $AnimatedSprite2D.animation.begins_with("Score"):
+		if not is_showing_score:
 			$AnimatedSprite2D.pause()
 	else:
 		if not $AnimatedSprite2D.is_playing():
@@ -178,12 +183,15 @@ func _process(delta):
 				is_immune = true
 				print(name + ": Wiederbelebt!")
 				update_path()
+			elif not is_eaten:
+				update_path()
 
 func get_speed_multiplier() -> float:
 	return 1.0 
 
 func get_eaten():
 	is_eaten = true
+	is_showing_score = true
 	Global.isGameStopped = true 
 	
 	match Global.eatGhostScore:
@@ -194,6 +202,8 @@ func get_eaten():
 		_: $AnimatedSprite2D.play("Score200")
 		
 	await get_tree().create_timer(0.5).timeout
+	
+	is_showing_score = false
 	Global.isGameStopped = false
 	current_path.clear()
 	update_path()

@@ -21,11 +21,10 @@ func _on_wave_timeout():
 func get_custom_target() -> Vector2:
 	if current_mode == Mode.CHASE:
 		if blinky != null:
-			var pacman_direction = Vector2.ZERO
-			if "direction" in pacman:
-				pacman_direction = pacman.direction.normalized()
-			elif "velocity" in pacman and pacman.velocity.length() > 0:
+			var pacman_direction = pacman.current_direction 
+			if pacman_direction == Vector2.ZERO and pacman.velocity.length() > 0:
 				pacman_direction = pacman.velocity.normalized()
+				
 			var pivot_point = pacman.global_position + (pacman_direction * 96.0)
 			var vector_from_blinky = pivot_point - blinky.global_position
 			return blinky.global_position + (vector_from_blinky * 2.0)
