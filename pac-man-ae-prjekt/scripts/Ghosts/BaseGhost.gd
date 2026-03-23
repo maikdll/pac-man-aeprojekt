@@ -27,10 +27,14 @@ var current_path: Array[Vector2i] = []
 var target_position: Vector2
 var current_scatter_target: Vector2 = Vector2.ZERO
 
-@onready var main_node = get_tree().root.get_node("Main")
-@onready var pacman = get_tree().get_first_node_in_group("PacMan")
+var main_node
+var pacman
 
 func _ready():
+	# Assigned here (not @onready) so GUT can stub _ready() before these run.
+	main_node = get_tree().root.get_node("Main")
+	pacman = get_tree().get_first_node_in_group("PacMan")
+
 	if Global.died_in_level:
 		dots_to_leave = dots_to_leave_after_death
 		
