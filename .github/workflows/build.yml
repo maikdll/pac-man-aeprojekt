@@ -44,16 +44,25 @@ jobs:
           godot --headless --editor --quit || true
           
           if [ "${{ matrix.platform }}" = "Windows" ]; then
-            godot --headless --path . --export-release "Windows" ../build/Windows/game
+            # LÖSUNG WINDOWS: Wir hängen explizit .exe an, damit Godot den Namen erzwingt!
+            godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
             cd ../build/Windows
             zip -r PacMan-Windows.zip .
             
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
-            # Godot erstellt automatisch eine perfekte .zip Datei für macOS.
-            # Wir benennen diese einfach nur um, anstatt sie zu entpacken!
-            godot --headless --path . --export-release "macOS" ../build/macOS/PacMan-macOS.zip
+            # LÖSUNG MACOS: Godot erstellt automatisch eine .zip mit der .app darin.
+            # Wir exportieren es temporär, entpacken es, benennen die App um und zippen neu!
+            godot --headless --path . --export-release "macOS" ../build/macOS/temp_macos.zip
+            cd ../build/macOS
+            unzip -q temp_macos.zip
+            rm temp_macos.zip
+            # Finde die .app (egal wie sie heißt) und nenne sie game.app
+            find . -name "*.app" -maxdepth 1 -exec mv {} game.app \;
+            # Neu zippen in die finale Datei
+            zip -r PacMan-macOS.zip .
             
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
+            # LÖSUNG LINUX: Hier reicht der Name "game" aus
             godot --headless --path . --export-release "Linux" ../build/Linux/game
             chmod +x ../build/Linux/game
             cd ../build/Linux
