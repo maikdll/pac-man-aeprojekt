@@ -231,7 +231,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
-radius = 4.651163
+radius = 3.7151704
 
 [node name="CyanGhost" type="CharacterBody2D" unique_id=1182016807 groups=["CyanGhost", "Ghost"]]
 collision_layer = 4
@@ -243,5 +243,6 @@ sprite_frames = SubResource("SpriteFrames_hyw4r")
 animation = &"ScaredBlink"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
+position = Vector2(0, 2)
 scale = Vector2(3.01, 3.01)
 shape = SubResource("CircleShape2D_a73n8")
