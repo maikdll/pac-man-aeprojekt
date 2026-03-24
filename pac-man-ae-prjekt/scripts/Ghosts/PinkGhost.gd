@@ -20,11 +20,10 @@ func _on_wave_timeout():
 
 func get_custom_target() -> Vector2:
 	if current_mode == Mode.CHASE:
-		var pacman_direction = Vector2.ZERO
-		if "direction" in pacman:
-			pacman_direction = pacman.direction.normalized()
-		elif "velocity" in pacman and pacman.velocity.length() > 0:
+		var pacman_direction = pacman.current_direction
+		if pacman_direction == Vector2.ZERO and pacman.velocity.length() > 0:
 			pacman_direction = pacman.velocity.normalized()
+			
 		return pacman.global_position + (pacman_direction * ambush_distance)
 	else:
 		if global_position.distance_to(current_scatter_target) < 32.0:

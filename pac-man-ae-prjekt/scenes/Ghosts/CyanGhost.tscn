@@ -240,7 +240,7 @@ script = ExtResource("1_oclmk")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=981668526]
 scale = Vector2(2.5, 2.5)
 sprite_frames = SubResource("SpriteFrames_hyw4r")
-animation = &"Augen_Unten"
+animation = &"ScaredBlink"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1817056081 groups=["Ghost"]]
 position = Vector2(0, 2)
