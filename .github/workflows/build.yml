@@ -50,15 +50,28 @@ jobs:
             zip -r PacMan-Windows.zip .
             
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
-            # LÖSUNG MACOS: Godot erstellt automatisch eine .zip mit der .app darin.
-            # Wir exportieren es temporär, entpacken es, benennen die App um und zippen neu!
+            # DIE ELEGANTE LÖSUNG FÜR MAC
             godot --headless --path . --export-release "macOS" ../build/macOS/temp_macos.zip
             cd ../build/macOS
             unzip -q temp_macos.zip
             rm temp_macos.zip
-            # Finde die .app (egal wie sie heißt) und nenne sie game.app
-            find . -name "*.app" -maxdepth 1 -exec mv {} game.app \;
-            # Neu zippen in die finale Datei
+            
+            # 1. Den .app Ordnernamen finden
+            APP_NAME=$(find . -name "*.app" -maxdepth 1)
+            
+            # 2. Die rohe ausführbare Datei herausziehen und 'game' nennen
+            mv "$APP_NAME/Contents/MacOS/"* ./game
+            
+            # 3. Die Godot-Spieldaten herausziehen und 'game.pck' nennen
+            mv "$APP_NAME/Contents/Resources/"*.pck ./game.pck
+            
+            # 4. Den restlichen .app Ordner löschen
+            rm -rf "$APP_NAME"
+            
+            # 5. Ausführungsrechte garantieren
+            chmod +x ./game
+            
+            # 6. Sauber neu zippen
             zip -r PacMan-macOS.zip .
             
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
