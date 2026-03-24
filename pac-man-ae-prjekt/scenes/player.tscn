@@ -1,7 +1,9 @@
-[gd_scene format=3 uid="uid://cnjypthnhveik"]
+[gd_scene format=3 uid="uid://cykqp6o7o8lsl"]
 
-[ext_resource type="Texture2D" uid="uid://1vbbukx7ankf" path="res://Pacman.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://bdn2g6hofykro" path="res://scripts/PacMan.gd" id="1_g2els"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_3vyb7"]
+load_path = "res://.godot/imported/Pacman.png-3e65d8ec7468a6cb2dbc814c1698f385.ctex"
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3vyb7"]
 
@@ -10,7 +12,7 @@ script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=441394606]
 position = Vector2(-13, -6)
-texture = ExtResource("1_3vyb7")
+texture = SubResource("CompressedTexture2D_3vyb7")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=880179392]
 modulate = Color(1, 0, 1, 1)

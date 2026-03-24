@@ -29,6 +29,9 @@ var play_label: Label
 var hs_label: Label
 var small_dots: Array = []
 
+var inactivity_time: float = 0.0
+const INACTIVITY_LIMIT: float = 180.0 # seconds
+
 const PACMAN_SCENE = preload("res://scenes/PacMan.tscn")
 const GHOST_SCENES = [
 	preload("res://scenes/Ghosts/Reddghost.tscn"),
@@ -41,6 +44,7 @@ func _on_button_button_down() -> void:
 	start_game()
 
 func _unhandled_input(event: InputEvent) -> void:
+	inactivity_time = 0.0
 	if event.is_action_pressed("start_game"):
 		start_game()
 		
@@ -117,6 +121,10 @@ func _reset():
 		dot.visible = true
 
 func _process(delta: float):
+	inactivity_time += delta
+	if inactivity_time >= INACTIVITY_LIMIT:
+		print("Spiel wird wegen Inaktivität geschlossen...")
+		get_tree().quit()
 	blink_timer += delta
 	play_label.visible = fmod(blink_timer, 1.2) < 0.9
 
