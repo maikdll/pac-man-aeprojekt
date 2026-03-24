@@ -56,6 +56,9 @@ func start_game():
 	Global.eaten_points_positions.clear()
 	Global.died_in_level = false
 	Global.isIntermissionMode = false
+	Global.fruit_spawned_1 = false
+	Global.fruit_spawned_2 = false
+	Global.eatGhostScore = 200
 	
 	SceneTransition.change_scene("res://scenes/Main.tscn")
 

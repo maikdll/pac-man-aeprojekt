@@ -15,7 +15,6 @@ extends Node2D
 @export var point_spacing: int = 2
 
 @onready var level_fruit = $Fruit 
-@onready var ready_label = $ReadyScreen/ReadyLabel
 
 var astar_grid = AStarGrid2D.new()
 
@@ -52,21 +51,6 @@ func _ready():
 		setup_grid()
 		spawn_points()
 		restrict_grid_for_ghosts()
-		
-	start_ready_sequence()
-	
-func start_ready_sequence():
-	for i in range(6):
-		if ready_label:
-			ready_label.visible = not ready_label.visible
-		await get_tree().create_timer(0.5).timeout
-		
-	if ready_label:
-		ready_label.visible = false
-		
-	Global.isGameStopped = false
-	
-	get_tree().call_group("PacMan", "start_moving_animation")
 
 func _process(_delta):
 	if Global.dots_eaten >= 138 and not Global.fruit_spawned_1:

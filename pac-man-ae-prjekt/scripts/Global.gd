@@ -82,12 +82,14 @@ func _ready():
 
 func save_leaderboard():
 	var file = FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	file.store_var(leaderboard)
+	if file != null:
+		file.store_var(leaderboard)
 	
 func load_leaderboard():
 	if FileAccess.file_exists(SAVE_PATH):
 		var file = FileAccess.open(SAVE_PATH, FileAccess.READ)
-		leaderboard = file.get_var()
+		if file != null:
+			leaderboard = file.get_var()
 
 func _input(event):
 	if event is InputEventKey or event is InputEventJoypadButton:
