@@ -5,9 +5,6 @@ const ROW_Y := 190.0
 const GHOST_ROW_GAP := 70.0
 const GH_SCALE := Vector2(2.8, 2.8)
 
-var inactivity_time: float = 0.0
-const INACTIVITY_LIMIT: float = 180.0 # seconds
-
 var name_input: LineEdit
 
 func _ready() -> void:
@@ -142,11 +139,3 @@ func _submit_name(player_name: String):
 	Global.update_leaderboard(pname)
 	
 	SceneTransition.change_scene("res://scenes/UI/StartMenu.tscn")
-	
-func _process(delta):
-	inactivity_time += delta
-	if inactivity_time >= INACTIVITY_LIMIT:
-		print("Spiel wird wegen Inaktivität geschlossen...")
-		get_tree().quit()
-	
-	

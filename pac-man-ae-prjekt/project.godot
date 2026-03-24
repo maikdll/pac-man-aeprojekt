@@ -22,9 +22,9 @@ boot_splash/show_image=false
 
 [autoload]
 
-Global="*uid://708xk1jl38ed"
-SceneTransition="*uid://c0vgeukipwv1j"
-DebugOverlay="*uid://gifwmm8xv4ut"
+Global="*res://scripts/Global.gd"
+DebugOverlay="*res://scenes/PerformanceOverlay.tscn"
+SceneTransition="*res://scenes/SceneTransition.tscn"
 
 [display]
 
