@@ -4,56 +4,22 @@ var current_direction = Vector2.RIGHT
 var next_direction = Vector2.RIGHT
 var is_invincible = false
 var isDying = false
+var is_ready_sequence = true
 var intermission_time_left = 0.0
 var intermission_blink_time = 0.0
-var is_waiting_for_start = true
 
-@export var spawn_position: Vector2 = Vector2(400, 800)
+
+@export var spawn_position: Vector2 = Vector2(400, 600)
 
 func _ready():
 	get_tree().call_group("Main", "setDifficulty")
 	global_position = spawn_position
-	velocity = Vector2.ZERO
-	is_waiting_for_start = true
 	
 	$AnimatedSprite2D.play("Closed")
-	
-	blink_ready_label()
-	
-	var start_timer = Timer.new()
-	start_timer.name = "AutoStartTimer"
-	start_timer.wait_time = 3.0
-	start_timer.one_shot = true
-	start_timer.autostart = true
-	add_child(start_timer)
-	start_timer.timeout.connect(_on_auto_start_timeout)
-
-func blink_ready_label():
-	var ready_label = get_tree().root.find_child("ReadyLabel", true, false)
-	if ready_label:
-		for i in range(3):
-			if not is_waiting_for_start: break
-			ready_label.show()
-			await get_tree().create_timer(0.5).timeout
-			if not is_waiting_for_start: break
-			ready_label.hide()
-			await get_tree().create_timer(0.5).timeout
-
-func _on_auto_start_timeout():
-	if is_waiting_for_start:
-		start_game_logic()
-
-func start_game_logic():
-	is_waiting_for_start = false
-	Global.isGameStopped = false
-	$AnimatedSprite2D.play("PacMan_Kauen")
-	var ready_label = get_tree().root.find_child("ReadyLabel", true, false)
-	if ready_label:
-		ready_label.hide()
-	$Area2D.monitoring = false
-	$Area2D.set_deferred("monitoring", true)
 
 func _process(delta):
+	if Global.isGameStopped:
+		return
 	if intermission_time_left > 0:
 		intermission_time_left -= delta
 		if intermission_time_left <= 0:
@@ -63,12 +29,6 @@ func _process(delta):
 			get_tree().call_group("Main", "setDifficulty")
 
 func _physics_process(_delta: float) -> void:
-	if is_waiting_for_start:
-		if Input.is_action_just_pressed("ui_right") or Input.is_action_just_pressed("ui_left") or Input.is_action_just_pressed("ui_up") or Input.is_action_just_pressed("ui_down"):
-			start_game_logic()
-		else:
-			return
-
 	if Global.isGameStopped == false:
 		if Input.is_action_pressed("ui_right"):
 			next_direction = Vector2.RIGHT
@@ -78,15 +38,18 @@ func _physics_process(_delta: float) -> void:
 			next_direction = Vector2.DOWN
 		elif Input.is_action_pressed("ui_up"):
 			next_direction = Vector2.UP
-		
 		var can_turn = not test_move(transform, next_direction * 25)
 		if next_direction != current_direction and can_turn:
-			if next_direction.x != 0: global_position.y = snapped(global_position.y, 8.0)
-			if next_direction.y != 0: global_position.x = snapped(global_position.x, 8.0)
+			velocity = (current_direction * 0.5 + next_direction).normalized() * Global.speedPlayer * 100
 			current_direction = next_direction
-		
+		else:
+			if is_on_wall() and can_turn:
+				current_direction = next_direction
 		velocity = current_direction * Global.speedPlayer * 100
-		move_and_slide()
+
+	if Global.isGameStopped == false:
+		if move_and_slide():
+			pass
 	
 	if velocity.length() > 0:
 		rotation = current_direction.angle()
@@ -94,7 +57,7 @@ func _physics_process(_delta: float) -> void:
 
 func _on_area_2d_area_entered(area: Area2D) -> void:
 	# FIX: Schützt Punkte davor, im Todes-Animations-Screen oder beim "READY"-Startbildschirm gegessen zu werden.
-	if isDying or is_waiting_for_start:
+	if isDying or is_ready_sequence:
 		return
 
 	# Normale Punkte
@@ -227,3 +190,6 @@ func stop_for_level_end():
 	$AnimatedSprite2D.play("Closed")
 	
 	
+func start_moving_animation():
+	is_ready_sequence = false
+	$AnimatedSprite2D.play("PacMan_Kauen")

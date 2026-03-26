@@ -231,7 +231,7 @@ animations = [{
 }]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_a73n8"]
-radius = 3.8834953
+radius = 2.0425868
 
 [node name="PinkGhost" type="CharacterBody2D" unique_id=1182016807 groups=["Ghost", "PinkGhost"]]
 collision_layer = 4
