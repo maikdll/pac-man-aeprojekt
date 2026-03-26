@@ -268,7 +268,7 @@ func _build_ui():
 
 	# --- CREDITS LABEL (DEZENT, GANZ UNTEN) ---
 	var credits_label = Label.new()
-	credits_label.text = "CREATED BY MAIK MADEJSKI - NIKO REICHEL - Nurzhan Abdyraeva"
+	credits_label.text = "CREATED BY MAIK MADEJSKI - NIKO REICHEL - NURZHAN ABDYRAEVA"
 	credits_label.add_theme_font_override("font", font)
 	credits_label.add_theme_font_size_override("font_size", 8) 
 	credits_label.add_theme_color_override("font_color", Color(0.3, 0.3, 0.3)) 
