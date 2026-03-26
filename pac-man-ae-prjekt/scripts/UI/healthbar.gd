@@ -11,5 +11,5 @@ func update_healthbar():
 		
 
 
-func _ready() -> void:
+func _on_ready() -> void:
 	update_healthbar()

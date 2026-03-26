@@ -22,13 +22,7 @@ func before_each() -> void:
 	stub(ghost, "pick_new_scatter_target").to_do_nothing()
 	add_child_autoqfree(ghost)
 
-	var _PacManScript = load("res://scripts/PacMan.gd")
-	fake_pacman = partial_double(_PacManScript).new()
-	stub(fake_pacman, "_ready").to_do_nothing()
-	stub(fake_pacman, "_process").to_do_nothing()
-	stub(fake_pacman, "_physics_process").to_do_nothing()
-	add_child_autoqfree(fake_pacman)
-	fake_pacman.current_direction = Vector2.ZERO
+	fake_pacman = add_child_autoqfree(Node2D.new())
 	ghost.pacman = fake_pacman
 	ghost.global_position = Vector2.ZERO
 	ghost.current_scatter_target = Vector2(1000.0, 1000.0)
