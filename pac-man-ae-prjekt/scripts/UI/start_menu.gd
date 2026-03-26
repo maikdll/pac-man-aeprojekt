@@ -266,6 +266,21 @@ func _build_ui():
 	hs_label.position = Vector2(380, 400)
 	add_child(hs_label)
 
+	# --- CREDITS LABEL (DEZENT, GANZ UNTEN) ---
+	var credits_label = Label.new()
+	credits_label.text = "CREATED BY MAIK MADEJSKI - NIKO REICHEL - Nurzhan Abdyraeva"
+	credits_label.add_theme_font_override("font", font)
+	credits_label.add_theme_font_size_override("font_size", 8) 
+	credits_label.add_theme_color_override("font_color", Color(0.3, 0.3, 0.3)) 
+	credits_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	credits_label.anchor_left = 0.0
+	credits_label.anchor_right = 1.0
+	credits_label.anchor_top = 1.0
+	credits_label.anchor_bottom = 1.0
+	credits_label.offset_top = -15 
+	credits_label.offset_bottom = -2
+	add_child(credits_label)
+
 func _on_play():
 	start_game()
 
