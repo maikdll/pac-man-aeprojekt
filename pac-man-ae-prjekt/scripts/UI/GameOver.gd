@@ -1,14 +1,21 @@
 extends CanvasLayer
 
-const VIEWPORT_W := 960.0
-const ROW_Y := 190.0 
+const ROW_Y := 60.0 
 const GHOST_ROW_GAP := 70.0
 const GH_SCALE := Vector2(2.8, 2.8)
 
-var name_input: LineEdit
+var player_name := ""
+var name_display_label: Label
+var keyboard_grid: GridContainer
+
+const KEYS = [
+	"A", "B", "C", "D", "E", "F", "G",
+	"H", "I", "J", "K", "L", "M", "N",
+	"O", "P", "Q", "R", "S", "T", "U",
+	"V", "W", "X", "Y", "Z", "<", "OK"
+]
 
 func _ready() -> void:
-	# Baut den Screen sofort auf, wenn die Szene geladen wird
 	Global.eaten_points_positions.clear()
 	Global.isGameStopped = true
 	
@@ -35,6 +42,7 @@ func _build_screen() -> Control:
 
 	var font = load("res://assets/fonts/PressStart2P-Regular.ttf")
 
+	# --- 1. GEISTER PERFEKT ZENTRIEREN ---
 	var ghost_scenes = [
 		preload("res://scenes/Ghosts/CyanGhost.tscn"),
 		preload("res://scenes/Ghosts/Reddghost.tscn"),
@@ -42,25 +50,27 @@ func _build_screen() -> Control:
 		preload("res://scenes/Ghosts/OrangeGhost.tscn")
 	]
 	
+	# Holt sich die ECHTE Breite eures Fensters, statt 960 fix zu nutzen
+	var screen_width = get_viewport().get_visible_rect().size.x
 	var total_ghosts = ghost_scenes.size()
 	var total_spans_width = (total_ghosts - 1) * GHOST_ROW_GAP
-	var start_x = (VIEWPORT_W / 2.0) - (total_spans_width / 2.0)
+	var start_x = (screen_width / 2.0) - (total_spans_width / 2.0)
 
 	for i in range(total_ghosts):
 		var gx = start_x + (i * GHOST_ROW_GAP)
 		_spawn_ghost(ghost_scenes[i], Vector2(gx, ROW_Y), "Unten", root)
 
+	# --- 2. TEXTE PERFEKT ZENTRIEREN (PRESET_TOP_WIDE) ---
 	var title = Label.new()
 	title.text = "GAME OVER"
 	title.add_theme_font_override("font", font)
 	title.add_theme_font_size_override("font_size", 40)
 	title.add_theme_color_override("font_color", Color.RED)
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.anchor_left = 0.0
-	title.anchor_right = 1.0
-	title.offset_top = ROW_Y + 60 
-	title.offset_bottom = ROW_Y + 110
 	root.add_child(title)
+	title.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	title.offset_top = ROW_Y + 70 
+	title.offset_bottom = ROW_Y + 120
 
 	var score_lbl = Label.new()
 	score_lbl.text = "SCORE:  " + str(Global.score)
@@ -68,11 +78,10 @@ func _build_screen() -> Control:
 	score_lbl.add_theme_font_size_override("font_size", 18)
 	score_lbl.add_theme_color_override("font_color", Color.YELLOW)
 	score_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	score_lbl.anchor_left = 0.0
-	score_lbl.anchor_right = 1.0
+	root.add_child(score_lbl)
+	score_lbl.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
 	score_lbl.offset_top = ROW_Y + 120
 	score_lbl.offset_bottom = ROW_Y + 150
-	root.add_child(score_lbl)
 
 	var name_label = Label.new()
 	name_label.text = "ENTER YOUR NAME"
@@ -80,40 +89,74 @@ func _build_screen() -> Control:
 	name_label.add_theme_font_size_override("font_size", 12)
 	name_label.add_theme_color_override("font_color", Color(0.7, 0.7, 0.7))
 	name_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	name_label.anchor_left = 0.0
-	name_label.anchor_right = 1.0
-	name_label.offset_top = ROW_Y + 190
-	name_label.offset_bottom = ROW_Y + 210
 	root.add_child(name_label)
+	name_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	name_label.offset_top = ROW_Y + 170
+	name_label.offset_bottom = ROW_Y + 190
 
-	var input_container = HBoxContainer.new()
-	input_container.anchor_left = 0.5
-	input_container.anchor_right = 0.5
-	input_container.offset_left = -170
-	input_container.offset_right = 170
-	input_container.offset_top = ROW_Y + 220
-	input_container.offset_bottom = ROW_Y + 265
-	input_container.add_theme_constant_override("separation", 12)
-	root.add_child(input_container)
+	name_display_label = Label.new()
+	name_display_label.text = "NAME: _"
+	name_display_label.add_theme_font_override("font", font)
+	name_display_label.add_theme_font_size_override("font_size", 18)
+	name_display_label.add_theme_color_override("font_color", Color.WHITE)
+	name_display_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	root.add_child(name_display_label)
+	name_display_label.set_anchors_and_offsets_preset(Control.PRESET_TOP_WIDE)
+	name_display_label.offset_top = ROW_Y + 195
+	name_display_label.offset_bottom = ROW_Y + 225
 
-	name_input = LineEdit.new()
-	name_input.placeholder_text = "Name"
-	name_input.add_theme_font_override("font", font)
-	name_input.add_theme_font_size_override("font_size", 14)
-	name_input.custom_minimum_size.x = 200
-	name_input.max_length = 15
-	name_input.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	input_container.add_child(name_input)
+	# --- 3. TASTATUR PERFEKT ZENTRIEREN (PRESET_CENTER_TOP) ---
+	keyboard_grid = GridContainer.new()
+	keyboard_grid.columns = 7
+	keyboard_grid.add_theme_constant_override("h_separation", 8)
+	keyboard_grid.add_theme_constant_override("v_separation", 8)
+	root.add_child(keyboard_grid)
+	
+	# Das ist die Magie: Godot zentriert den Container automatisch und wächst gleichmäßig in beide Richtungen
+	keyboard_grid.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
+	keyboard_grid.grow_horizontal = Control.GROW_DIRECTION_BOTH 
+	keyboard_grid.offset_top = ROW_Y + 240
 
-	var btn = Button.new()
-	btn.text = "Confirm"
-	btn.add_theme_font_override("font", font)
-	btn.add_theme_font_size_override("font_size", 12)
-	btn.pressed.connect(_on_confirm)
-	input_container.add_child(btn)
+	# Tasten-Design 
+	var style_normal = StyleBoxFlat.new()
+	style_normal.bg_color = Color(0.1, 0.1, 0.1) 
+	style_normal.corner_radius_top_left = 3
+	style_normal.corner_radius_top_right = 3
+	style_normal.corner_radius_bottom_right = 3
+	style_normal.corner_radius_bottom_left = 3
 
-	name_input.text_submitted.connect(_on_name_submitted)
-	name_input.call_deferred("grab_focus")
+	var style_focus = StyleBoxFlat.new()
+	style_focus.bg_color = Color(0.1, 0.1, 0.1)
+	style_focus.border_color = Color.RED
+	style_focus.border_width_left = 3
+	style_focus.border_width_right = 3
+	style_focus.border_width_top = 3
+	style_focus.border_width_bottom = 3
+	style_focus.corner_radius_top_left = 3
+	style_focus.corner_radius_top_right = 3
+	style_focus.corner_radius_bottom_right = 3
+	style_focus.corner_radius_bottom_left = 3
+
+	for key in KEYS:
+		var btn = Button.new()
+		btn.text = key
+		btn.add_theme_font_override("font", font)
+		btn.add_theme_font_size_override("font_size", 12)
+		btn.custom_minimum_size = Vector2(45, 45)
+		btn.mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
+		btn.focus_mode = Control.FOCUS_ALL
+		
+		btn.add_theme_stylebox_override("normal", style_normal)
+		btn.add_theme_stylebox_override("focus", style_focus) 
+		btn.add_theme_stylebox_override("hover", style_focus) 
+		btn.add_theme_stylebox_override("pressed", style_focus)
+		
+		btn.pressed.connect(_on_key_pressed.bind(key))
+		keyboard_grid.add_child(btn)
+
+	if keyboard_grid.get_child_count() > 0:
+		keyboard_grid.get_child(0).call_deferred("grab_focus")
+
 	return root
 
 func _spawn_ghost(scene: PackedScene, pos: Vector2, anim: String, parent: Control):
@@ -126,14 +169,21 @@ func _spawn_ghost(scene: PackedScene, pos: Vector2, anim: String, parent: Contro
 	g_anim.play(anim)
 	g_inst.queue_free()
 
-func _on_confirm():
-	_submit_name(name_input.text)
+func _on_key_pressed(key: String):
+	if key == "<": 
+		if player_name.length() > 0:
+			player_name = player_name.substr(0, player_name.length() - 1)
+	elif key == "OK":
+		if player_name.strip_edges() != "":
+			_submit_name(player_name)
+	else:
+		if player_name.length() < 10:
+			player_name += key
+			
+	name_display_label.text = "NAME: " + player_name + "_"
 
-func _on_name_submitted(_text: String):
-	_submit_name(name_input.text)
-
-func _submit_name(player_name: String):
-	var pname = player_name.strip_edges()
+func _submit_name(submitted_name: String):
+	var pname = submitted_name.strip_edges()
 	if pname == "":
 		pname = "Unknown"
 	Global.update_leaderboard(pname)
