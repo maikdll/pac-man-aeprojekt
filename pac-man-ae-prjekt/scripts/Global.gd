@@ -3,17 +3,17 @@ extends Node
 var level = 1
 var health = 3
 var score = 0
-var isGameStopped = false;
-var speedGhost = 0.6;
-var speedGhostRed = 1;
-var speedGhostCyan = 1;
-var speedGhostPink = 1;
-var speedGhostOrange = 1;
-var speedPlayer = 1;
-var isIntermissionMode = false;
-var eatGhostScore = 200;
+var isGameStopped = false
+var speedGhost = 0.6
+var speedGhostRed = 1
+var speedGhostCyan = 1
+var speedGhostPink = 1
+var speedGhostOrange = 1
+var speedPlayer = 1
+var isIntermissionMode = false
+var eatGhostScore = 200
 var dots_eaten = 0
-var remainingPoints = 500;
+var remainingPoints = 500
 var eaten_points_positions = {}
 var died_in_level = false
 
@@ -26,9 +26,12 @@ var socket = WebSocketPeer.new()
 var ws_url = "ws://localhost:8765"
 
 const CHAIN_A = "A"
-const CHAIN_B = "B"
 const SEG_ALL = 99
 const SEG_A_MARQUEE = 0
+const SEG_A_MONITOR_TOP = 1
+const SEG_A_MONITOR_LEFT = 2
+const SEG_A_MONITOR_BOTTOM = 3
+const SEG_A_MONITOR_RIGHT = 4
 const SEG_A_CONTROL_PANEL = 5
 
 const SAVE_PATH = "user://leaderboard.save"
@@ -46,8 +49,7 @@ func _physics_process(_delta):
 		while socket.get_available_packet_count() > 0:
 			socket.get_packet()
 
-func send_effect(chain: String, effect_type: String, color: Color, segment: int = SEG_ALL, speed: int = 50, repeat_count: int = -1):
-	await get_tree().create_timer(0.2).timeout
+func send_effect(chain: String, effect_type: String, color: Color, segment = SEG_ALL, speed: int = 50, repeat_count: int = -1, length: int = 5, priority: int = 2, dir: int = 1):
 	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
 		var data = {
 			"cmd": "effect",
@@ -55,19 +57,31 @@ func send_effect(chain: String, effect_type: String, color: Color, segment: int 
 			"type": effect_type,
 			"segment": segment, 
 			"color": {
-				"r": int(color.r * 255),
-				"g": int(color.g * 255),
-				"b": int(color.b * 255)
+				"r": int(round(color.r * 255)),
+				"g": int(round(color.g * 255)),
+				"b": int(round(color.b * 255))
 			},
 			"speed": speed,
 			"repeat": repeat_count,
-			"length": 10,
-			"priority": 2
+			"length": length,
+			"dir": dir,
+			"priority": priority
 		}
 		print("Sending effect!...")
 		socket.send_text(JSON.stringify(data))
 	else:
 		print("FEHLER: Socket nicht offen! Status ist: ", socket.get_ready_state())
+
+func send_attract(state: String):
+	if socket.get_ready_state() == WebSocketPeer.STATE_OPEN:
+		var data = {
+			"cmd": "attract",
+			"state": state
+		}
+		socket.send_text(JSON.stringify(data))
+	else:
+		print("FEHLER: Socket nicht offen für Attract-Befehl!")
+
 func _ready():
 	var err = socket.connect_to_url(ws_url)
 	if err != OK:
@@ -102,13 +116,11 @@ func _on_inactivity_timeout():
 
 func update_leaderboard(new_name: String):
 	leaderboard.append({"name": new_name, "score": Global.score})
-	
 	leaderboard.sort_custom(func(a, b): return a["score"] > b["score"])
-	
 	leaderboard = leaderboard.slice(0, 5)
-	
 	save_leaderboard()
 
 func resetLedGameplay():
-	send_effect(Global.CHAIN_A, "chase", Color.YELLOW, Global.SEG_ALL, 40, -1)
-	send_effect(Global.CHAIN_B, "pulse", Color.YELLOW, Global.SEG_ALL, 70, -1)
+	send_attract("resume")
+	send_attract("pause")
+	send_effect(CHAIN_A, "chase", Color8(255, 215, 0), SEG_ALL, 40, -1, 5, 1)

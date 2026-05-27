@@ -41,7 +41,7 @@ func _ready():
 	Global.isGameStopped = true 
 	Global.isIntermissionMode = false
 	
-	setDifficulty()
+	setup_difficulty()
 	
 	if level_fruit:
 		level_fruit.visible = false
@@ -65,7 +65,6 @@ func start_ready_sequence():
 		ready_label.visible = false
 		
 	Global.isGameStopped = false
-	
 	get_tree().call_group("PacMan", "start_moving_animation")
 
 func _process(_delta):
@@ -79,7 +78,6 @@ func _process(_delta):
 		
 func setup_grid():
 	var full_rect = tile_map1.get_used_rect().merge(tile_map2.get_used_rect().merge(tile_map3.get_used_rect()))
-	
 	astar_grid.region = full_rect
 	astar_grid.cell_size = Vector2(16, 16)
 	astar_grid.diagonal_mode = AStarGrid2D.DIAGONAL_MODE_NEVER
@@ -97,13 +95,11 @@ func _add_walls_from_layer(layer: TileMapLayer):
 func get_path_to_pacman(ghost_global_pos: Vector2, target_global_pos: Vector2) -> Array[Vector2i]:
 	var local_ghost = tile_map1.to_local(ghost_global_pos)
 	var local_target = tile_map1.to_local(target_global_pos)
-	
 	var start_cell = tile_map1.local_to_map(local_ghost)
 	var end_cell = tile_map1.local_to_map(local_target)
 	
 	if not astar_grid.region.has_point(start_cell) or not astar_grid.region.has_point(end_cell):
 		return []
-
 	return astar_grid.get_id_path(start_cell, end_cell)
 
 func spawn_points():
@@ -118,10 +114,8 @@ func spawn_points():
 	for x in range(region.position.x, region.end.x):
 		for y in range(region.position.y, region.end.y):
 			var cell = Vector2i(x, y)
-			
 			if astar_grid.is_point_solid(cell):
 				continue
-				
 			if tile_map3.get_cell_source_id(cell) != -1:
 				continue
 				
@@ -141,12 +135,10 @@ func spawn_points():
 				continue
 				
 			valid_cells_evaluated += 1
-		
 			if Global.eaten_points_positions.has(cell):
 				continue
 				
 			points_placed += 1
-			
 			var local_center = tile_map1.map_to_local(cell)
 			var current_point_pos = tile_map1.to_global(local_center)
 			
@@ -158,7 +150,6 @@ func spawn_points():
 				
 			points_container.add_child(point)
 			point.global_position = current_point_pos
-			
 			point.grid_pos = cell
 	Global.remainingPoints = points_placed
 
@@ -169,23 +160,19 @@ func restrict_grid_for_ghosts():
 	for x in range(region.position.x, region.end.x):
 		for y in range(region.position.y, region.end.y):
 			var cell = Vector2i(x, y)
-			
 			if astar_grid.is_point_solid(cell):
 				continue
 				
 			var touches_wall = false
-			
 			for dx in [-1, 0, 1]:
 				for dy in [-1, 0, 1]:
 					if dx == 0 and dy == 0:
 						continue
-						
 					var neighbor_cell = cell + Vector2i(dx, dy)
 					if astar_grid.is_in_boundsv(neighbor_cell):
 						if astar_grid.is_point_solid(neighbor_cell):
 							touches_wall = true
 							break
-							
 				if touches_wall:
 					break
 					
@@ -202,18 +189,19 @@ func checkAllPointsEaten():
 		Global.isGameStopped = true
 		get_tree().call_group("PacMan", "stop_for_level_end")
 		
+		# Event: pacman_level (Segment 99, Wipe, Gelb (255,215,0), Speed 30, Repeat 1, Prio 3)
+		Global.send_effect(Global.CHAIN_A, "wipe", Color8(255, 215, 0), Global.SEG_ALL, 30, 1, 5, 3)
+		
 		await get_tree().create_timer(0.25).timeout
 		
 		Global.level += 1
 		Global.eaten_points_positions.clear()
 		Global.dots_eaten = 0
 		Global.died_in_level = false
-		
 		Global.fruit_spawned_1 = false
 		Global.fruit_spawned_2 = false
 		
 		await get_tree().create_timer(1.0).timeout
-		
 		get_tree().call_group("PacMan", "set", "visible", false)
 		get_tree().call_group("Ghost", "set", "visible", false)
 		
@@ -221,7 +209,6 @@ func checkAllPointsEaten():
 			tile_map1.visible = false
 			tile_map2.visible = false
 			tile_map4.visible = false
-			
 			points_container.visible = false
 			if is_instance_valid(level_fruit): 
 				level_fruit.visible = false
@@ -235,7 +222,6 @@ func checkAllPointsEaten():
 			tile_map1.visible = true
 			tile_map2.visible = true
 			tile_map4.visible = true
-			
 			points_container.visible = true
 			if is_instance_valid(level_fruit): 
 				level_fruit.visible = true
@@ -248,7 +234,7 @@ func checkAllPointsEaten():
 			
 		SceneTransition.change_scene("res://scenes/Cutscenes.tscn")
 		
-func setDifficulty():
+func setup_difficulty():
 	if Global.level == 1:
 		Global.speedPlayer = 1.0
 		Global.speedGhost = 0.6
@@ -271,17 +257,17 @@ func setDifficulty():
 		Global.speedPlayer = 1.8
 		Global.speedGhost = 1.6
 	elif Global.level == 8:
-		Global.speedPlayer = 2
+		Global.speedPlayer = 2.0
 		Global.speedGhost = 1.6
 	elif Global.level == 9:
-		Global.speedPlayer = 2
+		Global.speedPlayer = 2.0
 		Global.speedGhost = 1.8
 	elif Global.level == 10:
 		Global.speedPlayer = 2.0
 		Global.speedGhost = 2.0
 	else:
 		Global.speedPlayer = 1.8
-		Global.speedGhost = 2 + (Global.level -10) / 10.0
+		Global.speedGhost = 2.0 + (Global.level - 10) / 10.0
 
 func spawn_fruit():
 	if not level_fruit: return
@@ -291,9 +277,7 @@ func spawn_fruit():
 	
 	var current_score = get_fruit_score(Global.level)
 	level_fruit.set_meta("score_value", current_score)
-	
 	level_fruit.global_position = Vector2(480, 152) 
-	
 	level_fruit.visible = true
 	level_fruit.set_deferred("monitoring", true)
 	level_fruit.set_deferred("monitorable", true)

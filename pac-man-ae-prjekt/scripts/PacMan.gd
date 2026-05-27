@@ -8,13 +8,11 @@ var is_ready_sequence = true
 var intermission_time_left = 0.0
 var intermission_blink_time = 0.0
 
-
 @export var spawn_position: Vector2 = Vector2(400, 600)
 
 func _ready():
-	get_tree().call_group("Main", "setDifficulty")
+	get_tree().call_group("Main", "setup_difficulty")
 	global_position = spawn_position
-	
 	$AnimatedSprite2D.play("Closed")
 
 func _process(delta):
@@ -26,7 +24,7 @@ func _process(delta):
 			Global.resetLedGameplay()
 			$AudioIntermission.stop()
 			Global.isIntermissionMode = false
-			get_tree().call_group("Main", "setDifficulty")
+			get_tree().call_group("Main", "setup_difficulty")
 
 func _physics_process(_delta: float) -> void:
 	if Global.isGameStopped == false:
@@ -38,6 +36,7 @@ func _physics_process(_delta: float) -> void:
 			next_direction = Vector2.DOWN
 		elif Input.is_action_pressed("ui_up"):
 			next_direction = Vector2.UP
+			
 		var can_turn = not test_move(transform, next_direction * 25)
 		if next_direction != current_direction and can_turn:
 			velocity = (current_direction * 0.5 + next_direction).normalized() * Global.speedPlayer * 100
@@ -54,13 +53,11 @@ func _physics_process(_delta: float) -> void:
 	if velocity.length() > 0:
 		rotation = current_direction.angle()
 
-
 func _on_area_2d_area_entered(area: Area2D) -> void:
-	# FIX: Schützt Punkte davor, im Todes-Animations-Screen oder beim "READY"-Startbildschirm gegessen zu werden.
 	if isDying or is_ready_sequence:
 		return
 
-	# Normale Punkte
+	# Normale Punkte (pacman_pill)
 	if area.is_in_group("Points") and not area.is_in_group("BigPoint"):
 		area.set_deferred("monitoring", false)
 		area.set_deferred("monitorable", false)
@@ -72,15 +69,17 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			
 		Global.dots_eaten += 1
 		Global.score += 10
+		
+		# Event: pacman_pill (Segment 1, Gelb (255,215,0), Speed 40, Repeat 1, Prio 2)
+		Global.send_effect(Global.CHAIN_A, "sparkle", Color8(255, 215, 0), 1, 30, 1, 5, 2)
 		get_tree().call_group("Main", "checkAllPointsEaten")
 		area.queue_free() 
 
-	# Große Punkte (Power Pellets)
+	# Große Punkte (pacman_powerpill)
 	elif area.is_in_group("BigPoint"):
 		area.set_deferred("monitoring", false)
 		area.set_deferred("monitorable", false)
 		area.visible = false
-		print("Big point eaten!")
 		
 		if "grid_pos" in area:
 			Global.eaten_points_positions[area.grid_pos] = true
@@ -98,15 +97,18 @@ func _on_area_2d_area_entered(area: Area2D) -> void:
 			Global.isIntermissionMode = true
 			get_tree().call_group("Ghost", "on_power_pellet_eaten")
 			
+			# Event: pacman_powerpill (Segment 99, Blau (0,0,255), Speed 15, Repeat -1, Prio 2)
+			Global.send_effect(Global.CHAIN_A, "pulse", Color8(0, 0, 255), Global.SEG_ALL, 15, -1, 5, 2)
 			Global.eatGhostScore = 200 
 			get_tree().call_group("Ghost", "start_wave", 1, 10.0)
 			
 		area.queue_free() 
 
-	# Früchte
+	# Früchte (pacman_fruit)
 	elif area.is_in_group("Fruit"):
 		$AudioEatingFruit.play()
-		Global.send_effect(Global.CHAIN_A, "sparkle", Color.MAGENTA, Global.SEG_ALL, 40, 2)
+		# Event: pacman_fruit (Segment 0, Dunkelorange (255,140,0), Speed 50, Repeat 5, Prio 2)
+		Global.send_effect(Global.CHAIN_A, "sparkle", Color8(255, 140, 0), 0, 50, 5, 5, 2)
 		area.visible = false
 		area.set_deferred("monitoring", false)
 		area.set_deferred("monitorable", false)
@@ -121,12 +123,12 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 		return
 	if not body.is_in_group("Ghost"):
 		return
-	
 	if body.is_eaten:
 		return
 		
 	if Global.isIntermissionMode == true and body.is_immune == false:
-		Global.send_effect(Global.CHAIN_A, "sparkle", Color.WHITE, Global.SEG_ALL, 40, 5)
+		# Event: pacman_ghost (Segment 99, Weiß (255,255,255), Speed 50, Repeat 3, Prio 2)
+		Global.send_effect(Global.CHAIN_A, "sparkle", Color8(255, 255, 255), Global.SEG_ALL, 50, 3, 5, 2)
 		$AudioEatingGhost.play()
 		body.get_eaten()
 		Global.score += Global.eatGhostScore
@@ -136,11 +138,11 @@ func _on_area_2d_body_entered(body: Node2D) -> void:
 	else:
 		killPacman()
 				
-				
 func killPacman():
 	if isDying: return
-	Global.send_effect(Global.CHAIN_A, "chase", Color.RED, Global.SEG_ALL, 5, 2)
-	Global.send_effect(Global.CHAIN_B, "blink", Color.RED, Global.SEG_ALL, 10, 2)
+	
+	# Event: pacman_death (Segment 99, Rot (255,0,0), Speed 150, Repeat 3, Prio 3)
+	Global.send_effect(Global.CHAIN_A, "blink", Color8(255, 0, 0), Global.SEG_ALL, 150, 3, 5, 3)
 	
 	print("Gegessene Punkte vor dem Reload: ", Global.eaten_points_positions.size())
 	$AudioDeath.play()
@@ -158,10 +160,8 @@ func killPacman():
 	
 	if Global.health > 0:
 		Global.died_in_level = true
-		# Normaler Tod
 		SceneTransition.change_scene(get_tree().current_scene.scene_file_path)
 	else:
-		# Game Over!
 		SceneTransition.change_scene("res://scenes/UI/GameOver.tscn")
 	
 func get_intermission_times(level: int) -> Dictionary:
@@ -185,10 +185,8 @@ func get_intermission_times(level: int) -> Dictionary:
 		
 	return {"total": total_time, "blink": blink_time}
 	
-	
 func stop_for_level_end():
 	$AnimatedSprite2D.play("Closed")
-	
 	
 func start_moving_animation():
 	is_ready_sequence = false

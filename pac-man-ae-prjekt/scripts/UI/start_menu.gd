@@ -18,7 +18,7 @@ var move_dir := -1.0
 var pac_x := 0.0
 var gx := [0.0, 0.0, 0.0, 0.0]
 var ghosts_scared := false
-var ghosts_eaten := [false, false, false, false]
+var ghosts_eaten = [false, false, false, false]
 var eaten_count := 0
 var blink_timer := 0.0
 
@@ -43,12 +43,13 @@ func _on_button_button_down() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("start_game"):
 		start_game()
-		
 	elif event.is_action_pressed("quit_game"):
 		get_tree().quit()
 
 func start_game():
-	# --- ALLES AUF ANFANG SETZEN ---
+	# Event: sys_start_pacman (Segment 99, Scanner, Gelb (255,215,0), Speed 20, Repeat 1, Prio 3)
+	Global.send_effect(Global.CHAIN_A, "scanner", Color8(255, 215, 0), Global.SEG_ALL, 20, 1, 5, 3)
+
 	Global.level = 1
 	Global.score = 0
 	Global.health = 3
@@ -60,9 +61,14 @@ func start_game():
 	SceneTransition.change_scene("res://scenes/Main.tscn")
 
 func _ready():
-	Global.send_effect(Global.CHAIN_A, "fill", Color.YELLOW, Global.SEG_A_MARQUEE)
-	Global.send_effect(Global.CHAIN_B, "rainbow", Color.BLACK, Global.SEG_ALL, 80)
-	Global.send_effect(Global.CHAIN_A, "blink", Color.GREEN, Global.SEG_A_CONTROL_PANEL, 20)
+	# Event: sys_end / Idle-Modus (Attract-Mode reaktivieren)
+	Global.send_attract("resume")
+	
+	# Design für das Startmenü als Overlay (Prio 1)
+	Global.send_effect(Global.CHAIN_A, "fill", Color8(255, 215, 0), Global.SEG_A_MARQUEE, 50, -1, 5, 1)
+	Global.send_effect(Global.CHAIN_A, "blink", Color8(0, 255, 0), Global.SEG_A_CONTROL_PANEL, 20, -1, 5, 1)
+	Global.send_effect(Global.CHAIN_A, "rainbow", Color8(0, 0, 0), [1, 2, 3, 4], 80, -1, 5, 1)
+	
 	_build_ui()
 	_build_anim_sprites()
 	_reset()
@@ -146,7 +152,6 @@ func _begin_hunt():
 	ghosts_scared = true
 	pellet_sprite.visible = false
 	move_dir = 1.0
-	
 	pac_anim.scale = Vector2(PAC_SCALE.x, PAC_SCALE.y) 
 
 	for i in 4:
@@ -170,7 +175,6 @@ func _eat_ghost(i: int):
 	ghosts_eaten[i] = true
 	eaten_count += 1
 	var scores = [200, 400, 800, 1600]
-	
 	ghosts_anim[i].visible = false
 	_show_score(scores[eaten_count - 1], gx[i])
 	
@@ -266,7 +270,6 @@ func _build_ui():
 	hs_label.position = Vector2(380, 400)
 	add_child(hs_label)
 
-	# --- CREDITS LABEL (DEZENT, GANZ UNTEN) ---
 	var credits_label = Label.new()
 	credits_label.text = "CREATED BY MAIK MADEJSKI - NIKO REICHEL - NURZHAN ABDYRAEVA"
 	credits_label.add_theme_font_override("font", font)

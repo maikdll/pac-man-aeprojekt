@@ -19,8 +19,8 @@ func _ready() -> void:
 	Global.eaten_points_positions.clear()
 	Global.isGameStopped = true
 	
-	Global.send_effect(Global.CHAIN_A, "fill", Color.RED, Global.SEG_ALL, 50, -1)
-	Global.send_effect(Global.CHAIN_B, "fill", Color.RED, Global.SEG_ALL, 50, -1)
+	# Event: pacman_gameover (Segment 99, Fill, Rot (255,0,0), Speed 100, Repeat 1, Prio 3)
+	Global.send_effect(Global.CHAIN_A, "fill", Color8(255, 0, 0), Global.SEG_ALL, 100, 1, 5, 3)
 	
 	_build_screen()
 
@@ -42,7 +42,6 @@ func _build_screen() -> Control:
 
 	var font = load("res://assets/fonts/PressStart2P-Regular.ttf")
 
-	# --- 1. GEISTER PERFEKT ZENTRIEREN ---
 	var ghost_scenes = [
 		preload("res://scenes/Ghosts/CyanGhost.tscn"),
 		preload("res://scenes/Ghosts/Reddghost.tscn"),
@@ -50,7 +49,6 @@ func _build_screen() -> Control:
 		preload("res://scenes/Ghosts/OrangeGhost.tscn")
 	]
 	
-	# Holt sich die ECHTE Breite eures Fensters, statt 960 fix zu nutzen
 	var screen_width = get_viewport().get_visible_rect().size.x
 	var total_ghosts = ghost_scenes.size()
 	var total_spans_width = (total_ghosts - 1) * GHOST_ROW_GAP
@@ -60,7 +58,6 @@ func _build_screen() -> Control:
 		var gx = start_x + (i * GHOST_ROW_GAP)
 		_spawn_ghost(ghost_scenes[i], Vector2(gx, ROW_Y), "Unten", root)
 
-	# --- 2. TEXTE PERFEKT ZENTRIEREN (PRESET_TOP_WIDE) ---
 	var title = Label.new()
 	title.text = "GAME OVER"
 	title.add_theme_font_override("font", font)
@@ -105,19 +102,16 @@ func _build_screen() -> Control:
 	name_display_label.offset_top = ROW_Y + 195
 	name_display_label.offset_bottom = ROW_Y + 225
 
-	# --- 3. TASTATUR PERFEKT ZENTRIEREN (PRESET_CENTER_TOP) ---
 	keyboard_grid = GridContainer.new()
 	keyboard_grid.columns = 7
 	keyboard_grid.add_theme_constant_override("h_separation", 8)
 	keyboard_grid.add_theme_constant_override("v_separation", 8)
 	root.add_child(keyboard_grid)
 	
-	# Das ist die Magie: Godot zentriert den Container automatisch und wächst gleichmäßig in beide Richtungen
 	keyboard_grid.set_anchors_and_offsets_preset(Control.PRESET_CENTER_TOP)
 	keyboard_grid.grow_horizontal = Control.GROW_DIRECTION_BOTH 
 	keyboard_grid.offset_top = ROW_Y + 240
 
-	# Tasten-Design 
 	var style_normal = StyleBoxFlat.new()
 	style_normal.bg_color = Color(0.1, 0.1, 0.1) 
 	style_normal.corner_radius_top_left = 3
@@ -187,5 +181,4 @@ func _submit_name(submitted_name: String):
 	if pname == "":
 		pname = "Unknown"
 	Global.update_leaderboard(pname)
-	
 	SceneTransition.change_scene("res://scenes/UI/StartMenu.tscn")
