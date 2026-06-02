@@ -63,6 +63,7 @@ zoom = Vector2(2.5, 2.5)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=589967790]
 stream = ExtResource("4_rarhs")
+volume_db = -20.0
 autoplay = true
 playback_type = 1
 
