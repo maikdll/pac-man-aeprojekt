@@ -29,9 +29,9 @@ const CHAIN_A = "A"
 const SEG_ALL = 99
 const SEG_A_MARQUEE = 0
 const SEG_A_MONITOR_TOP = 1
-const SEG_A_MONITOR_LEFT = 2
+const SEG_A_MONITOR_RIGHT = 2
 const SEG_A_MONITOR_BOTTOM = 3
-const SEG_A_MONITOR_RIGHT = 4
+const SEG_A_MONITOR_LEFT = 4
 const SEG_A_CONTROL_PANEL = 5
 
 const SAVE_PATH = "user://leaderboard.save"
