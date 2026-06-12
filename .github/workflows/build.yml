@@ -1,19 +1,25 @@
 name: Build-Godot-Stable
 
+# Definiert die Auslöser (Triggers) für diese Pipeline.
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+      - 'feature/**' # Feature-Branches lösen einen Linux-Pre-Release-Build aus
     tags:
-      - 'v*'
-  workflow_dispatch:
+      - 'v*' # Löst automatische Releases bei neuen Versions-Tags aus
+  workflow_dispatch: # Ermöglicht manuelles Triggern über GitHub
 
 permissions:
   contents: write
 
 jobs:
+  # --- Hauptbuild für main, Tags und manuelles Triggern ---
   export:
     name: Export-${{ matrix.platform }}
     runs-on: ubuntu-latest
+    # Läuft nur auf main, Tags oder manuell – NICHT auf Feature-Branches
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/') || github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:
@@ -38,42 +44,42 @@ jobs:
         run: |
           mkdir -p build/${{ matrix.platform }}
           cd pac-man-ae-prjekt
-          
+
           # Godot kurz aufwärmen lassen für den sauberen Cache
           echo "Baue sauberen Linux-Godot-Cache auf..."
           godot --headless --editor --quit || true
-          
+
           if [ "${{ matrix.platform }}" = "Windows" ]; then
             # LÖSUNG WINDOWS: Wir hängen explizit .exe an, damit Godot den Namen erzwingt!
             godot --headless --path . --export-release "Windows" ../build/Windows/game.exe
             cd ../build/Windows
             zip -r PacMan-Windows.zip .
-            
+
           elif [ "${{ matrix.platform }}" = "macOS" ]; then
             # DIE ELEGANTE LÖSUNG FÜR MAC
             godot --headless --path . --export-release "macOS" ../build/macOS/temp_macos.zip
             cd ../build/macOS
             unzip -q temp_macos.zip
             rm temp_macos.zip
-            
+
             # 1. Den .app Ordnernamen finden
             APP_NAME=$(find . -name "*.app" -maxdepth 1)
-            
+
             # 2. Die rohe ausführbare Datei herausziehen und 'game' nennen
             mv "$APP_NAME/Contents/MacOS/"* ./game
-            
+
             # 3. Die Godot-Spieldaten herausziehen und 'game.pck' nennen
             mv "$APP_NAME/Contents/Resources/"*.pck ./game.pck
-            
+
             # 4. Den restlichen .app Ordner löschen
             rm -rf "$APP_NAME"
-            
+
             # 5. Ausführungsrechte garantieren
             chmod +x ./game
-            
+
             # 6. Sauber neu zippen
             zip -r PacMan-macOS.zip .
-            
+
           elif [ "${{ matrix.platform }}" = "Linux" ]; then
             # LÖSUNG LINUX: Hier reicht der Name "game" aus
             godot --headless --path . --export-release "Linux" ../build/Linux/game
@@ -89,6 +95,69 @@ jobs:
           path: build/${{ matrix.platform }}/PacMan-${{ matrix.platform }}.zip
           retention-days: 7
 
+  # --- Linux Build für Feature-Branches (Pre-Release) ---
+  export-linux-prerelease:
+    name: Export-Linux (Pre-Release)
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/feature/')
+
+    container:
+      image: barichello/godot-ci:4.3
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Zip installieren (Sicherheitsmaßnahme)
+        run: apt-get update && apt-get install -y zip
+
+      - name: Setup Export Templates
+        run: |
+          mkdir -p ~/.local/share/godot/export_templates
+          mv /root/.local/share/godot/export_templates/4.3.stable ~/.local/share/godot/export_templates/4.3.stable
+
+      - name: Run-Export & Zip
+        run: |
+          mkdir -p build/Linux
+          cd pac-man-ae-prjekt
+          godot --headless --editor --quit || true
+          godot --headless --path . --export-release "Linux" ../build/Linux/game
+          chmod +x ../build/Linux/game
+          cd ../build/Linux
+          zip -r PacMan-Linux.zip .
+
+      - name: Artifact hochladen
+        uses: actions/upload-artifact@v4
+        with:
+          name: PacMan-Linux
+          path: build/Linux/PacMan-Linux.zip
+          retention-days: 7
+
+  # --- Automatisches GitHub Pre-Release (Feature-Branches) ---
+  prerelease:
+    name: GitHub Pre-Release erstellen
+    runs-on: ubuntu-latest
+    needs: export-linux-prerelease
+    if: startsWith(github.ref, 'refs/heads/feature/')
+    permissions:
+      contents: write
+    steps:
+      - name: Artifact herunterladen
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts/
+
+      - name: Pre-Release erstellen und Asset hochladen
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/**/*.zip
+          prerelease: true
+          tag_name: pre-${{ github.ref_name }}-${{ github.run_number }}
+          name: "Pre-Release ${{ github.ref_name }} #${{ github.run_number }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # --- Automatisches GitHub Release ---
   release:
     name: GitHub Release erstellen
     runs-on: ubuntu-latest
